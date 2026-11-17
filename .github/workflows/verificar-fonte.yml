@@ -1,0 +1,36 @@
+# Baixa o código-fonte de um pacote e mostra o sha256 e quem assinou, para fixar no PKGBUILD.
+# Uso: Actions → "verificar fonte" → Run workflow, com a URL do arquivo (e a da assinatura).
+# O hash só entra no PKGBUILD depois de conferido por uma segunda cópia baixada em outro lugar.
+name: verificar fonte
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: URL do arquivo (tar.gz, tar.xz…)
+        required: true
+      sig:
+        description: URL da assinatura .asc/.sig (opcional)
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  hash:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixa e confere
+        env:
+          URL: ${{ inputs.url }}
+          SIG: ${{ inputs.sig }}
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 5 -o fonte "$URL"
+          echo "tamanho: $(stat -c %s fonte) bytes"
+          echo "sha256:  $(sha256sum fonte | cut -d' ' -f1)"
+          echo "b2sum:   $(b2sum fonte | cut -d' ' -f1)"
+          if [ -n "$SIG" ]; then
+            curl -fsSL --retry 5 -o fonte.sig "$SIG"
+            gpg --list-packets fonte.sig | grep -E 'issuer fpr|created' || true
+          fi
