@@ -3,8 +3,9 @@ local lib = require("nullyzos.lib")
 local exec = hl.dsp.exec_cmd
 local sh = lib.shell
 
+-- Nomes de tecla como no XKB ("space", "Return"): "Space" não casa com a tecla.
 -- Sistema e apps
-hl.bind("SUPER + Space", exec(sh("toggleLauncher")), { description = "Buscar apps" })
+hl.bind("SUPER + space", exec(sh("toggleLauncher")), { description = "Buscar apps" })
 hl.bind("SUPER + L", exec(sh("lock")), { description = "Bloquear a tela" })
 hl.bind("SUPER + Return", exec(lib.apps.terminal), { description = "Terminal" })
 hl.bind("SUPER + E", exec(lib.apps.files), { description = "Arquivos" })

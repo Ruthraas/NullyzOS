@@ -29,7 +29,7 @@ ANIM_LEAVES = {
 }
 
 MOCK = r"""
-calls = { binds = {}, curves = {}, anims = {}, config = {}, rules = {}, layer_rules = {}, env = {}, on = {} }
+calls = { binds = {}, curves = {}, anims = {}, config = {}, rules = {}, layer_rules = {}, env = {}, on = {}, monitors = {} }
 local function dsp(name) return function(arg) return { dsp = name, arg = arg } end end
 local function ns(prefix)
   return setmetatable({}, { __index = function(_, k) return dsp(prefix .. k) end })
@@ -54,6 +54,7 @@ function hl.layer_rule(r) assert(r.match and r.match.namespace, "layer_rule sem 
 function hl.env(k, v) calls.env[k] = v end
 function hl.on(ev, fn) calls.on[ev] = fn end
 function hl.exec_cmd(c) end
+function hl.monitor(m) assert(m.output ~= nil and m.mode, "monitor sem output/mode"); table.insert(calls.monitors, m) end
 """
 
 
@@ -82,6 +83,10 @@ def run(vm: bool) -> list[str]:
     cfg = calls.config
     if not cfg.general or not cfg.decoration:
         errors.append(f"[{tag}] general/decoration não configurados")
+    if bind_space := [b for b in binds if b.endswith("Space")]:
+        errors.append(f"[{tag}] tecla 'Space' não casa no XKB, use 'space': {bind_space}")
+    if not list(calls.monitors.values()):
+        errors.append(f"[{tag}] sem regra de monitor")
     if not calls.on["hyprland.start"]:
         errors.append(f"[{tag}] sem autostart")
     sw = calls.env["LIBGL_ALWAYS_SOFTWARE"]

@@ -14,7 +14,7 @@ Singleton {
     readonly property color text: "#ededf2"
     readonly property color muted: "#a3a3b3"
     readonly property color accent: "#9d8cff"
-    readonly property color onAccent: "#0e0e13"
+    readonly property color textOnAccent: "#0e0e13"
     readonly property color error: "#f06a6a"
     // Vidro: tinta (mais opaca no modo VM, que não tem desfoque), borda de luz e brilho no topo.
     readonly property color glass: vm ? Qt.rgba(24 / 255, 24 / 255, 34 / 255, 0.94) : Qt.rgba(24 / 255, 24 / 255, 34 / 255, 0.55)

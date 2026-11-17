@@ -18,7 +18,9 @@ PanelWindow {
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
     property int current: 0
-    readonly property var results: Apps.search(field.text).slice(0, 8)
+    // Quantos resultados cabem entre a busca e o dock (52 px cada), no máximo 7.
+    readonly property int fits: Math.max(3, Math.min(7, Math.floor((root.height * 0.82 - 64 - 140) / 54)))
+    readonly property var results: Apps.search(field.text).slice(0, fits)
     onResultsChanged: current = 0
 
     function open(entry) {
@@ -40,7 +42,7 @@ PanelWindow {
         width: Math.min(640, root.width - 48)
         height: header.height + list.height + (root.results.length ? 20 : 0)
         anchors.horizontalCenter: parent.horizontalCenter
-        y: root.height * 0.18
+        y: Math.max(56, root.height * 0.14)
         clip: true
         // Entrada: cresce de 96% com leve overshoot e aparece; a saída é o próprio fechar.
         opacity: 0
@@ -131,7 +133,8 @@ PanelWindow {
                     id: rowArea
                     anchors.fill: parent
                     hoverEnabled: true
-                    onEntered: root.current = row.index
+                    // Só segue o mouse quando ele se mexe (não quando a lista aparece embaixo dele).
+                    onPositionChanged: root.current = row.index
                     onClicked: root.open(row.modelData)
                 }
             }

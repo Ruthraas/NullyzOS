@@ -8,6 +8,7 @@ local here = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "/usr/share/n
 package.path = here .. "?.lua;" .. package.path
 
 require("nullyzos.env")
+require("nullyzos.monitors")
 require("nullyzos.input")
 require("nullyzos.look")
 require("nullyzos.animations")

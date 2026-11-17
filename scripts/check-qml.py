@@ -137,6 +137,10 @@ def main() -> int:
 
         if "pragma Singleton" in src and not re.search(r"^Singleton\s*\{", code, re.M):
             errors.append(f"{rel}: pragma Singleton sem raiz Singleton")
+        # Propriedade "onAlgo" vira tratador de sinal no QML: o arquivo inteiro deixa de carregar.
+        for m in re.finditer(r"property\s+\w+\s+(on[A-Z]\w*)", src):
+            ln = src[: m.start()].count(chr(10)) + 1
+            errors.append(f"{rel}:{ln}: propriedade {m.group(1)} (on + maiúscula é nome de sinal)")
         if f.parent.name == "services" and "pragma Singleton" not in src:
             errors.append(f"{rel}: service sem pragma Singleton")
         if "theme" not in f.parts:
