@@ -23,7 +23,7 @@ strings:
 images:
     productIcon:    "logo.svg"
     productLogo:    "logo.svg"
-    productWelcome: "logo.svg"
+    productWelcome: "welcome.svg"   # N pequeno com respiro (gerar-imagens.py)
 
 # Papéis de branding/tokens.json (escuro)
 style:

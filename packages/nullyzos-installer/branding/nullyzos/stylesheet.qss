@@ -9,3 +9,9 @@ QListView, QTreeView, QTableView { background-color: #17171f; border: 1px solid 
 QProgressBar { background-color: #1f1f29; border: none; border-radius: 6px; text-align: center; }
 QProgressBar::chunk { background-color: #9d8cff; border-radius: 6px; }
 QLabel { background: transparent; }
+QRadioButton, QCheckBox { spacing: 8px; }
+QRadioButton::indicator { width: 16px; height: 16px; border-radius: 9px; border: 2px solid #a3a3b3; background-color: #17171f; }
+QRadioButton::indicator:checked { border: 2px solid #9d8cff; background-color: qradialgradient(cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 #9d8cff, stop:0.55 #9d8cff, stop:0.6 #17171f); }
+QCheckBox::indicator { width: 16px; height: 16px; border-radius: 5px; border: 2px solid #a3a3b3; background-color: #17171f; }
+QCheckBox::indicator:checked { border: 2px solid #9d8cff; background-color: #9d8cff; }
+QQuickWidget, QQuickView { background-color: #0e0e13; }

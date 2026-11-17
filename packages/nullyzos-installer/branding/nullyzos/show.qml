@@ -5,6 +5,9 @@ import calamares.slideshow 1.0
 Presentation {
     id: presentation
 
+    // Fundo da área inteira (sem isto o Calamares deixa uma moldura branca em volta dos slides).
+    Rectangle { anchors.fill: parent; color: "#0e0e13"; z: -1 }
+
     function nextSlide() { presentation.goToNextSlide(); }
 
     Timer {

@@ -19,7 +19,6 @@ Rectangle {
     property int sessionIndex: sessionModel.lastIndex >= 0 ? sessionModel.lastIndex : 0
     property string userName: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 1) || userModel.lastUser
     property string realName: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 2) || userName
-    property string sessionName: sessionModel.data(sessionModel.index(sessionIndex, 0), Qt.UserRole + 4) || "Sessão"
     property bool busy: false
 
     Image {
@@ -184,46 +183,108 @@ Rectangle {
         }
     }
 
-    // ---- sessão (canto inferior esquerdo) -------------------------------------------
+    // ---- sessão (topo): todas as opções lado a lado, a ativa em destaque ---------------
     Rectangle {
-        anchors { left: parent.left; bottom: parent.bottom; margins: 28 }
-        height: 40; radius: 14
-        width: sessionText.implicitWidth + 32
+        id: sessionBar
+        anchors { left: parent.left; top: parent.top; margins: 28 }
+        height: 44; radius: 16
+        width: sessionRow.implicitWidth + 8
         color: Qt.rgba(24 / 255, 24 / 255, 34 / 255, 0.55)
         border { width: 1; color: Qt.rgba(1, 1, 1, 0.16) }
-        Text {
-            id: sessionText
+        Row {
+            id: sessionRow
             anchors.centerIn: parent
-            text: "Sessão: " + root.sessionName + (sessionModel.rowCount() > 1 ? "  ▸" : "")
-            color: root.text
-            font { family: root.font; pixelSize: 14; weight: Font.Medium }
-        }
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            onClicked: root.sessionIndex = (root.sessionIndex + 1) % sessionModel.rowCount()
-            Accessible.name: "Trocar sessão"
+            spacing: 4
+            Repeater {
+                model: sessionModel
+                Rectangle {
+                    required property int index
+                    required property string name
+                    readonly property bool active: index === root.sessionIndex
+                    height: 36; radius: 12
+                    width: sessLabel.implicitWidth + 28
+                    color: active ? root.accent : (sessHover.containsMouse ? Qt.rgba(1, 1, 1, 0.10) : "transparent")
+                    Behavior on color { ColorAnimation { duration: 160 } }
+                    Text {
+                        id: sessLabel
+                        anchors.centerIn: parent
+                        text: name
+                        color: parent.active ? "#0e0e13" : root.text
+                        font { family: root.font; pixelSize: 14; weight: parent.active ? Font.DemiBold : Font.Medium }
+                    }
+                    MouseArea {
+                        id: sessHover
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: root.sessionIndex = index
+                        Accessible.name: "Sessão " + name
+                    }
+                }
+            }
         }
     }
 
-    // ---- energia (canto inferior direito) -------------------------------------------
-    Row {
+    // ---- energia (canto inferior direito): ícones, um embaixo do outro ---------------
+    // Ícones desenhados em traço (Canvas), sem depender de fonte de ícones instalada.
+    component PowerIcon: Canvas {
+        property string kind: "power"
+        property color tint: root.text
+        width: 20; height: 20
+        onTintChanged: requestPaint()
+        onPaint: {
+            const c = getContext("2d");
+            c.reset();
+            c.strokeStyle = tint; c.fillStyle = tint;
+            c.lineWidth = 2; c.lineCap = "round"; c.lineJoin = "round";
+            const m = width / 2;
+            if (kind === "power") {
+                c.beginPath(); c.arc(m, m + 1, 7, -Math.PI * 0.3, Math.PI * 1.3); c.stroke();
+                c.beginPath(); c.moveTo(m, 2); c.lineTo(m, m); c.stroke();
+            } else if (kind === "restart") {
+                c.beginPath(); c.arc(m, m, 7, -Math.PI * 0.15, Math.PI * 1.6); c.stroke();
+                c.beginPath(); c.moveTo(m + 7, 2.5); c.lineTo(m + 7, m - 1.5); c.lineTo(m + 2.5, m - 1.5); c.stroke();
+            } else {             // suspender: lua crescente
+                c.fillRule = Qt.OddEvenFill;
+                c.beginPath(); c.arc(m, m, 7.5, 0, Math.PI * 2);
+                c.moveTo(m + 10.5, m - 3.5); c.arc(m + 4.5, m - 3.5, 6, 0, Math.PI * 2); c.fill();
+            }
+        }
+    }
+
+    Column {
         anchors { right: parent.right; bottom: parent.bottom; margins: 28 }
         spacing: 10
         Repeater {
             model: [
-                { label: "Suspender", show: sddm.canSuspend, act: function () { sddm.suspend(); } },
-                { label: "Reiniciar", show: sddm.canReboot, act: function () { sddm.reboot(); } },
-                { label: "Desligar", show: sddm.canPowerOff, act: function () { sddm.powerOff(); } }
+                { label: "Suspender", kind: "sleep", show: sddm.canSuspend, act: function () { sddm.suspend(); } },
+                { label: "Reiniciar", kind: "restart", show: sddm.canReboot, act: function () { sddm.reboot(); } },
+                { label: "Desligar", kind: "power", show: sddm.canPowerOff, act: function () { sddm.powerOff(); } }
             ]
             Rectangle {
+                id: btn
                 visible: modelData.show
-                height: 40; radius: 14
-                width: label.implicitWidth + 32
-                color: hover.containsMouse ? Qt.rgba(1, 1, 1, 0.14) : Qt.rgba(24 / 255, 24 / 255, 34 / 255, 0.55)
+                width: 48; height: 48; radius: 24
+                color: hover.containsMouse ? Qt.rgba(1, 1, 1, 0.16) : Qt.rgba(24 / 255, 24 / 255, 34 / 255, 0.55)
                 border { width: 1; color: Qt.rgba(1, 1, 1, 0.16) }
+                scale: hover.pressed ? 0.92 : (hover.containsMouse ? 1.06 : 1)
                 Behavior on color { ColorAnimation { duration: 160 } }
-                Text { id: label; anchors.centerIn: parent; text: modelData.label; color: root.text; font { family: root.font; pixelSize: 14; weight: Font.Medium } }
+                Behavior on scale { NumberAnimation { duration: 160; easing.type: Easing.OutBack } }
+                PowerIcon {
+                    anchors.centerIn: parent
+                    kind: modelData.kind
+                    tint: modelData.kind === "power" && hover.containsMouse ? "#f06a6a" : root.text
+                }
+                // nome ao lado, aparece no hover
+                Rectangle {
+                    anchors { right: parent.left; rightMargin: 10; verticalCenter: parent.verticalCenter }
+                    height: 30; radius: 10
+                    width: tip.implicitWidth + 20
+                    color: Qt.rgba(14 / 255, 14 / 255, 19 / 255, 0.85)
+                    opacity: hover.containsMouse ? 1 : 0
+                    Behavior on opacity { NumberAnimation { duration: 140 } }
+                    Text { id: tip; anchors.centerIn: parent; text: modelData.label; color: root.text; font { family: root.font; pixelSize: 13 } }
+                }
                 MouseArea { id: hover; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: modelData.act(); Accessible.name: modelData.label }
             }
         }

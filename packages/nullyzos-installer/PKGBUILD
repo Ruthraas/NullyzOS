@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-installer
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Instalador do NullyzOS (configuração e visual do Calamares)"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -12,9 +12,14 @@ license=('GPL-3.0-only')
 options=('!debug')
 depends=('calamares' 'cage' 'ttf-geist' 'qt6-svg' 'qt6-wayland' 'arch-install-scripts'
          'squashfs-tools' 'grub' 'efibootmgr' 'btrfs-progs')
+makedepends=('python')
 source=()
 
 _here() { cd "$startdir" && pwd; }
+
+build() {
+  python "$(_here)/gerar-imagens.py" "$srcdir/imagens"
+}
 
 package() {
   local src
@@ -24,6 +29,7 @@ package() {
   install -m644 "$src"/modules/*.conf "$pkgdir/etc/calamares/modules/"
   install -m644 "$src"/branding/nullyzos/* "$pkgdir/etc/calamares/branding/nullyzos/"
   install -Dm644 "$src/../../branding/logo/nullyz-escuro.svg" "$pkgdir/etc/calamares/branding/nullyzos/logo.svg"
+  install -m644 "$srcdir"/imagens/* "$pkgdir/etc/calamares/branding/nullyzos/"
   install -Dm755 "$src/scripts/preparar-destino" "$pkgdir/usr/lib/nullyzos-installer/preparar-destino"
   install -Dm755 "$src/scripts/nullyzos-instalar" "$pkgdir/usr/bin/nullyzos-instalar"
   install -Dm644 "$src/../../docs/nullyz-repo.asc" "$pkgdir/usr/share/nullyzos-installer/nullyz-repo.asc"
