@@ -53,6 +53,8 @@ for f in "$PROFILE"/efiboot/loader/entries/*.conf "$PROFILE"/syslinux/*.cfg "$PR
   sed -i -e 's/Arch Linux install medium/NullyzOS live/g' -e 's/Arch Linux/NullyzOS/g' "$f"
 done
 if [ -f "$PROFILE/syslinux/archiso_head.cfg" ]; then
+  # O nome já está desenhado no splash; o título do menu caía em cima dele.
+  sed -i '/^MENU TITLE/d' "$PROFILE/syslinux/archiso_head.cfg"
   cat "$ISO_SRC/branding/syslinux-colors.cfg" >> "$PROFILE/syslinux/archiso_head.cfg"
 fi
 cp "$ISO_SRC/branding/splash.png" "$PROFILE/syslinux/splash.png"
