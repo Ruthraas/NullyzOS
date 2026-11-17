@@ -35,7 +35,7 @@ Nome: **NULLYZ OS** em letras de pixel 5×7 quando acompanha o símbolo, com **Y
 4. Três pixels pulsam enquanto carrega.
 
 **Primeiro boot (boas-vindas), uma vez, uns 12 s:**
-1. **"Seja bem-vindo(a) ao NullyzOS"** em mono. Cada letra passa por um símbolo de código (`0 1 # { } < >`) e assenta saindo do desfoque; NullyzOS em destaque. Depois o cursor pisca.
+1. **"Seja bem-vindo(a) ao NullyzOS"** na fonte da interface (Geist, a mesma da frase). Cada letra passa por um símbolo de código em mono (`0 1 # { } < >`) e assenta saindo do desfoque; NullyzOS em destaque. Depois o cursor pisca.
 2. Embaixo, com fade e desfoque, entrando e saindo: *"É preciso ter o caos dentro de si para dar à luz uma estrela dançante."* (Friedrich Nietzsche, *Assim falou Zaratustra*; tradução nossa de obra em domínio público).
 3. Botão **Começar**, que abre as boas-vindas.
 
