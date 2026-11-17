@@ -41,6 +41,12 @@ done
 LOCAL_DB="$OUT/nullyzos-local.db.tar.zst"
 have_local=0
 grep -q '^\[nullyzos-local\]' /etc/pacman.conf && have_local=1
+if [ "$have_local" -eq 1 ]; then
+  # O pacman recusa qualquer instalação se um repositório listado não tem banco: começa vazio.
+  tar --zstd -cf "$LOCAL_DB" -T /dev/null
+  ln -sf "$(basename "$LOCAL_DB")" "$OUT/nullyzos-local.db"
+  sudo pacman -Sy --noconfirm >/dev/null
+fi
 
 shopt -s nullglob
 for dir in "${dirs[@]}"; do
