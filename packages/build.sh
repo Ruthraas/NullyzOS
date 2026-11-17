@@ -48,10 +48,26 @@ if [ "$have_local" -eq 1 ]; then
   sudo pacman -Sy --noconfirm >/dev/null
 fi
 
+# Pacotes já publicados (o CI baixa a release em packages/prev): versão igual = mesmo arquivo,
+# reaproveitado byte a byte. Recompilar a mesma versão gera bytes diferentes com o mesmo nome,
+# e o cache do GitHub passa a servir banco e pacote que não batem. Mudou um pacote? Suba o pkgrel.
+PREV="$ROOT/prev"
 shopt -s nullglob
 for dir in "${dirs[@]}"; do
-  echo ":: construindo $(basename "$dir")"
-  (cd "$dir" && PKGDEST="$OUT" makepkg --clean --cleanbuild --force --syncdeps --noconfirm "${sign_args[@]}")
+  mapfile -t want < <(cd "$dir" && PKGDEST="$OUT" makepkg --packagelist)
+  reuse=1
+  for f in "${want[@]}"; do
+    b="$(basename "$f")"
+    [ -f "$PREV/$b" ] || reuse=0
+    [ "$SIGN" -eq 0 ] || [ -f "$PREV/$b.sig" ] || reuse=0
+  done
+  if [ "$reuse" -eq 1 ] && [ ${#want[@]} -gt 0 ]; then
+    echo ":: $(basename "$dir"): mesma versão já publicada, reaproveitando"
+    for f in "${want[@]}"; do cp "$PREV/$(basename "$f")"* "$OUT/"; done
+  else
+    echo ":: construindo $(basename "$dir")"
+    (cd "$dir" && PKGDEST="$OUT" makepkg --clean --cleanbuild --force --syncdeps --noconfirm "${sign_args[@]}")
+  fi
   built=("$OUT"/*.pkg.tar.zst)
   if [ "$have_local" -eq 1 ] && [ ${#built[@]} -gt 0 ]; then
     repo-add -q "$LOCAL_DB" "${built[@]}"

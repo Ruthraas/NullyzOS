@@ -12,6 +12,8 @@ packages/
 .github/workflows/repo.yml  CI: constrói num contêiner Arch e publica na release "repo"
 ```
 
+**Mudou um pacote? Suba o `pkgrel` (ou o `pkgver`).** O CI reaproveita, byte a byte, todo pacote cuja versão já está publicada: recompilar a mesma versão gera um arquivo diferente com o mesmo nome, e o cache do GitHub passa a entregar banco e pacote que não batem (o pacman acusa "Maximum file size exceeded").
+
 O CI roda sozinho a cada push na `main` que mexe em `packages/` ou `branding/`, e também à mão (Actions → "repositório pacman" → Run workflow).
 
 ## Hospedagem
