@@ -6,7 +6,7 @@
 - Estilo inspirado no macOS Tahoe (vidro, cantos redondos, barra de menus, dock). **Nada da Apple**: nem ícone, fonte, som, wallpaper, nome ou logo.
 - Rice de terceiro = receita declarativa (`rices/<id>/rice.toml`): commit fixo, só pacotes oficiais/`nullyz`, só cópia de arquivos listados, snapshot antes. Crédito + licença visíveis; avisar o autor antes de publicar.
 - Serpantinum (AGPL) e illogical-impulse (GPL) são candidatos a receita, nunca código copiado para o nosso shell.
-- Nullyzrice: o usuário pensa em apagar; recomendado arquivar (tem repo pacman assinado e chave pública publicados). Não mexer sem pedido explícito.
+- Nullyzrice: repositório no GitHub **apagado** pelo usuário em 17/11/2026; cópia local continua em E:\projetos\Nullyzrice (referência). A chave "Nullyz Packages" segue valendo: privada em E:\projetos\Nullyzrice-chave-gpg, pública em docs/nullyz-repo.asc. Repositório pacman do NullyzOS se chama `nullyzos`.
 
 ## Regras herdadas
 - Sem AUR, sem `curl | bash`. Calamares não está nos repos oficiais: empacotar em `packages/`.
