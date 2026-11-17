@@ -1,0 +1,30 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Configuração do instalador gráfico do NullyzOS (#5): sequência do Calamares, telas, pt-BR,
+# btrfs, escolha do desktop e o script que prepara o sistema novo.
+
+pkgname=nullyzos-installer
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Instalador do NullyzOS (configuração e visual do Calamares)"
+arch=('any')
+url="https://github.com/Ruthraas/NullyzOS"
+license=('GPL-3.0-only')
+depends=('calamares' 'cage' 'ttf-geist' 'qt6-svg' 'qt6-wayland' 'arch-install-scripts'
+         'squashfs-tools' 'grub' 'efibootmgr' 'btrfs-progs')
+source=()
+
+_here() { cd "$startdir" && pwd; }
+
+package() {
+  local src
+  src="$(_here)"
+  install -Dm644 "$src/settings.conf" "$pkgdir/etc/calamares/settings.conf"
+  install -dm755 "$pkgdir/etc/calamares/modules" "$pkgdir/etc/calamares/branding/nullyzos"
+  install -m644 "$src"/modules/*.conf "$pkgdir/etc/calamares/modules/"
+  install -m644 "$src"/branding/nullyzos/* "$pkgdir/etc/calamares/branding/nullyzos/"
+  install -Dm644 "$src/../../branding/logo/nullyz-escuro.svg" "$pkgdir/etc/calamares/branding/nullyzos/logo.svg"
+  install -Dm755 "$src/scripts/preparar-destino" "$pkgdir/usr/lib/nullyzos-installer/preparar-destino"
+  install -Dm755 "$src/scripts/nullyzos-instalar" "$pkgdir/usr/bin/nullyzos-instalar"
+  install -Dm644 "$src/../../docs/nullyz-repo.asc" "$pkgdir/usr/share/nullyzos-installer/nullyz-repo.asc"
+  install -Dm644 "$src/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

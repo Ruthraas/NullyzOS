@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Abre o instalador do NullyzOS em tela cheia (cage = compositor Wayland de um app só).
+# Na VM sem aceleração 3D usa desenho por software (lição do Nullyzrice).
+set -u
+if [ "$(systemd-detect-virt 2>/dev/null || echo none)" != "none" ]; then
+  export WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 QT_QUICK_BACKEND=software
+fi
+export QT_QPA_PLATFORM=wayland XDG_SESSION_TYPE=wayland
+exec cage -s -- calamares "$@"

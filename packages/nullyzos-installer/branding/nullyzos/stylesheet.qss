@@ -1,0 +1,11 @@
+/* Instalador do NullyzOS: cores de branding/tokens.json (escuro). */
+QWidget { background-color: #0e0e13; color: #ededf2; font-family: "Geist", "Inter", sans-serif; font-size: 14px; }
+QPushButton { background-color: #1f1f29; border: 1px solid #2b2b37; border-radius: 10px; padding: 8px 18px; }
+QPushButton:hover { background-color: #262632; }
+QPushButton#view-button-next { background-color: #9d8cff; color: #0e0e13; border: none; font-weight: 600; }
+QLineEdit, QComboBox, QSpinBox { background-color: #17171f; border: 1px solid #2b2b37; border-radius: 10px; padding: 6px 10px; }
+QLineEdit:focus, QComboBox:focus { border: 2px solid #9d8cff; }
+QListView, QTreeView, QTableView { background-color: #17171f; border: 1px solid #2b2b37; border-radius: 12px; selection-background-color: rgba(157, 140, 255, 0.25); selection-color: #ededf2; }
+QProgressBar { background-color: #1f1f29; border: none; border-radius: 6px; text-align: center; }
+QProgressBar::chunk { background-color: #9d8cff; border-radius: 6px; }
+QLabel { background: transparent; }

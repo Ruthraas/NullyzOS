@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=NullyzOS
+Description=N pixelado acendendo, NULL escrevendo e YZ OS girando (docs/IDENTIDADE.md)
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/nullyzos
+ScriptFile=/usr/share/plymouth/themes/nullyzos/nullyzos.script

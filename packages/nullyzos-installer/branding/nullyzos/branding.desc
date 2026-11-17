@@ -1,0 +1,36 @@
+---
+componentName: nullyzos
+welcomeStyleCalamares: false
+welcomeExpandingLogo: false
+windowExpanding: fullscreen
+windowSize: 1024px,640px
+windowPlacement: center
+sidebar: widget
+navigation: widget
+
+strings:
+    productName:         "NullyzOS"
+    shortProductName:    "NullyzOS"
+    version:             "0.1"
+    shortVersion:        "0.1"
+    versionedName:       "NullyzOS 0.1"
+    shortVersionedName:  "NullyzOS 0.1"
+    bootloaderEntryName: "NullyzOS"
+    productUrl:          "https://github.com/Ruthraas/NullyzOS"
+    supportUrl:          "https://github.com/Ruthraas/NullyzOS/issues"
+    knownIssuesUrl:      "https://github.com/Ruthraas/NullyzOS/issues"
+
+images:
+    productIcon:    "logo.svg"
+    productLogo:    "logo.svg"
+    productWelcome: "logo.svg"
+
+# Papéis de branding/tokens.json (escuro)
+style:
+    SidebarBackground:        "#17171f"
+    SidebarText:              "#ededf2"
+    SidebarTextCurrent:       "#0e0e13"
+    SidebarBackgroundCurrent: "#9d8cff"
+
+slideshow: "show.qml"
+slideshowAPI: 2

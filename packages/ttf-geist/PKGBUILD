@@ -1,0 +1,23 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Fontes Geist (interface), Geist Mono (terminal) e Geist Pixel (detalhes em pixel) da Vercel.
+# Não existem nos repositórios oficiais do Arch (só a variante Nerd Font da Mono).
+# sha256 igual em duas cópias (CI "verificar fonte" e o PC do mantenedor), 17/11/2026.
+
+pkgname=ttf-geist
+pkgver=1.9.2
+pkgrel=1
+pkgdesc="Fontes Geist, Geist Mono e Geist Pixel (Vercel), usadas pelo NullyzOS"
+arch=('any')
+url="https://github.com/vercel/geist-font"
+license=('OFL-1.1')
+depends=('fontconfig')
+source=("$pkgname-$pkgver.zip::$url/releases/download/v$pkgver/geist-font-v$pkgver.zip")
+sha256sums=('15f066d58dcb99fb10014a49913009fdaf41e464cfb8851a44b44e593c95d3d8')
+
+package() {
+  local fam
+  for fam in Geist GeistMono GeistPixel; do
+    install -Dm644 -t "$pkgdir/usr/share/fonts/OTF" "$srcdir/geist-font/$fam/otf/"*.otf
+  done
+  install -Dm644 "$srcdir/geist-font/OFL.txt" "$pkgdir/usr/share/licenses/$pkgname/OFL.txt"
+}

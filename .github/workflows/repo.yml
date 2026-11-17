@@ -31,6 +31,8 @@ jobs:
           echo 'builder ALL=(ALL) NOPASSWD: /usr/bin/pacman' > /etc/sudoers.d/builder
           chown -R builder: "$GITHUB_WORKSPACE"
           printf '%s\n' "$KEY" | su builder -c 'gpg --batch --import'
+          # Repositório local temporário: pacotes nossos que dependem de outros nossos (build.sh).
+          printf '\n[nullyzos-local]\nSigLevel = Optional TrustAll\nServer = file://%s/packages/out\n' "$GITHUB_WORKSPACE" >> /etc/pacman.conf
 
       - name: Constrói e assina
         env:

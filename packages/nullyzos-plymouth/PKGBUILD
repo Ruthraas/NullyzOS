@@ -1,0 +1,28 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Animação de boot do NullyzOS (#7): N pixelado → NULL → YZ OS girando, depois pixels pulsando.
+# Os quadros são gerados no build por gerar-frames.py (só biblioteca padrão do Python).
+
+pkgname=nullyzos-plymouth
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Tema de boot (Plymouth) do NullyzOS"
+arch=('any')
+url="https://github.com/Ruthraas/NullyzOS"
+license=('GPL-3.0-only')
+depends=('plymouth')
+makedepends=('python')
+source=()
+
+_here() { cd "$startdir" && pwd; }
+
+build() {
+  python "$(_here)/gerar-frames.py" "$srcdir/frames"
+}
+
+package() {
+  local dest="$pkgdir/usr/share/plymouth/themes/nullyzos"
+  install -dm755 "$dest"
+  install -m644 "$srcdir"/frames/*.png "$dest/"
+  install -m644 "$(_here)"/nullyzos.{plymouth,script} "$dest/"
+  install -Dm644 "$(_here)/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

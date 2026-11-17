@@ -27,11 +27,31 @@ fi
 
 rm -rf "$OUT"
 mkdir -p "$OUT"
+
+# Ordem: primeiro quem só depende de pacotes oficiais; os nossos que dependem de outros nossos
+# depois. Cada pacote pronto entra num repositório local temporário ("nullyzos-local", que o
+# pacman.conf precisa listar com Server = file://<esta pasta>/out) para o próximo achar.
+ORDER=(ttf-geist calamares nullyzos-branding nullyzos-plymouth nullyzos-sddm nullyzos-installer)
+dirs=()
+for name in "${ORDER[@]}"; do [ -f "$ROOT/$name/PKGBUILD" ] && dirs+=("$ROOT/$name"); done
 for pkgbuild in "$ROOT"/*/PKGBUILD; do
-  dir="$(dirname "$pkgbuild")"
-  echo ":: construindo $(basename "$dir")"
-  (cd "$dir" && PKGDEST="$OUT" makepkg --clean --cleanbuild --force --syncdeps --noconfirm "${sign_args[@]}")
+  d="$(dirname "$pkgbuild")"
+  [[ " ${ORDER[*]} " == *" $(basename "$d") "* ]] || dirs+=("$d")
 done
+LOCAL_DB="$OUT/nullyzos-local.db.tar.zst"
+have_local=0
+grep -q '^\[nullyzos-local\]' /etc/pacman.conf && have_local=1
+
+for dir in "${dirs[@]}"; do
+  echo ":: construindo $(basename "$dir")"
+  before=$(ls "$OUT"/*.pkg.tar.zst 2>/dev/null | wc -l)
+  (cd "$dir" && PKGDEST="$OUT" makepkg --clean --cleanbuild --force --syncdeps --noconfirm "${sign_args[@]}")
+  if [ "$(ls "$OUT"/*.pkg.tar.zst | wc -l)" -gt "$before" ] && [ "$have_local" -eq 1 ]; then
+    repo-add -q "$LOCAL_DB" "$OUT"/*.pkg.tar.zst
+    sudo pacman -Sy --noconfirm >/dev/null
+  fi
+done
+rm -f "$OUT"/nullyzos-local.*
 
 echo ":: banco $REPO_NAME"
 cd "$OUT"
