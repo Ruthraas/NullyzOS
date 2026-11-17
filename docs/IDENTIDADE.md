@@ -4,16 +4,42 @@ Aprovada em 17/11/2026 (issue #1). Valores exatos em [`branding/tokens.json`](..
 
 ## Símbolo
 
-O **N** com o sinal de vazio (∅): o traço do N atravessa o anel. Nulo é o ponto de partida; o resto você escolhe na instalação.
+Um **N de 7×7 pixels**: hastes de 2 pixels e a diagonal em degraus. Por ser feito de quadrados, escala do boot ao terminal sem perder a forma.
+
+```
+████      ████
+██████    ████
+████████  ████
+████  ████████
+████    ██████
+████      ████
+████      ████
+```
 
 | Arquivo | Uso |
 |---|---|
-| `branding/logo/nullyz-escuro.svg` | fundo escuro (padrão) |
+| `branding/logo/nullyz-escuro.svg` | fundo escuro (padrão), pixels com canto leve |
 | `branding/logo/nullyz-claro.svg` | fundo claro |
-| `branding/logo/nullyz-mono.svg` | uma cor (`currentColor`): boot, terminal, ícone simbólico |
-| `branding/logo/nullyz-16.svg` | 16 px e menores, sem as pontas do traço |
+| `branding/logo/nullyz-mono.svg` | uma cor (`currentColor`): ícone simbólico |
+| `branding/logo/nullyz-pixel.svg` | pixel exato 7×7 (`crispEdges`): tamanhos pequenos, Plymouth |
+| `branding/logo/nullyz-terminal.txt` | o N em blocos █ para o fetch (cada pixel = 2 blocos) |
 
-Nome: **NullyzOS**, com "OS" na cor de destaque quando houver cor.
+Nome: **NULLYZ OS** em letras de pixel 5×7 quando acompanha o símbolo, com **YZ OS** no destaque.
+
+## Boot e boas-vindas
+
+**Boot (Plymouth), toda vez, uns 4 s:**
+1. Os pixels do N acendem em diagonal, cada um com overshoot. No fim o N dá uma leve amassada e volta (squash and stretch).
+2. **NULL** se escreve letra a letra, linha a linha, como um scanline.
+3. **YZ** e depois **OS** entram girando (um giro e meio), passam um pouco do ponto e assentam.
+4. Três pixels pulsam enquanto carrega.
+
+**Primeiro boot (boas-vindas), uma vez, uns 12 s:**
+1. **"Seja bem-vindo(a) ao NullyzOS"** em mono. Cada letra passa por um símbolo de código (`0 1 # { } < >`) e assenta saindo do desfoque; NullyzOS em destaque. Depois o cursor pisca.
+2. Embaixo, com fade e desfoque, entrando e saindo: *"É preciso ter o caos dentro de si para dar à luz uma estrela dançante."* (Friedrich Nietzsche, *Assim falou Zaratustra*; tradução nossa de obra em domínio público).
+3. Botão **Começar**, que abre as boas-vindas.
+
+Com "reduzir movimento" ligado, tudo aparece pronto, sem animação.
 
 ## Cores por papéis
 

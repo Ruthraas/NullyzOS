@@ -1,6 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" width="512" height="512" fill="#5b46e0">
   <title>NullyzOS</title>
-  <circle cx="50" cy="50" r="33" fill="none" stroke="#5b46e0" stroke-width="7"/>
-  <path d="M38 63 V37 L62 63 V37" fill="none" stroke="#15151c" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M24 21 L38 37 M62 63 L76 79" fill="none" stroke="#5b46e0" stroke-width="7" stroke-linecap="round"/>
+  <rect x="0.5" y="0.5" width="9" height="9" rx="1.5"/>
+  <rect x="10.5" y="0.5" width="9" height="9" rx="1.5"/>
+  <rect x="50.5" y="0.5" width="9" height="9" rx="1.5"/>
+  <rect x="60.5" y="0.5" width="9" height="9" rx="1.5"/>
+  <rect x="0.5" y="10.5" width="9" height="9" rx="1.5"/>
+  <rect x="10.5" y="10.5" width="9" height="9" rx="1.5"/>
+  <rect x="20.5" y="10.5" width="9" height="9" rx="1.5"/>
+  <rect x="50.5" y="10.5" width="9" height="9" rx="1.5"/>
+  <rect x="60.5" y="10.5" width="9" height="9" rx="1.5"/>
+  <rect x="0.5" y="20.5" width="9" height="9" rx="1.5"/>
+  <rect x="10.5" y="20.5" width="9" height="9" rx="1.5"/>
+  <rect x="20.5" y="20.5" width="9" height="9" rx="1.5"/>
+  <rect x="30.5" y="20.5" width="9" height="9" rx="1.5"/>
+  <rect x="50.5" y="20.5" width="9" height="9" rx="1.5"/>
+  <rect x="60.5" y="20.5" width="9" height="9" rx="1.5"/>
+  <rect x="0.5" y="30.5" width="9" height="9" rx="1.5"/>
+  <rect x="10.5" y="30.5" width="9" height="9" rx="1.5"/>
+  <rect x="30.5" y="30.5" width="9" height="9" rx="1.5"/>
+  <rect x="40.5" y="30.5" width="9" height="9" rx="1.5"/>
+  <rect x="50.5" y="30.5" width="9" height="9" rx="1.5"/>
+  <rect x="60.5" y="30.5" width="9" height="9" rx="1.5"/>
+  <rect x="0.5" y="40.5" width="9" height="9" rx="1.5"/>
+  <rect x="10.5" y="40.5" width="9" height="9" rx="1.5"/>
+  <rect x="40.5" y="40.5" width="9" height="9" rx="1.5"/>
+  <rect x="50.5" y="40.5" width="9" height="9" rx="1.5"/>
+  <rect x="60.5" y="40.5" width="9" height="9" rx="1.5"/>
+  <rect x="0.5" y="50.5" width="9" height="9" rx="1.5"/>
+  <rect x="10.5" y="50.5" width="9" height="9" rx="1.5"/>
+  <rect x="50.5" y="50.5" width="9" height="9" rx="1.5"/>
+  <rect x="60.5" y="50.5" width="9" height="9" rx="1.5"/>
+  <rect x="0.5" y="60.5" width="9" height="9" rx="1.5"/>
+  <rect x="10.5" y="60.5" width="9" height="9" rx="1.5"/>
+  <rect x="50.5" y="60.5" width="9" height="9" rx="1.5"/>
+  <rect x="60.5" y="60.5" width="9" height="9" rx="1.5"/>
 </svg>
