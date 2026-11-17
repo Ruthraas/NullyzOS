@@ -70,7 +70,13 @@ fi
 EOF
 
 # Animação de boot também no live: plymouth no initramfs do archiso e "quiet splash".
-sed -i 's/\bkms\b/kms plymouth/' "$PROFILE/airootfs/etc/mkinitcpio.conf.d/archiso.conf"
+# O releng atual não tem "kms" (o vídeo cedo, que o plymouth precisa): entra junto, depois do modconf.
+ARCHISO_CONF="$PROFILE/airootfs/etc/mkinitcpio.conf.d/archiso.conf"
+if grep -q '\bkms\b' "$ARCHISO_CONF"; then
+  sed -i 's/\bkms\b/kms plymouth/' "$ARCHISO_CONF"
+else
+  sed -i 's/\bmodconf\b/modconf kms plymouth/' "$ARCHISO_CONF"
+fi
 grep -q plymouth "$PROFILE/airootfs/etc/mkinitcpio.conf.d/archiso.conf" \
   || { echo "não achei onde pôr o hook plymouth em archiso.conf" >&2; exit 1; }
 for f in "$PROFILE"/efiboot/loader/entries/*.conf; do
