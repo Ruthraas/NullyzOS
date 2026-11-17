@@ -9,6 +9,7 @@ pkgdesc="Tema de boot (Plymouth) do NullyzOS"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
+options=('!debug')
 depends=('plymouth')
 makedepends=('python')
 source=()

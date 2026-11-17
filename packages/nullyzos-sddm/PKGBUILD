@@ -8,6 +8,7 @@ pkgdesc="Tema da tela de login (SDDM) do NullyzOS"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
+options=('!debug')
 depends=('sddm' 'qt6-declarative' 'ttf-geist' 'xorg-server' 'adwaita-cursors')
 makedepends=('python')
 backup=('etc/sddm.conf.d/nullyzos.conf')

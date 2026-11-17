@@ -9,6 +9,7 @@ pkgdesc="Identidade visual do NullyzOS: símbolo N pixelado, tokens de cor e log
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
+options=('!debug')
 source=()
 
 _root() { cd "$startdir/../.." && pwd; }

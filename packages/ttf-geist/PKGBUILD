@@ -10,6 +10,7 @@ pkgdesc="Fontes Geist, Geist Mono e Geist Pixel (Vercel), usadas pelo NullyzOS"
 arch=('any')
 url="https://github.com/vercel/geist-font"
 license=('OFL-1.1')
+options=('!debug')
 depends=('fontconfig')
 source=("$pkgname-$pkgver.zip::$url/releases/download/v$pkgver/geist-font-v$pkgver.zip")
 sha256sums=('15f066d58dcb99fb10014a49913009fdaf41e464cfb8851a44b44e593c95d3d8')
