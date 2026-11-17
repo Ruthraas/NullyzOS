@@ -4,8 +4,8 @@
 #
 # Origem e integridade (conferido em 17/11/2026):
 # - código-fonte oficial no Codeberg (o projeto saiu do GitHub depois da 3.3.14);
-# - sha256 tirado pelo CI "verificar fonte" (4.958.762 bytes); segunda cópia, baixada fora do
-#   GitHub, para conferir antes de fechar a #4;
+# - sha256 igual em duas cópias baixadas em lugares diferentes (CI "verificar fonte" e o PC do
+#   mantenedor), 4.958.762 bytes; gpg --verify deu "Good signature" de Adriaan de Groot;
 # - o .asc da 3.4.3 é da subchave ed25519 6D08 3784 1C06 8A23 3F24 127B 14B6 CC38 1BC2 56D6,
 #   da chave de Adriaan de Groot (mantenedor), 00AC D15E 25A7 9FEE 028B 0EE5 7FEA 3DA6 169C 77D6.
 #   Os servidores públicos só têm uma autoassinatura vencida dessa chave, então o makepkg não
