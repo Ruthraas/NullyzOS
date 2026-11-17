@@ -42,9 +42,46 @@ sed -i \
 } | sort -u > "$PROFILE/packages.x86_64.new"
 mv "$PROFILE/packages.x86_64.new" "$PROFILE/packages.x86_64"
 
+# Repositório nullyzos (instalador, temas, fontes): assinatura exigida. A chave do projeto
+# entra no chaveiro de quem gera a ISO (o pacstrap do mkarchiso usa o chaveiro do host).
+FPR=C43C292B0901FB84D4A1A17436828706C86FB94A
+if ! pacman-key --list-keys "$FPR" >/dev/null 2>&1; then
+  pacman-key --add "$REPO/docs/nullyz-repo.asc"
+  pacman-key --lsign-key "$FPR"
+fi
+cat >> "$PROFILE/pacman.conf" <<'EOF'
+
+[nullyzos]
+SigLevel = Required DatabaseRequired
+Server = https://github.com/Ruthraas/NullyzOS/releases/download/repo
+EOF
+
 # 3. airootfs do NullyzOS (os-release, issue, motd, idioma e teclado) -----------------
 # O releng traz um motd do Arch; o nosso substitui.
 cp -a "$ISO_SRC/airootfs/." "$PROFILE/airootfs/"
+
+# O live abre o instalador gráfico sozinho no tty1 (Ctrl+Alt+F2 dá um terminal).
+cat >> "$PROFILE/airootfs/root/.zlogin" <<'EOF'
+
+# NullyzOS: instalador gráfico no tty1. Para reabrir: nullyzos-instalar
+if [[ "$(tty)" == /dev/tty1 ]] && [[ -z "${NULLYZ_SEM_INSTALADOR:-}" ]]; then
+  nullyzos-instalar
+fi
+EOF
+
+# Animação de boot também no live: plymouth no initramfs do archiso e "quiet splash".
+sed -i 's/\bkms\b/kms plymouth/' "$PROFILE/airootfs/etc/mkinitcpio.conf.d/archiso.conf"
+grep -q plymouth "$PROFILE/airootfs/etc/mkinitcpio.conf.d/archiso.conf" \
+  || { echo "não achei onde pôr o hook plymouth em archiso.conf" >&2; exit 1; }
+for f in "$PROFILE"/efiboot/loader/entries/*.conf; do
+  [ -f "$f" ] && sed -i '/^options / s/$/ quiet splash/' "$f"
+done
+for f in "$PROFILE"/syslinux/*.cfg; do
+  [ -f "$f" ] && sed -i '/^\s*APPEND .*archisobasedir/ s/$/ quiet splash/' "$f"
+done
+for f in "$PROFILE"/grub/*.cfg; do
+  [ -f "$f" ] && sed -i '/^\s*linux .*archisobasedir/ s/$/ quiet splash/' "$f"
+done
 
 # 4. Branding do boot: nome nos três carregadores, cores e splash do syslinux ---------
 echo ":: branding do boot"

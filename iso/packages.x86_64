@@ -5,3 +5,16 @@
 glibc-locales
 # Fonte do console mais nítida
 terminus-font
+
+# Boot animado (#7)
+plymouth
+nullyzos-plymouth
+nullyzos-branding
+
+# Instalador gráfico (#5): Calamares em tela cheia no cage
+nullyzos-installer
+calamares
+cage
+qt6-wayland
+ttf-geist
+adwaita-cursors

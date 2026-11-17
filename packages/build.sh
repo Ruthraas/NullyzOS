@@ -42,12 +42,13 @@ LOCAL_DB="$OUT/nullyzos-local.db.tar.zst"
 have_local=0
 grep -q '^\[nullyzos-local\]' /etc/pacman.conf && have_local=1
 
+shopt -s nullglob
 for dir in "${dirs[@]}"; do
   echo ":: construindo $(basename "$dir")"
-  before=$(ls "$OUT"/*.pkg.tar.zst 2>/dev/null | wc -l)
   (cd "$dir" && PKGDEST="$OUT" makepkg --clean --cleanbuild --force --syncdeps --noconfirm "${sign_args[@]}")
-  if [ "$(ls "$OUT"/*.pkg.tar.zst | wc -l)" -gt "$before" ] && [ "$have_local" -eq 1 ]; then
-    repo-add -q "$LOCAL_DB" "$OUT"/*.pkg.tar.zst
+  built=("$OUT"/*.pkg.tar.zst)
+  if [ "$have_local" -eq 1 ] && [ ${#built[@]} -gt 0 ]; then
+    repo-add -q "$LOCAL_DB" "${built[@]}"
     sudo pacman -Sy --noconfirm >/dev/null
   fi
 done

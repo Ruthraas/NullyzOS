@@ -1,6 +1,6 @@
 
   Bem-vindo(a) ao NullyzOS live.
 
-  Ainda não há instalador gráfico (v0.1 em construção).
+  O instalador gráfico abre sozinho no tty1. Para reabrir: nullyzos-instalar
   Rede: iwctl (Wi-Fi) ou cabo · Teclado: ABNT2 · Idioma: português
 
