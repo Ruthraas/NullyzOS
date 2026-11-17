@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-installer
 pkgver=0.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Instalador do NullyzOS (configuração e visual do Calamares)"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"

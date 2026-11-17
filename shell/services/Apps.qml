@@ -15,8 +15,10 @@ Singleton {
     readonly property var pinned: ["kitty", "org.kde.dolphin"]
 
     function byId(id) { return DesktopEntries.byId(id) || DesktopEntries.heuristicLookup(id); }
+    // Caminho do ícone, ou "" se o tema não tem nenhum (aí o shell desenha a inicial do app).
     function icon(entry) {
-        return Quickshell.iconPath(entry && entry.icon ? entry.icon : "application-x-executable", "application-x-executable");
+        const name = entry && entry.icon ? entry.icon : "";
+        return (name && Quickshell.iconPath(name, true)) || Quickshell.iconPath("application-x-executable", true) || "";
     }
 
     // Busca: começo do nome > palavra do nome > meio do nome > nome genérico, palavras-chave.

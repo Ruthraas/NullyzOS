@@ -56,13 +56,12 @@ PanelWindow {
                     readonly property int open: Hypr.windowsOf(modelData.id)
                     width: dock.iconSize; height: dock.iconSize
 
-                    Image {
+                    AppIcon {
                         id: icon
                         x: 0
-                        width: dock.iconSize; height: dock.iconSize
-                        sourceSize: Qt.size(dock.iconSize * 2, dock.iconSize * 2)
-                        source: Apps.icon(slot.modelData.entry)
-                        smooth: true
+                        size: dock.iconSize
+                        entry: slot.modelData.entry
+                        fallbackName: slot.modelData.id
                         // Hover: sobe e cresce um pouco; clique: amassa (antecipação) e volta.
                         y: area.containsMouse ? -6 : 0
                         scale: area.pressed ? 0.88 : (area.containsMouse ? 1.1 : 1)

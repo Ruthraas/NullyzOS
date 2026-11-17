@@ -109,13 +109,11 @@ PanelWindow {
                 radius: Tok.rCard - 6
                 color: sel ? Tok.selection : (rowArea.containsMouse ? Tok.hover : "transparent")
                 Behavior on color { ColorAnimation { duration: Tok.fast } }
-                Image {
+                AppIcon {
                     id: appIcon
                     anchors { left: parent.left; leftMargin: 12; verticalCenter: parent.verticalCenter }
-                    width: 32; height: 32
-                    sourceSize: Qt.size(64, 64)
-                    source: Apps.icon(row.modelData)
-                    smooth: true
+                    size: 32
+                    entry: row.modelData
                 }
                 Column {
                     anchors { left: appIcon.right; leftMargin: 14; right: parent.right; rightMargin: 14; verticalCenter: parent.verticalCenter }

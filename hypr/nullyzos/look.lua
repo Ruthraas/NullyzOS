@@ -48,5 +48,8 @@ hl.config({
     background_color = c.bg,
     -- Se o shell morrer com a tela bloqueada, um shell novo pode reassumir o bloqueio.
     allow_session_lock_restore = true,
+    -- Sem recarregar sozinho: no meio de uma atualização o pacman troca os arquivos e o
+    -- Hyprland lia a config pela metade (modo de emergência). Recarregar: hyprctl reload.
+    disable_autoreload = true,
   },
 })
