@@ -69,4 +69,9 @@ if ! grep -q '^\[nullyzos\]' /etc/pacman.conf; then
     echo "Server = https://github.com/Ruthraas/NullyzOS/releases/download/repo"
   } >> /etc/pacman.conf
 fi
+# A tela de login mostra só a sessão Hyprland do NullyzOS (nullyzos-hyprland.desktop, com o
+# modo VM); as duas sessões originais do pacote hyprland não são instaladas.
+if ! grep -q 'wayland-sessions/hyprland' /etc/pacman.conf; then
+  sed -i '/^\[options\]/a NoExtract = usr/share/wayland-sessions/hyprland.desktop usr/share/wayland-sessions/hyprland-uwsm.desktop' /etc/pacman.conf
+fi
 echo ":: pronto"

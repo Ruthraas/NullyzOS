@@ -1,0 +1,26 @@
+# Checagens rápidas a cada push: config Lua do Hyprland (API simulada), QML do shell e scripts.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Config Lua do Hyprland (normal e modo VM)
+        run: |
+          pip install lupa
+          python scripts/check-hypr.py
+      - name: QML do shell
+        run: python scripts/check-qml.py
+      - name: Shell scripts
+        run: |
+          sudo apt-get install -y shellcheck
+          shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/*

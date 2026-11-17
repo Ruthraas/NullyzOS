@@ -1,0 +1,43 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Desktop Nullyz para Hyprland (#6): config do Hyprland (Lua), shell em Quickshell (barra de
+# menus, dock, busca, notificações, bloqueio), sessão com modo VM e o fundo padrão.
+
+pkgname=nullyzos-desktop-hyprland
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Desktop do NullyzOS para Hyprland"
+arch=('any')
+url="https://github.com/Ruthraas/NullyzOS"
+license=('GPL-3.0-only')
+options=('!debug')
+depends=(
+  'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'polkit-kde-agent'
+  'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'grim' 'slurp' 'wl-clipboard'
+  'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding'
+)
+makedepends=('python')
+source=()
+
+_root() { cd "$startdir/../.." && pwd; }
+
+build() {
+  python "$(_root)/branding/gerar-fundo.py" "$srcdir/padrao.png"
+}
+
+package() {
+  local src
+  src="$(_root)"
+  # Config do Hyprland (do sistema; o usuário ajusta em ~/.config/hypr/nullyzos.lua)
+  install -Dm644 "$src/hypr/hyprland.lua" "$pkgdir/usr/share/nullyzos/hypr/hyprland.lua"
+  install -Dm644 -t "$pkgdir/usr/share/nullyzos/hypr/nullyzos" "$src"/hypr/nullyzos/*.lua
+  # Shell (qs -c nullyzos acha em /etc/xdg/quickshell)
+  install -dm755 "$pkgdir/etc/xdg/quickshell/nullyzos"
+  cp -r "$src"/shell/. "$pkgdir/etc/xdg/quickshell/nullyzos/"
+  find "$pkgdir/etc/xdg/quickshell/nullyzos" -name '*.md' -delete
+  # Sessão (a tela de login lista "Hyprland" apontando para o nosso lançador)
+  install -Dm755 "$src/session/nullyzos-hyprland" "$pkgdir/usr/bin/nullyzos-hyprland"
+  install -Dm644 "$src/session/nullyzos-hyprland.desktop" "$pkgdir/usr/share/wayland-sessions/nullyzos-hyprland.desktop"
+  # Fundo padrão (o mesmo da tela de login)
+  install -Dm644 "$srcdir/padrao.png" "$pkgdir/usr/share/nullyzos/wallpapers/padrao.png"
+  install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

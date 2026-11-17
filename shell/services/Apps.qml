@@ -1,0 +1,45 @@
+pragma Singleton
+
+import QtQuick
+import Quickshell
+
+// Apps instalados (.desktop). Usado pela busca e pelo dock.
+Singleton {
+    id: root
+
+    readonly property var all: DesktopEntries.applications.values
+        .filter(e => !e.noDisplay)
+        .sort((a, b) => a.name.localeCompare(b.name))
+
+    // Fixados no dock (ids de .desktop). v0.1: padrão do sistema; a escolha do usuário vem com as Configurações.
+    readonly property var pinned: ["kitty", "org.kde.dolphin"]
+
+    function byId(id) { return DesktopEntries.byId(id) || DesktopEntries.heuristicLookup(id); }
+    function icon(entry) {
+        return Quickshell.iconPath(entry && entry.icon ? entry.icon : "application-x-executable", "application-x-executable");
+    }
+
+    // Busca: começo do nome > palavra do nome > meio do nome > nome genérico, palavras-chave.
+    // Cada termo digitado precisa aparecer ("arq dol" acha "Dolphin — Gerenciador de arquivos").
+    function search(query) {
+        const q = query.trim().toLowerCase();
+        if (!q) return root.all;
+        const terms = q.split(/\s+/);
+        const scored = [];
+        for (const e of root.all) {
+            const name = e.name.toLowerCase();
+            const extra = [e.genericName, e.comment, (e.keywords || []).join(" "), e.id].join(" ").toLowerCase();
+            let score = 0, ok = true;
+            for (const t of terms) {
+                if (name.startsWith(t)) score += 100;
+                else if (name.includes(" " + t)) score += 60;
+                else if (name.includes(t)) score += 40;
+                else if (extra.includes(t)) score += 15;
+                else { ok = false; break; }
+            }
+            if (ok) scored.push({ e: e, s: score });
+        }
+        scored.sort((a, b) => b.s - a.s || a.e.name.localeCompare(b.e.name));
+        return scored.map(x => x.e);
+    }
+}

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Sessão Hyprland do NullyzOS (a tela de login chama este script; ver nullyzos-hyprland.desktop).
+#  - em máquina virtual liga o modo VM (NULLYZ_VM=1): apps e shell desenham por software;
+#  - na primeira sessão cria ~/.config/hypr/hyprland.lua apontando para a config do sistema;
+#  - se o Hyprland cair em poucos segundos numa VM (sem aceleração 3D), tenta de novo com
+#    tudo por software (mais lento, mas abre).
+set -u
+
+if [ "$(systemd-detect-virt 2>/dev/null || echo none)" != "none" ]; then
+  export NULLYZ_VM=1
+fi
+
+cfg="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
+if [ ! -e "$cfg/hyprland.lua" ] && [ ! -e "$cfg/hyprland.conf" ]; then
+  mkdir -p "$cfg"
+  {
+    echo "-- Config do NullyzOS (do sistema, atualizada pelo pacote)."
+    echo "-- Seus ajustes vão em ~/.config/hypr/nullyzos.lua."
+    echo 'dofile("/usr/share/nullyzos/hypr/hyprland.lua")'
+  } > "$cfg/hyprland.lua"
+fi
+
+started=$(date +%s)
+start-hyprland
+rc=$?
+if [ "$rc" -ne 0 ] && [ "${NULLYZ_VM:-}" = "1" ] && [ -z "${LIBGL_ALWAYS_SOFTWARE:-}" ] \
+   && [ $(( $(date +%s) - started )) -lt 15 ]; then
+  export LIBGL_ALWAYS_SOFTWARE=1
+  exec start-hyprland
+fi
+exit "$rc"

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Hyprland
+Comment=NullyzOS com Hyprland
+Exec=nullyzos-hyprland
+Type=Application
+DesktopNames=Hyprland

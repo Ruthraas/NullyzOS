@@ -17,7 +17,7 @@ source=()
 _here() { cd "$startdir" && pwd; }
 
 build() {
-  python "$(_here)/gerar-fundo.py" "$srcdir/fundo.png"
+  python "$(_here)/../../branding/gerar-fundo.py" "$srcdir/fundo.png"
 }
 
 package() {
