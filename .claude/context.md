@@ -29,3 +29,18 @@
 - VM de teste "NullyzOS-teste" (sem disco, DVD = E:\VMs\nullyzos-*.iso): `modifyvm --firmware bios|efi`. BIOS e UEFI testados e dando boot no live.
 - Console do Linux não tem cor 24-bit: /etc/issue redefine as cores 5 e 13 da paleta (`ESC ] P n rrggbb`) para #9d8cff.
 - Pendente de conferir no próximo build: "YZ OS" (negrito, cor 13) em violeta.
+
+## Teste de instalação completa (17/11/2026, VM "NullyzOS-teste", UEFI, disco 30 GB)
+- Funcionou: plymouth no live (N → NULL → YZ OS, pixels pulsando), Calamares sozinho em tela cheia
+  (pt-BR, São Paulo, ABNT2, escolha Hyprland/KDE, btrfs), instalação até "Tudo pronto", boot do disco,
+  SDDM Nullyz (relógio, cartão, "Senha incorreta" com tremida, sessão Hyprland).
+- Bugs achados e corrigidos no instalador: sem DNS no chroot (shellprocess@rede, pkgrel 2);
+  faltava grubcfg (GRUB "Arch Linux" e sem splash no sistema instalado, pkgrel 3) — conferir no próximo build.
+- Pendentes: imagem de boas-vindas gigante/cortada; prévia do packagechooser é o ícone padrão;
+  moldura branca no slideshow; "timezone para 1"/"modelo teclado para 1" no resumo; radio buttons
+  quase invisíveis; Hyprland puro cai na VM sem 3D (precisa do modo VM do desktop Nullyz, #6).
+- Pilotar o Calamares pelo teclado: Alt+letra sublinhada (Alt+P às vezes cai em "Problemas conhecidos";
+  aí Tab Tab Espaço), lista do desktop: Shift+Tab, seta, Espaço. Live: tty2 = Ctrl+Alt+F2, login root,
+  `loadkeys us` antes de digitar símbolos. Atualizar config no live sem nova ISO: curl dos arquivos do
+  raw.githubusercontent.com para /etc/calamares e `pkill calamares`; reabrir com `nullyzos-instalar` no tty1.
+- Repositório: nunca recompilar versão igual (CI reaproveita); mudou pacote → subir pkgrel.
