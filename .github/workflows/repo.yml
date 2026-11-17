@@ -1,0 +1,46 @@
+# Constrói os pacotes de packages/ num contêiner Arch e publica o repositório pacman
+# assinado "nullyzos" como assets da release "repo" (docs/REPOSITORIO.md).
+# Secrets: NULLYZ_GPG_PRIVATE_KEY (chave privada armorada) e NULLYZ_GPG_KEY (fingerprint).
+name: repositório pacman
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["packages/**", "branding/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - name: Dependências
+        run: pacman -Syu --noconfirm --needed git github-cli sudo
+
+      - uses: actions/checkout@v4
+
+      - name: Importa a chave GPG
+        env:
+          KEY: ${{ secrets.NULLYZ_GPG_PRIVATE_KEY }}
+        run: |
+          test -n "$KEY" || { echo "falta o secret NULLYZ_GPG_PRIVATE_KEY (docs/REPOSITORIO.md)"; exit 1; }
+          useradd -m builder
+          echo 'builder ALL=(ALL) NOPASSWD: /usr/bin/pacman' > /etc/sudoers.d/builder
+          chown -R builder: "$GITHUB_WORKSPACE"
+          printf '%s\n' "$KEY" | su builder -c 'gpg --batch --import'
+
+      - name: Constrói e assina
+        env:
+          NULLYZ_GPG_KEY: ${{ secrets.NULLYZ_GPG_KEY }}
+        run: su builder -c "cd '$GITHUB_WORKSPACE' && NULLYZ_GPG_KEY='$NULLYZ_GPG_KEY' packages/build.sh"
+
+      - name: Publica na release "repo"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          gh release view repo >/dev/null 2>&1 || gh release create repo --title "Repositório pacman do NullyzOS" --notes "Pacotes assinados pela chave Nullyz Packages. Instruções: docs/REPOSITORIO.md"
+          gh release upload repo packages/out/* --clobber

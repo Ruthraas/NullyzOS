@@ -1,0 +1,31 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Identidade visual do NullyzOS (#1): símbolo, tokens de cor e o N do terminal.
+# Constrói a partir da árvore do repositório (packages/build.sh chama o makepkg aqui dentro).
+
+pkgname=nullyzos-branding
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Identidade visual do NullyzOS: símbolo N pixelado, tokens de cor e logo do terminal"
+arch=('any')
+url="https://github.com/Ruthraas/NullyzOS"
+license=('GPL-3.0-only')
+source=()
+
+_root() { cd "$startdir/../.." && pwd; }
+
+package() {
+  local src share
+  src="$(_root)"
+  share="$pkgdir/usr/share/nullyzos"
+
+  # Símbolo: LOGO=nullyzos no os-release procura este nome no tema de ícones.
+  install -Dm644 "$src/branding/logo/nullyz-escuro.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/nullyzos.svg"
+  install -Dm644 "$src/branding/logo/nullyz-mono.svg" "$pkgdir/usr/share/icons/hicolor/symbolic/apps/nullyzos-symbolic.svg"
+  install -Dm644 "$src/branding/logo/nullyz-escuro.svg" "$pkgdir/usr/share/pixmaps/nullyzos.svg"
+
+  install -dm755 "$share/logo"
+  install -m644 "$src"/branding/logo/* "$share/logo/"
+  install -Dm644 "$src/branding/tokens.json" "$share/tokens.json"
+
+  install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
