@@ -1,0 +1,61 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Calamares, o instalador gráfico do NullyzOS (#4). Não existe nos repositórios oficiais do Arch;
+# este PKGBUILD é nosso, compila o código-fonte oficial e depende só de pacotes oficiais.
+#
+# Origem e integridade (conferido em 17/11/2026):
+# - código-fonte oficial no Codeberg (o projeto saiu do GitHub depois da 3.3.14);
+# - sha256 tirado pelo CI "verificar fonte" (4.958.762 bytes); segunda cópia, baixada fora do
+#   GitHub, para conferir antes de fechar a #4;
+# - o .asc da 3.4.3 é da subchave ed25519 6D08 3784 1C06 8A23 3F24 127B 14B6 CC38 1BC2 56D6,
+#   da chave de Adriaan de Groot (mantenedor), 00AC D15E 25A7 9FEE 028B 0EE5 7FEA 3DA6 169C 77D6.
+#   Os servidores públicos só têm uma autoassinatura vencida dessa chave, então o makepkg não
+#   consegue validar sozinho: a garantia aqui é o sha256 fixado. Atualizar = conferir de novo.
+
+pkgname=calamares
+pkgver=3.4.3
+pkgrel=1
+pkgdesc="Instalador gráfico modular (usado pelo instalador do NullyzOS)"
+arch=('x86_64')
+url="https://codeberg.org/Calamares/calamares"
+license=('GPL-3.0-or-later' 'LGPL-2.1-or-later' 'BSD-2-Clause' 'CC0-1.0' 'CC-BY-4.0')
+depends=(
+  'qt6-base' 'qt6-declarative' 'qt6-svg'
+  'kcoreaddons' 'kpmcore' 'polkit-qt6'
+  'yaml-cpp' 'libpwquality' 'python'
+  'gcc-libs' 'glibc'
+)
+makedepends=('cmake' 'ninja' 'extra-cmake-modules' 'qt6-tools' 'qt6-translations')
+source=("$url/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
+sha256sums=('144cbbf6bdcebfb21685950db4f0777218519df095f62f4aa392f28348110d18')
+
+# Módulos que o NullyzOS não usa: exemplos, initramfs do Debian/dracut (usamos mkinitcpio),
+# OpenRC (usamos systemd) e o terminal interativo (precisaria do qtermwidget).
+_skip_modules=(
+  dummycpp dummyprocess dummypython dummypythonqt
+  dracut dracutlukscfg initramfs initramfscfg
+  services-openrc interactiveterminal
+)
+
+build() {
+  cmake -B build -S "$pkgname-$pkgver" -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DWITH_QT6=ON \
+    -DWITH_PYTHON=ON \
+    -DWITH_PYBIND11=ON \
+    -DINSTALL_CONFIG=ON \
+    -DINSTALL_POLKIT=ON \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_SCHEMA_TESTING=OFF \
+    -DBUILD_CRASH_REPORTING=OFF \
+    -DSKIP_MODULES="${_skip_modules[*]}" \
+    -Wno-dev
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+  # O projeto segue o REUSE: todas as licenças usadas ficam em LICENSES/.
+  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" "$pkgname-$pkgver"/LICENSES/*
+}
