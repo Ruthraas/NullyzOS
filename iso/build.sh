@@ -49,6 +49,9 @@ if ! pacman-key --list-keys "$FPR" >/dev/null 2>&1; then
   pacman-key --add "$REPO/docs/nullyz-repo.asc"
   pacman-key --lsign-key "$FPR"
 fi
+# Cópias antigas dos nossos pacotes no cache do pacman do host travam o build ("corrupted"):
+# o nome é o mesmo e o conteúdo pode não bater com o banco atual. Sempre baixa de novo.
+rm -f /var/cache/pacman/pkg/nullyzos-* /var/cache/pacman/pkg/ttf-geist-* /var/cache/pacman/pkg/calamares-*
 cat >> "$PROFILE/pacman.conf" <<'EOF'
 
 [nullyzos]
