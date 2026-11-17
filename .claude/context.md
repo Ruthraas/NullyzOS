@@ -22,3 +22,10 @@
 - Digitar na VM: `keyboardputstring` + scancode `1c 9c` (Enter); evitar `/ ; : " | { } \ '` e acentos (ABNT2). Sempre screenshot antes de digitar. Nunca chutar a senha (faillock).
 - ISO: build fora do tmpfs (`/var/tmp`), instalar a home live como o usuário, checar base-devel.
 - Resolução da VM: `nullyz monitor set 1920x1080@60` no rice; janela do VirtualBox em tela cheia (Right Ctrl+F) para não ter barras de rolagem.
+
+## ISO (#2, fechada 17/11/2026)
+- Build na VM "Nullyz" (Arch do rice), no TTY: `cd ~/NullyzOS && git pull && sudo iso/build.sh 2>&1 | tee ~/iso-build.log` (~11 min, 1,3 GB). No TTY o teclado é US: `/` e `:` digitam certo.
+- Trazer para o Windows: `VBoxManage controlvm Nullyz natpf1 "isohttp,tcp,127.0.0.1,18080,,8000"` + na VM `python -m http.server 8000 --bind 0.0.0.0 -d ~/NullyzOS/out` + `curl` para E:\VMs\. Depois Ctrl+C e `natpf1 delete isohttp`.
+- VM de teste "NullyzOS-teste" (sem disco, DVD = E:\VMs\nullyzos-*.iso): `modifyvm --firmware bios|efi`. BIOS e UEFI testados e dando boot no live.
+- Console do Linux não tem cor 24-bit: /etc/issue redefine as cores 5 e 13 da paleta (`ESC ] P n rrggbb`) para #9d8cff.
+- Pendente de conferir no próximo build: "YZ OS" (negrito, cor 13) em violeta.
