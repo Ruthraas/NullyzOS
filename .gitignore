@@ -1,0 +1,15 @@
+# Build da ISO e pacotes
+/iso/work/
+/iso/out/
+/packages/**/pkg/
+/packages/**/src/
+*.pkg.tar.zst
+*.pkg.tar.zst.sig
+# Chaves nunca entram no repositório
+*.gpg
+*.key
+secring*
+# Python
+__pycache__/
+*.pyc
+.venv/
