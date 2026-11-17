@@ -1,0 +1,7 @@
+# Pacotes da ISO do NullyzOS, somados aos do perfil releng do archiso.
+# Só repositórios oficiais. Desktop e instalador entram nas próximas issues (#4, #5, #6).
+
+# Português já compilado (o archiso não roda locale-gen)
+glibc-locales
+# Fonte do console mais nítida
+terminus-font

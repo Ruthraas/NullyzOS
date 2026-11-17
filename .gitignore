@@ -13,3 +13,4 @@ secring*
 __pycache__/
 *.pyc
 .venv/
+out/
