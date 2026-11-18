@@ -27,7 +27,7 @@ dock.height = Math.round(gridUnit * 3.4);
 dock.floating = true;
 dock.lengthMode = "fit";
 dock.alignment = "center";
-dock.hiding = "dodgewindows";
+dock.hiding = "none";   // sempre visível, como um dock
 var tarefas = dock.addWidget("org.kde.plasma.icontasks");
 tarefas.currentConfigGroup = ["General"];
 tarefas.writeConfig("launchers", [

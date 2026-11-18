@@ -5,7 +5,7 @@
 
 pkgname=nullyzos-desktop-kde
 pkgver=0.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Visual do NullyzOS para KDE Plasma"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
