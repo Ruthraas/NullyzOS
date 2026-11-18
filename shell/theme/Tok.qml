@@ -13,7 +13,19 @@ Singleton {
     readonly property color border: "#2b2b37"
     readonly property color text: "#ededf2"
     readonly property color muted: "#a3a3b3"
-    readonly property color accent: "#9d8cff"
+    // Cor de destaque (branding/tokens.json → destaques), escolhida em Configurações → Aparência.
+    // Prefs escreve accentName. Sem Behavior aqui (singleton): quem anima é cada componente.
+    readonly property var accents: ({
+        violeta: { name: "Violeta", color: "#9d8cff" },
+        azul: { name: "Azul", color: "#6e8cff" },
+        ciano: { name: "Ciano", color: "#2bb6c9" },
+        verde: { name: "Verde", color: "#5fd18b" },
+        coral: { name: "Coral", color: "#f08a5d" },
+        rosa: { name: "Rosa", color: "#f07ab8" }
+    })
+    readonly property var accentOrder: ["violeta", "azul", "ciano", "verde", "coral", "rosa"]
+    property string accentName: "violeta"
+    readonly property color accent: (accents[accentName] || accents.violeta).color
     readonly property color textOnAccent: "#0e0e13"
     readonly property color error: "#f06a6a"
     // Vidro: tinta (mais opaca no modo VM, que não tem desfoque), borda de luz e brilho no topo.
@@ -21,7 +33,7 @@ Singleton {
     readonly property color edge: Qt.rgba(1, 1, 1, 0.16)
     readonly property color highlight: Qt.rgba(1, 1, 1, 0.28)
     readonly property color hover: Qt.rgba(1, 1, 1, 0.08)
-    readonly property color selection: Qt.rgba(157 / 255, 140 / 255, 1, 0.20)
+    readonly property color selection: Qt.rgba(accent.r, accent.g, accent.b, 0.20)
 
     readonly property string font: "Geist"
     readonly property string mono: "Geist Mono"

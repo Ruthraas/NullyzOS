@@ -23,7 +23,7 @@ Gradient GradientStop Transition Translate Scale Rotation Timer Connections QtOb
 RowLayout ColumnLayout GridLayout StackLayout HoverHandler DragHandler WheelHandler TapHandler MultiEffect
 ShellRoot Scope Variants PanelWindow PopupWindow FloatingWindow LazyLoader Singleton SystemClock
 FileView Process StdioCollector SplitParser IpcHandler JsonAdapter Region
-WlSessionLock WlSessionLockSurface PwObjectTracker NotificationServer PamContext QsMenuAnchor DropArea Shape ShapePath PathAngleArc PathLine PathArc PathSvg Matrix4x4 TextEdit
+WlSessionLock WlSessionLockSurface IdleMonitor Binding PwObjectTracker NotificationServer PamContext QsMenuAnchor DropArea Shape ShapePath PathAngleArc PathLine PathArc PathSvg Matrix4x4 TextEdit
 anchors margins font border easing transform
 """.split())
 

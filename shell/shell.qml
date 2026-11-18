@@ -33,6 +33,7 @@ ShellRoot {
     LazyLoader { active: Panels.settings; Settings {} }
     LazyLoader { active: Panels.quick; QuickPanel {} }
     Connections { target: Panels; function onLockRequested() { screenLock.lock(); } }
+    Idle { onLockNow: { Panels.closeAll(); screenLock.lock(); } }
 
     // Atalhos do Hyprland chamam: qs -c nullyzos ipc call nullyzos <função>
     IpcHandler {

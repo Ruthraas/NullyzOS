@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.services
+import qs.theme
 
 // Ajustes do Hyprland feitos pelas Configurações (teclado, mouse, monitores).
 // Guarda a escolha em ~/.config/nullyzos/hyprland.json e gera ~/.config/nullyzos/hyprland.lua,
@@ -19,6 +20,10 @@ Singleton {
     readonly property int repeatRate: conf.repeatRate
     readonly property real pointerSpeed: conf.pointerSpeed
     readonly property bool naturalScroll: conf.naturalScroll
+    readonly property string gaps: conf.gaps              // "" | compacto | normal | amplo
+    readonly property int rounding: conf.rounding         // -1 = padrão (14)
+    readonly property bool animations: conf.animations
+    readonly property bool blur: conf.blur
     readonly property var monitors: { try { return JSON.parse(conf.monitors || "{}"); } catch (e) { return {}; } }
 
     function set(key, value) {
@@ -47,6 +52,16 @@ Singleton {
             "-- Ajustes à mão vão em ~/.config/hypr/nullyzos.lua, que é carregado depois deste.",
             `hl.config({ input = { ${input.join(", ")} } })`
         ];
+        // Janelas: espaço, cantos, animações, desfoque; borda na cor de destaque.
+        const g = { compacto: [2, 4], normal: [5, 10], amplo: [10, 20] }[conf.gaps];
+        if (g) out.push(`hl.config({ general = { gaps_in = ${g[0]}, gaps_out = ${g[1]} } })`);
+        if (conf.rounding >= 0) out.push(`hl.config({ decoration = { rounding = ${conf.rounding} } })`);
+        if (!conf.animations) out.push("hl.config({ animations = { enabled = false } })");
+        if (!conf.blur) out.push("hl.config({ decoration = { blur = { enabled = false } } })");
+        if (Tok.accentName !== "violeta") {
+            const hex = String((Tok.accents[Tok.accentName] || Tok.accents.violeta).color).replace("#", "");
+            out.push(`hl.config({ general = { col = { active_border = { colors = { "rgba(${hex}ff)", "rgba(${hex}66)" }, angle = 45 } } } })`);
+        }
         const mons = root.monitors;
         for (const name in mons) {
             const r = mons[name];
@@ -77,6 +92,10 @@ Singleton {
             property real pointerSpeed: 0
             property bool naturalScroll: true
             property string monitors: "{}"
+            property string gaps: ""
+            property int rounding: -1
+            property bool animations: true
+            property bool blur: true
         }
     }
     FileView { id: luaFile; path: root.dir + "/hyprland.lua" }

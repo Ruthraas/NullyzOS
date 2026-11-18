@@ -28,6 +28,53 @@ SettingsPage {
         }
     }
 
+    // ---- cor de destaque ---------------------------------------------------------------
+    Item {
+        width: parent.width; height: 20
+        Txt { text: "Cor de destaque"; font.weight: Font.DemiBold }
+        Txt { anchors.right: parent.right; text: (Tok.accents[Tok.accentName] || Tok.accents.violeta).name; muted: true; font.pixelSize: 13 }
+    }
+    Row {
+        spacing: 14
+        Repeater {
+            model: Tok.accentOrder
+            Item {
+                id: dot
+                required property string modelData
+                readonly property bool chosen: Tok.accentName === modelData
+                width: 36; height: 36
+                // Anel do escolhido: entra crescendo com overshoot
+                Rectangle {
+                    anchors.fill: parent
+                    radius: width / 2
+                    color: "transparent"
+                    border { width: 2; color: Tok.accents[dot.modelData].color }
+                    scale: dot.chosen ? 1 : 0.6
+                    opacity: dot.chosen ? 1 : 0
+                    Behavior on scale { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutBack } }
+                    Behavior on opacity { NumberAnimation { duration: Tok.fast } }
+                }
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: 26; height: 26; radius: 13
+                    color: Tok.accents[dot.modelData].color
+                    scale: dotArea.pressed ? 0.85 : (dotArea.containsMouse ? 1.1 : 1)
+                    Behavior on scale { NumberAnimation { duration: Tok.fast; easing.type: Easing.OutBack } }
+                }
+                MouseArea {
+                    id: dotArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Prefs.set("accent", dot.modelData)
+                    Accessible.name: "Cor " + Tok.accents[dot.modelData].name
+                }
+            }
+        }
+    }
+
+    Item { width: 1; height: 6 }
+
     Txt { text: "Fundo da área de trabalho"; font.weight: Font.DemiBold }
     Flow {
         width: parent.width
@@ -47,13 +94,5 @@ SettingsPage {
         text: "Para aparecer aqui, coloque a imagem na pasta Imagens."
         muted: true
         font.pixelSize: 13
-    }
-
-    Item { width: 1; height: 6 }
-
-    SettingsRow {
-        title: "Mostrar dock"
-        description: "Apps fixados e abertos numa barra na parte de baixo da tela. Desligado, as janelas usam a tela até embaixo."
-        Toggle { checked: Prefs.dock; onToggled: v => Prefs.set("dock", v) }
     }
 }

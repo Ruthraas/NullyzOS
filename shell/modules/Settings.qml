@@ -19,17 +19,19 @@ PanelWindow {
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
     visible: !Panels.settingsAside
 
+    // Páginas por tópico; a ordem aqui é a da lateral.
     readonly property var pages: [
-        { id: "aparencia", label: "Aparência",
-          icon: "M12 3a9 9 0 1 0 0 18c1.2 0 1.6-1 1.2-1.8-.5-1.1.3-2.2 1.5-2.2H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10z M7.5 12h.01 M9.5 7.5h.01 M14.5 7.5h.01",
-          file: "SettingsAppearance.qml" },
-        { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml" },
-        { id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml" },
-        { id: "som", label: "Som", icon: Icons.volumeHigh, file: "SettingsSound.qml" },
-        { id: "teclado", label: "Teclado e mouse", icon: Icons.keyboard, file: "SettingsKeyboard.qml" },
-        { id: "monitores", label: "Monitores", icon: Icons.monitor, file: "SettingsDisplays.qml" },
-        { id: "sobre", label: "Sobre",
-          icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 7.8h.01", file: "SettingsAbout.qml" }
+        { id: "aparencia", label: "Aparência", icon: Icons.palette, file: "SettingsAppearance.qml", group: "Personalização" },
+        { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml", group: "Personalização" },
+        { id: "barra", label: "Barra e dock", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização" },
+        { id: "janelas", label: "Janelas", icon: Icons.windows, file: "SettingsWindows.qml", group: "Personalização" },
+        { id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml", group: "Sistema" },
+        { id: "som", label: "Som", icon: Icons.volumeHigh, file: "SettingsSound.qml", group: "Sistema" },
+        { id: "teclado", label: "Teclado e mouse", icon: Icons.keyboard, file: "SettingsKeyboard.qml", group: "Sistema" },
+        { id: "monitores", label: "Monitores", icon: Icons.monitor, file: "SettingsDisplays.qml", group: "Sistema" },
+        { id: "energia", label: "Energia", icon: Icons.bolt, file: "SettingsPower.qml", group: "Sistema" },
+        { id: "atalhos", label: "Atalhos", icon: Icons.command, file: "SettingsShortcuts.qml", group: "Geral" },
+        { id: "sobre", label: "Sobre", icon: Icons.info, file: "SettingsAbout.qml", group: "Geral" }
     ]
     readonly property int pageIndex: Math.max(0, pages.findIndex(p => p.id === Panels.settingsPage))
 
@@ -81,38 +83,53 @@ PanelWindow {
             }
 
             Column {
-                anchors { top: brand.bottom; topMargin: 24; left: parent.left; right: parent.right; leftMargin: 12; rightMargin: 12 }
+                anchors { top: brand.bottom; topMargin: 20; left: parent.left; right: parent.right; leftMargin: 12; rightMargin: 12 }
                 spacing: 2
                 Repeater {
                     model: root.pages
-                    Rectangle {
+                    Column {
                         id: nav
                         required property var modelData
                         required property int index
                         readonly property bool current: index === root.pageIndex
-                        width: parent.width; height: 38
-                        radius: Tok.rButton + 2
-                        color: current ? Tok.selection : (navArea.containsMouse ? Tok.hover : "transparent")
-                        Behavior on color { ColorAnimation { duration: Tok.fast } }
-                        Row {
+                        readonly property bool firstOfGroup: index === 0 || root.pages[index - 1].group !== modelData.group
+                        width: parent.width
+                        spacing: 2
+                        // Título do tópico
+                        Txt {
+                            visible: nav.firstOfGroup
                             x: 12
-                            anchors.verticalCenter: parent.verticalCenter
-                            spacing: 12
-                            Ico { anchors.verticalCenter: parent.verticalCenter; size: 18; d: nav.modelData.icon; color: nav.current ? Tok.accent : Tok.muted }
-                            Txt {
-                                anchors.verticalCenter: parent.verticalCenter
-                                text: nav.modelData.label
-                                color: nav.current ? Tok.text : Tok.muted
-                                font.weight: nav.current ? Font.DemiBold : Font.Normal
-                            }
+                            topPadding: nav.index === 0 ? 0 : 12
+                            bottomPadding: 4
+                            text: nav.modelData.group.toUpperCase()
+                            muted: true
+                            font { pixelSize: 11; weight: Font.DemiBold; letterSpacing: 1.1 }
                         }
-                        MouseArea {
-                            id: navArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: Panels.settingsPage = nav.modelData.id
-                            Accessible.name: nav.modelData.label
+                        Rectangle {
+                            width: parent.width; height: 36
+                            radius: Tok.rButton + 2
+                            color: nav.current ? Tok.selection : (navArea.containsMouse ? Tok.hover : "transparent")
+                            Behavior on color { ColorAnimation { duration: Tok.fast } }
+                            Row {
+                                x: 12
+                                anchors.verticalCenter: parent.verticalCenter
+                                spacing: 12
+                                Ico { anchors.verticalCenter: parent.verticalCenter; size: 18; d: nav.modelData.icon; color: nav.current ? Tok.accent : Tok.muted }
+                                Txt {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: nav.modelData.label
+                                    color: nav.current ? Tok.text : Tok.muted
+                                    font.weight: nav.current ? Font.DemiBold : Font.Normal
+                                }
+                            }
+                            MouseArea {
+                                id: navArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: Panels.settingsPage = nav.modelData.id
+                                Accessible.name: nav.modelData.label
+                            }
                         }
                     }
                 }

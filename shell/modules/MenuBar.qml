@@ -79,6 +79,7 @@ PanelWindow {
         }
 
         Txt {
+            visible: Prefs.showAppName
             anchors.verticalCenter: parent.verticalCenter
             text: bar.activeName
             font.weight: Font.DemiBold
@@ -115,7 +116,7 @@ PanelWindow {
             WheelHandler { onWheel: event => Audio.setVolume(Audio.volume + (event.angleDelta.y > 0 ? 0.05 : -0.05)) }
         }
 
-        Txt { anchors.verticalCenter: parent.verticalCenter; text: Clock.dayShort; font.weight: Font.Medium }
-        Txt { anchors.verticalCenter: parent.verticalCenter; text: Clock.time; font.weight: Font.Medium; font.features: { "tnum": 1 } }
+        Txt { visible: Prefs.showDate; anchors.verticalCenter: parent.verticalCenter; text: Clock.dayShort; font.weight: Font.Medium }
+        Txt { anchors.verticalCenter: parent.verticalCenter; text: Prefs.clockSeconds ? Clock.timeSec : Clock.time; font.weight: Font.Medium; font.features: { "tnum": 1 } }
     }
 }

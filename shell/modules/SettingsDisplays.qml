@@ -184,21 +184,4 @@ SettingsPage {
         text: "Procurando monitores…"
         muted: true
     }
-
-    // Botão-pílula de escolha (resolução, Hz, escala, Manter/Voltar).
-    component Chip: Rectangle {
-        id: chip
-        property string text
-        property bool active: false
-        signal clicked()
-        width: label.implicitWidth + 26; height: 32
-        radius: 16
-        color: active ? Tok.accent : (chipArea.containsMouse ? Tok.hover : Tok.surfaceHi)
-        border { width: 1; color: active ? Tok.accent : Tok.border }
-        Behavior on color { ColorAnimation { duration: Tok.fast } }
-        scale: chipArea.pressed ? 0.95 : 1
-        Behavior on scale { NumberAnimation { duration: Tok.fast; easing.type: Easing.OutBack } }
-        Txt { id: label; anchors.centerIn: parent; text: chip.text; color: chip.active ? Tok.textOnAccent : Tok.text; font.pixelSize: 13; font.weight: chip.active ? Font.DemiBold : Font.Normal }
-        MouseArea { id: chipArea; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: chip.clicked() }
-    }
 }

@@ -3,6 +3,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.theme
 
 // Preferências do usuário em ~/.config/nullyzos/shell.json, escritas pelas Configurações.
 // Sem o arquivo, o shell cria um com os padrões (assim dá para vigiar desde o começo);
@@ -13,6 +14,9 @@ import Quickshell.Io
 //   lockDim        escurece o fundo do bloqueio para o relógio e a senha ficarem legíveis
 //   loginWallpaper imagem copiada para a tela de login ("" = fundo Nullyz); só registro, quem
 //                  aplica é /usr/lib/nullyzos/fundo-login (root, via pkexec)
+//   accent         cor de destaque (nome em Tok.accents)
+//   clockSeconds, showDate, showAppName   o que a barra de menus mostra
+//   idleLock, idleSuspend                 minutos parado até bloquear / suspender (0 = nunca)
 Singleton {
     id: root
 
@@ -25,6 +29,14 @@ Singleton {
     readonly property bool lockDim: prefs.lockDim
     readonly property string loginWallpaper: prefs.loginWallpaper
     readonly property string currentWallpaper: prefs.wallpaper || defaultWallpaper
+    readonly property string accent: prefs.accent
+    readonly property bool clockSeconds: prefs.clockSeconds
+    readonly property bool showDate: prefs.showDate
+    readonly property bool showAppName: prefs.showAppName
+    readonly property int idleLock: prefs.idleLock
+    readonly property int idleSuspend: prefs.idleSuspend
+
+    Binding { target: Tok; property: "accentName"; value: prefs.accent }
 
     readonly property string wallpaperUrl: url(prefs.wallpaper || defaultWallpaper)
     readonly property string lockUrl: prefs.lockWallpaper === "desktop" ? wallpaperUrl : url(defaultWallpaper)
@@ -36,6 +48,7 @@ Singleton {
         if (prefs[key] === value) return;
         prefs[key] = value;
         file.writeAdapter();
+        if (key === "accent") HyprConf.save();    // borda das janelas na cor nova
     }
 
     FileView {
@@ -51,6 +64,12 @@ Singleton {
             property string lockWallpaper: "padrao"
             property bool lockDim: true
             property string loginWallpaper: ""
+            property string accent: "violeta"
+            property bool clockSeconds: false
+            property bool showDate: true
+            property bool showAppName: true
+            property int idleLock: 10
+            property int idleSuspend: 0
         }
     }
 

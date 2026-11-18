@@ -28,5 +28,10 @@ Singleton {
     readonly property string power: "M12 3v8 M7 6.5a7.5 7.5 0 1 0 10 0"
     readonly property string keyboard: "M3.5 6.5h17a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z M7 10h.01 M10 10h.01 M13 10h.01 M16 10h.01 M8 14h8"
     readonly property string monitor: "M3.5 4.5h17a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1z M9 20h6 M12 16.5V20"
+    readonly property string palette: "M12 3a9 9 0 1 0 0 18c1.2 0 1.6-1 1.2-1.8-.5-1.1.3-2.2 1.5-2.2H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10z M7.5 12h.01 M9.5 7.5h.01 M14.5 7.5h.01"
+    readonly property string bar: "M3.5 4.5h17a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-13a1 1 0 0 1 1-1z M2.5 8h19 M8 16.5h8"
+    readonly property string windows: "M4 4.5h7v7H4z M13 4.5h7v15h-7z M4 13.5h7v6H4z"
+    readonly property string command: "M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3z"
+    readonly property string info: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 7.8h.01"
     readonly property string logout: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 8l-4 4 4 4 M6 12h10"
 }
