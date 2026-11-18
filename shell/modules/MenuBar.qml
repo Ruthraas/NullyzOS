@@ -6,7 +6,7 @@ import qs.services
 import qs.components
 
 // Barra de menus (topo): símbolo (abre a busca), nome do app ativo, workspaces; à direita
-// a data e a hora. Altura fixa: o desenho por software não redesenha janela que muda de tamanho.
+// os ícones de status (rede, som, bateria; clique abre o painel rápido) e a data e a hora. Altura fixa: o desenho por software não redesenha janela que muda de tamanho.
 PanelWindow {
     id: bar
     required property var modelData
@@ -90,6 +90,31 @@ PanelWindow {
     Row {
         anchors { right: parent.right; rightMargin: 14; verticalCenter: parent.verticalCenter }
         spacing: 12
+
+        // Status: um alvo só (como no macOS); rolar a roda em cima muda o volume.
+        Rectangle {
+            anchors.verticalCenter: parent.verticalCenter
+            width: status.implicitWidth + 16; height: 26; radius: Tok.rButton
+            color: Panels.quick ? Tok.selection : (statusArea.containsMouse ? Tok.hover : "transparent")
+            Behavior on color { ColorAnimation { duration: Tok.fast } }
+            Row {
+                id: status
+                anchors.centerIn: parent
+                spacing: 10
+                Ico { anchors.verticalCenter: parent.verticalCenter; size: 17; d: Network.icon; color: Network.connected ? Tok.text : Tok.muted }
+                Ico { anchors.verticalCenter: parent.verticalCenter; size: 17; d: Audio.icon; color: Audio.available ? Tok.text : Tok.muted }
+                BatteryIcon { visible: Battery.present; anchors.verticalCenter: parent.verticalCenter; size: 20 }
+            }
+            MouseArea {
+                id: statusArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: Panels.toggleQuick()
+                Accessible.name: "Painel rápido: " + Network.label + ", som " + Audio.label
+            }
+            WheelHandler { onWheel: event => Audio.setVolume(Audio.volume + (event.angleDelta.y > 0 ? 0.05 : -0.05)) }
+        }
+
         Txt { anchors.verticalCenter: parent.verticalCenter; text: Clock.dayShort; font.weight: Font.Medium }
         Txt { anchors.verticalCenter: parent.verticalCenter; text: Clock.time; font.weight: Font.Medium; font.features: { "tnum": 1 } }
     }

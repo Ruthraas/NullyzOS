@@ -31,12 +31,15 @@ ShellRoot {
     Lock { id: screenLock }
     LazyLoader { active: Panels.launcher; Launcher {} }
     LazyLoader { active: Panels.settings; Settings {} }
+    LazyLoader { active: Panels.quick; QuickPanel {} }
+    Connections { target: Panels; function onLockRequested() { screenLock.lock(); } }
 
     // Atalhos do Hyprland chamam: qs -c nullyzos ipc call nullyzos <função>
     IpcHandler {
         target: "nullyzos"
         function toggleLauncher(): void { Panels.toggleLauncher(); }
         function settings(): void { Panels.toggleSettings(); }
+        function quick(): void { Panels.toggleQuick(); }
         function settingsPage(page: string): void { Panels.openSettings(page); }
         function lock(): void { Panels.closeAll(); screenLock.lock(); }
         function isLocked(): bool { return screenLock.locked; }
