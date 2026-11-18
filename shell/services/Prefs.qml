@@ -70,6 +70,12 @@ Singleton {
     readonly property int workspaceCount: prefs.workspaceCount
     readonly property bool showStatus: prefs.showStatus
     readonly property int barHeight: ({ compacta: 30, normal: 36, alta: 42 })[prefs.barSize] || 36
+    // Estilo (Configurações → Barra): clássica (de ponta a ponta), flutuante (solta das bordas),
+    // ilhas (cada grupo uma pílula) ou sem fundo. Os soltos ganham um respiro em cima.
+    readonly property string barStyle: prefs.barStyle
+    readonly property int barGap: (prefs.barStyle === "flutuante" || prefs.barStyle === "ilhas") ? 6 : 0
+    // Tudo o que a barra ocupa no topo: os painéis abrem logo abaixo disso
+    readonly property int barSpace: barHeight + barGap
     Binding { target: Tok; property: "accentName"; value: prefs.accent }
     // Destaque do wallpaper: a cor amostrada mudou → borda das janelas e terminal acompanham
     Connections {
@@ -139,7 +145,7 @@ Singleton {
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
                           "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
                           "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
-                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "uiFont", "textScale",
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "uiFont", "textScale",
                           "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
                           "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
                           "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp", "startupApps", "notifSeconds",
@@ -170,6 +176,7 @@ Singleton {
             property int workspaceCount: 5
             property bool showStatus: true
             property string barSize: "normal"
+            property string barStyle: "classica"
             property string uiFont: "Geist"
             property real textScale: 1
             property string dockPosition: "baixo"

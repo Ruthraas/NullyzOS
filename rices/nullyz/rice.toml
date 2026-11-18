@@ -15,6 +15,7 @@ glassOpacity = 0.55
 roundness = 1
 motion = 1
 barSize = "normal"
+barStyle = "classica"
 dockStyle = "vidro"
 dockIndicator = "ponto"
 dockMagnify = 0.35

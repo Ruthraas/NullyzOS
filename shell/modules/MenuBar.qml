@@ -8,16 +8,24 @@ import qs.components
 // Barra de menus (topo): símbolo (abre a busca), nome do app ativo, workspaces; à direita
 // os ícones de status (rede, som, bateria; clique abre o painel rápido) e a data e a hora
 // (clique abre o calendário). Cada parte liga/desliga em Configurações → Barra e dock.
+// Estilos (Prefs.barStyle): clássica (vidro de ponta a ponta), flutuante (vidro solto das
+// bordas, cantos redondos), ilhas (cada grupo numa pílula: símbolo e workspaces, nome do app
+// no meio, status e relógio) e sem fundo (só o conteúdo sobre o wallpaper).
 // Altura fixa por janela: o desenho por software não redesenha janela que muda de tamanho;
-// trocar a altura recria a barra (shell.qml).
+// trocar a altura (ou o respiro dos estilos soltos) recria a barra (shell.qml).
 PanelWindow {
     id: bar
     required property var modelData
     screen: modelData
     anchors { top: true; left: true; right: true }
     readonly property int size: Prefs.barHeight
-    implicitHeight: size
-    exclusiveZone: size
+    readonly property int gap: Prefs.barGap
+    readonly property string style: Prefs.barStyle
+    readonly property bool islands: style === "ilhas"
+    // Cantos das partes soltas: pílula de verdade, acompanhando o arredondamento escolhido
+    readonly property real pill: Math.min(size / 2, Math.max(4, 14 * Tok.roundness))
+    implicitHeight: size + gap
+    exclusiveZone: size + gap
     color: "transparent"
     WlrLayershell.namespace: "nullyzos-menubar"
 
@@ -27,17 +35,63 @@ PanelWindow {
     readonly property string activeName: activeEntry ? activeEntry.name
         : (Hypr.activeToplevel ? (Hypr.activeToplevel.appId || "") : "NullyzOS")
 
+    // Fundo: clássica e flutuante (as ilhas desenham o próprio, atrás de cada grupo)
     Glass {
+        visible: bar.style === "classica"
         anchors.fill: parent
         radius: 0
         topLight: false
         border.width: 0
         Rectangle { anchors { left: parent.left; right: parent.right; bottom: parent.bottom } height: 1; color: Tok.edge }
     }
+    Glass {
+        visible: bar.style === "flutuante"
+        x: 8; y: bar.gap
+        width: parent.width - 16; height: bar.size
+        radius: bar.pill
+    }
+    // Ilhas: uma pílula atrás de cada grupo, do tamanho do que tem dentro
+    Glass {
+        visible: bar.islands && leftRow.width > 0
+        x: content.x + leftRow.x - 8; y: bar.gap
+        width: leftRow.width + 16; height: bar.size
+        radius: bar.pill
+    }
+    Glass {
+        visible: bar.islands && centerName.visible
+        x: content.x + centerName.x - 14; y: bar.gap
+        width: centerName.width + 28; height: bar.size
+        radius: bar.pill
+    }
+    Glass {
+        visible: bar.islands
+        x: content.x + rightRow.x - 6; y: bar.gap
+        width: rightRow.width + 12; height: bar.size
+        radius: bar.pill
+    }
+
+    // Área do conteúdo: abaixo do respiro, com recuo lateral nos estilos soltos
+    Item {
+        id: content
+        x: bar.style === "classica" || bar.style === "semfundo" ? 0 : 8
+        y: bar.gap
+        width: parent.width - 2 * x
+        height: bar.size
+
+    // Ilhas: o nome do app vai para uma ilha própria, no meio
+    Txt {
+        id: centerName
+        visible: bar.islands && Prefs.showAppName && !bar.narrow
+        anchors.centerIn: parent
+        text: bar.activeName
+        font.weight: Font.DemiBold
+        width: Math.min(implicitWidth, 320)
+    }
 
     // ---- esquerda ---------------------------------------------------------------------
     Row {
-        anchors { left: parent.left; leftMargin: 12; verticalCenter: parent.verticalCenter }
+        id: leftRow
+        anchors { left: parent.left; leftMargin: bar.islands ? 10 : 12; verticalCenter: parent.verticalCenter }
         spacing: 10
 
         // Símbolo: abre a busca (como o menu do sistema)
@@ -88,7 +142,7 @@ PanelWindow {
         }
 
         Txt {
-            visible: Prefs.showAppName && !bar.narrow
+            visible: Prefs.showAppName && !bar.narrow && !bar.islands
             anchors.verticalCenter: parent.verticalCenter
             text: bar.activeName
             font.weight: Font.DemiBold
@@ -98,7 +152,8 @@ PanelWindow {
 
     // ---- direita ----------------------------------------------------------------------
     Row {
-        anchors { right: parent.right; rightMargin: 8; verticalCenter: parent.verticalCenter }
+        id: rightRow
+        anchors { right: parent.right; rightMargin: bar.islands ? 6 : 8; verticalCenter: parent.verticalCenter }
         spacing: 4
 
         // Atualizações disponíveis: seta com o número; clique abre a página
@@ -170,5 +225,6 @@ PanelWindow {
                 Accessible.name: "Calendário: " + Clock.dateLong
             }
         }
+    }
     }
 }

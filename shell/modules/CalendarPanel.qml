@@ -61,7 +61,7 @@ PanelWindow {
         height: Math.min(col.implicitHeight + 32, parent.height - y - 10)
         clip: true
         x: parent.width - width - 10
-        y: Prefs.barHeight + 8
+        y: Prefs.barSpace + 8
         radius: Tok.rPanel - 4
         focus: true
         Keys.onEscapePressed: Panels.closeAll()

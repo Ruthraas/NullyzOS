@@ -90,7 +90,7 @@ PanelWindow {
         width: Math.min(360, parent.width - 20)
         height: Math.min(col.implicitHeight + 32, parent.height - y - 10)
         x: parent.width - width - 10
-        y: Prefs.barHeight + 8
+        y: Prefs.barSpace + 8
         radius: Tok.rPanel - 4
         clip: true
         focus: true

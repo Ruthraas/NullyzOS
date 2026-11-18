@@ -85,10 +85,10 @@ PanelWindow {
         id: card
         // Responsivo: até 980×720; em tela pequena encolhe e a lateral vira só ícones.
         width: Math.min(980, root.width - (root.width < Tok.narrow ? 16 : 64))
-        height: Math.min(720, root.height - Prefs.barHeight - (root.height < 700 ? 16 : 64))
+        height: Math.min(720, root.height - Prefs.barSpace - (root.height < 700 ? 16 : 64))
         readonly property bool rail: width < 760
         x: (root.width - width) / 2
-        y: Math.max(Prefs.barHeight + 8, (root.height - height) / 2)
+        y: Math.max(Prefs.barSpace + 8, (root.height - height) / 2)
         radius: Tok.rPanel
         color: Tok.bg
         border { width: 1; color: Tok.edge }

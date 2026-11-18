@@ -27,7 +27,7 @@ ShellRoot {
             }
             Connections {
                 target: Prefs
-                function onBarHeightChanged() { barLoader.active = false; Qt.callLater(() => barLoader.active = true); }
+                function onBarSpaceChanged() { barLoader.active = false; Qt.callLater(() => barLoader.active = true); }
             }
             // Dock: recriado quando muda de lado (a janela de camada muda de borda).
             LazyLoader {

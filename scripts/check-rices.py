@@ -42,6 +42,7 @@ PREFS = {
     "roundness": (float, 0, 1.6),
     "motion": (float, 0, 1.6),
     "barSize": ["compacta", "normal", "alta"],
+    "barStyle": ["classica", "flutuante", "ilhas", "semfundo"],
     "dockStyle": ["vidro", "solido", "transparente"],
     "dockIndicator": ["ponto", "traco", "nenhum"],
     "dockMagnify": (float, 0, 1),
