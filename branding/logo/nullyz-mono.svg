@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" width="512" height="512" fill="currentColor">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" width="512" height="512">
   <title>NullyzOS</title>
+  <!-- O KDE troca esta cor pela do texto do tema (ícone simbólico); fora dele, fica clara -->
+  <style id="current-color-scheme" type="text/css">.ColorScheme-Text{color:#ededf2}</style>
+  <g class="ColorScheme-Text" fill="currentColor">
   <rect x="0.5" y="0.5" width="9" height="9" rx="1.5"/>
   <rect x="10.5" y="0.5" width="9" height="9" rx="1.5"/>
   <rect x="50.5" y="0.5" width="9" height="9" rx="1.5"/>
@@ -34,4 +37,5 @@
   <rect x="10.5" y="60.5" width="9" height="9" rx="1.5"/>
   <rect x="50.5" y="60.5" width="9" height="9" rx="1.5"/>
   <rect x="60.5" y="60.5" width="9" height="9" rx="1.5"/>
+  </g>
 </svg>

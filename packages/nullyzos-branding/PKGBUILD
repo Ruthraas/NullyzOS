@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-branding
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Identidade visual do NullyzOS: símbolo N pixelado, tokens de cor e logo do terminal"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
