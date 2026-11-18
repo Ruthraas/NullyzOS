@@ -59,16 +59,25 @@ SettingsPage {
                     anchors.verticalCenter: parent.verticalCenter
                     columns: 7
                     readonly property real cell: Math.max(4, page.px * 0.55)
-                    spacing: Terminal.logo === "pixel" ? cell * 0.45 : 0
+                    spacing: Terminal.logo === "blocos" ? 0 : cell * 0.45
                     Repeater {
                         model: "##...#####..######.####.######..#####...####...##".split("")
                         Rectangle {
                             required property string modelData
                             readonly property bool lit: modelData === "#"
+                            readonly property bool bin: Terminal.logo === "binario"
                             width: parent.cell; height: parent.cell
                             radius: Terminal.logo === "pixel" ? (lit ? 1 : parent.cell / 2) : 0
-                            color: lit ? page.acc : (Terminal.logo === "pixel" ? Tok.ansiDark[8] : "transparent")
-                            scale: lit || Terminal.logo !== "pixel" ? 1 : 0.35
+                            color: bin ? "transparent" : lit ? page.acc : (Terminal.logo === "pixel" ? Tok.ansiDark[8] : "transparent")
+                            scale: bin || lit || Terminal.logo !== "pixel" ? 1 : 0.35
+                            Txt {
+                                visible: parent.bin
+                                anchors.centerIn: parent
+                                text: parent.lit ? "1" : "0"
+                                color: parent.lit ? page.acc : Tok.ansiDark[8]
+                                size: page.px
+                                font { family: Tok.mono; weight: parent.lit ? Font.Bold : Font.Normal }
+                            }
                         }
                     }
                 }
@@ -175,9 +184,9 @@ SettingsPage {
     }
     SettingsRow {
         title: "Logo"
-        description: "Pixel: o N como um painel de LED. Blocos: o N sólido."
+        description: "Binário: o N feito de 1 no meio dos 0. Pixel: painel de LED. Blocos: o N sólido."
         Choice {
-            options: [["pixel", "Pixel"], ["blocos", "Blocos"]]
+            options: [["binario", "Binário"], ["pixel", "Pixel"], ["blocos", "Blocos"]]
             current: Terminal.logo
             onPicked: v => Terminal.set("logo", v)
         }
