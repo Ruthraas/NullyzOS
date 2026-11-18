@@ -16,10 +16,14 @@ require("nullyzos.rules")
 require("nullyzos.binds")
 require("nullyzos.autostart")
 
+-- Depois do sistema: o que as Configurações gravaram (teclado, mouse, monitores) e, por
+-- último, os ajustes à mão do usuário (valem por cima de tudo).
 local home = os.getenv("HOME") or ""
-local user = home .. "/.config/hypr/nullyzos.lua"
-local f = io.open(user, "r")
-if f then
-  f:close()
-  dofile(user)
+local config = os.getenv("XDG_CONFIG_HOME") or (home .. "/.config")
+for _, file in ipairs({ config .. "/nullyzos/hyprland.lua", home .. "/.config/hypr/nullyzos.lua" }) do
+  local f = io.open(file, "r")
+  if f then
+    f:close()
+    dofile(file)
+  end
 end

@@ -26,5 +26,7 @@ Singleton {
     readonly property string moon: "M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"
     readonly property string restart: "M20 12a8 8 0 1 1-2.3-5.7 M20 4v4h-4"
     readonly property string power: "M12 3v8 M7 6.5a7.5 7.5 0 1 0 10 0"
+    readonly property string keyboard: "M3.5 6.5h17a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z M7 10h.01 M10 10h.01 M13 10h.01 M16 10h.01 M8 14h8"
+    readonly property string monitor: "M3.5 4.5h17a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1z M9 20h6 M12 16.5V20"
     readonly property string logout: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 8l-4 4 4 4 M6 12h10"
 }

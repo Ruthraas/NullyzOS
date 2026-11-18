@@ -26,6 +26,8 @@ PanelWindow {
         { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml" },
         { id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml" },
         { id: "som", label: "Som", icon: Icons.volumeHigh, file: "SettingsSound.qml" },
+        { id: "teclado", label: "Teclado e mouse", icon: Icons.keyboard, file: "SettingsKeyboard.qml" },
+        { id: "monitores", label: "Monitores", icon: Icons.monitor, file: "SettingsDisplays.qml" },
         { id: "sobre", label: "Sobre",
           icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 7.8h.01", file: "SettingsAbout.qml" }
     ]
