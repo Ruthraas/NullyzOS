@@ -15,7 +15,9 @@ Item {
 
     Shape {
         anchors.fill: parent
-        preferredRendererType: Shape.CurveRenderer
+        // CurveRenderer é mais liso, mas no desenho por software (VM) ignora o recorte das listas
+        // que rolam (ícone vazava para fora do cartão): lá fica o renderizador padrão.
+        preferredRendererType: Tok.vm ? Shape.UnknownRenderer : Shape.CurveRenderer
         transform: Scale { xScale: root.size / 24; yScale: root.size / 24 }
         ShapePath {
             strokeColor: root.color
