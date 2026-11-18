@@ -26,3 +26,9 @@ theme=__aurorae__svg__Nullyz
 
 [KSplash]
 Theme=org.nullyzos.desktop
+
+[kscreenlockerrc][Greeter]
+WallpaperPlugin=org.kde.image
+
+[kscreenlockerrc][Greeter][Wallpaper][org.kde.image][General]
+Image=file:///usr/share/wallpapers/Nullyz/

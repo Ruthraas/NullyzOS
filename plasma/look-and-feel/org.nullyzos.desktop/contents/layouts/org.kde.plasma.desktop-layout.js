@@ -9,7 +9,7 @@ barra.floating = false;
 
 var menu = barra.addWidget("org.kde.plasma.kickoff");
 menu.currentConfigGroup = ["General"];
-menu.writeConfig("icon", "nullyzos-symbolic");
+menu.writeConfig("icon", "nullyzos-symbolic");   // segue a cor do tema
 menu.writeConfig("favoritesPortedToKAstats", true);
 
 barra.addWidget("org.kde.plasma.appmenu");
