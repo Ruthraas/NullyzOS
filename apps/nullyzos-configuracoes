@@ -1,0 +1,5 @@
+#!/bin/sh
+# Abre as Configurações do NullyzOS como app (janela comum). No Hyprland o atalho Super+vírgula
+# abre pelo shell; aqui é para o KDE (e para quem preferir uma janela).
+export NULLYZ_APP=configuracoes
+exec qs -c nullyzos "$@"

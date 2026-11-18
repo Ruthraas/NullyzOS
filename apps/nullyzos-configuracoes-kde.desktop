@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Configurações Nullyz
+GenericName=Configurações do NullyzOS
+Comment=Rices, wallpapers e galeria, foto de perfil, atualizações e apps do NullyzOS
+Keywords=nullyz;wallpaper;fundo;galeria;rice;foto;perfil;atualizar;snapshot;flathub;
+Exec=nullyzos-configuracoes
+Icon=nullyzos
+Categories=Settings;
+OnlyShowIn=KDE;

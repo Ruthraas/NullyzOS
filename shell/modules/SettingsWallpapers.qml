@@ -30,6 +30,13 @@ SettingsPage {
     readonly property string script: Qt.resolvedUrl("../scripts/galeria.sh").toString().replace("file://", "")
 
     function loadLocal() { if (!local.running) local.running = true; }
+    // Usa um fundo: no Hyprland o shell desenha (Prefs); no KDE também vai para o Plasma.
+    readonly property bool kde: (Quickshell.env("XDG_CURRENT_DESKTOP") || "").indexOf("KDE") >= 0
+    function use(path) {
+        const padrao = path === Prefs.defaultWallpaper;
+        Prefs.set("wallpaper", padrao ? "" : path);
+        if (kde) Quickshell.execDetached(["plasma-apply-wallpaperimage", padrao ? "/usr/share/wallpapers/Nullyz" : path]);
+    }
     // Categoria nova (ou busca) começa do zero; "Mostrar mais" pede a próxima página.
     function loadGallery(more) {
         if (galleryLoading) return;
@@ -84,7 +91,7 @@ SettingsPage {
         stdout: StdioCollector {
             onStreamFinished: {
                 const path = text.trim();
-                if (path) { Prefs.set("wallpaper", path); page.loadLocal(); }
+                if (path) { page.use(path); page.loadLocal(); }
             }
         }
         onExited: code => { page.downloading = ""; if (code !== 0) page.galleryFailed = true; }
@@ -101,7 +108,7 @@ SettingsPage {
                 required property string modelData
                 path: modelData
                 selected: modelData === page.current
-                onPicked: Prefs.set("wallpaper", modelData === Prefs.defaultWallpaper ? "" : modelData)
+                onPicked: page.use(modelData)
             }
         }
     }

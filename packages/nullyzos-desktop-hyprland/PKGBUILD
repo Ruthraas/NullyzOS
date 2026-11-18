@@ -1,10 +1,10 @@
 # Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
 # Desktop Nullyz para Hyprland (#6): config do Hyprland (Lua), shell em Quickshell (barra de
-# menus, dock, busca, notificações, bloqueio), sessão com modo VM e o fundo padrão.
+# menus, dock, busca, notificações, bloqueio; pacote nullyzos-shell), sessão com modo VM e o kitty.
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=48
+pkgrel=49
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -14,21 +14,13 @@ backup=('etc/xdg/kitty/kitty.conf')
 depends=(
   'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'hyprpolkitagent' 'polkit-gnome'
   'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'fakeroot' 'libnotify' 'jq' 'kdialog' 'accountsservice' 'fastfetch' 'grim' 'slurp' 'wl-clipboard'
-  'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais' 'nullyzos-terminal'
+  'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais' 'nullyzos-terminal' 'nullyzos-shell'
   'hyprsunset' 'cliphist' 'wtype' 'satty'
   'plasma-integration' 'qqc2-desktop-style' 'breeze' 'breeze-icons' 'adw-gtk-theme' 'kconfig'
 )
-makedepends=('python')
 source=()
 
 _root() { cd "$startdir/../.." && pwd; }
-
-build() {
-  local v
-  for v in padrao aurora brasa oceano nucleo grafite; do
-    python "$(_root)/branding/gerar-fundo.py" "$srcdir/$v.png" "$v"
-  done
-}
 
 package() {
   local src
@@ -36,29 +28,10 @@ package() {
   # Config do Hyprland (do sistema; o usuário ajusta em ~/.config/hypr/nullyzos.lua)
   install -Dm644 "$src/hypr/hyprland.lua" "$pkgdir/usr/share/nullyzos/hypr/hyprland.lua"
   install -Dm644 -t "$pkgdir/usr/share/nullyzos/hypr/nullyzos" "$src"/hypr/nullyzos/*.lua
-  # Shell (qs -c nullyzos acha em /etc/xdg/quickshell)
-  install -dm755 "$pkgdir/etc/xdg/quickshell/nullyzos"
-  cp -r "$src"/shell/. "$pkgdir/etc/xdg/quickshell/nullyzos/"
-  find "$pkgdir/etc/xdg/quickshell/nullyzos" -name '*.md' -delete
   # Sessão (a tela de login lista "Hyprland" apontando para o nosso lançador)
   install -Dm755 "$src/session/nullyzos-hyprland" "$pkgdir/usr/bin/nullyzos-hyprland"
   install -Dm644 "$src/session/nullyzos-hyprland.desktop" "$pkgdir/usr/share/wayland-sessions/nullyzos-hyprland.desktop"
-  # Limpeza (Configurações → Desempenho): ajudante root via pkexec + regra do polkit
-  install -Dm755 "$src/apps/limpeza" "$pkgdir/usr/lib/nullyzos/limpeza"
-  install -Dm644 "$src/apps/org.nullyzos.limpeza.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.limpeza.policy"
   # Terminal: kitty do sistema, shell com prompt/saudação do Nullyz
   install -Dm644 "$src/terminal/kitty.conf" "$pkgdir/etc/xdg/kitty/kitty.conf"
-  # Atualizar o sistema pelas Configurações (pkexec)
-  install -Dm755 "$src/apps/atualizar" "$pkgdir/usr/lib/nullyzos/atualizar"
-  install -Dm644 "$src/apps/org.nullyzos.atualizar.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.atualizar.policy"
-  # Rices: aplicador, parte root (snapshot + pacotes da receita) e o catálogo verificado
-  install -Dm755 "$src/apps/nullyzos-rice" "$pkgdir/usr/bin/nullyzos-rice"
-  install -Dm755 "$src/apps/rice-root" "$pkgdir/usr/lib/nullyzos/rice-root"
-  install -Dm644 "$src/apps/org.nullyzos.rice.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.rice.policy"
-  install -Dm644 "$src/rices/catalogo.json" "$pkgdir/usr/share/nullyzos/rices/catalogo.json"
-  # Configurações na busca de apps
-  install -Dm644 -t "$pkgdir/usr/share/applications" "$src"/apps/*.desktop
-  # Fundos: o padrão (o mesmo da tela de login) e as variações de cor
-  install -Dm644 -t "$pkgdir/usr/share/nullyzos/wallpapers" "$srcdir"/*.png
   install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
