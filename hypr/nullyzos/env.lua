@@ -3,6 +3,8 @@ local lib = require("nullyzos.lib")
 
 -- Apps Qt/KDE seguem o esquema de cores Nullyz do kdeglobals (plasma-integration, #16)
 hl.env("QT_QPA_PLATFORMTHEME", "kde")
+-- Apps Qt Quick (pedido de senha, partições…) no mesmo esquema, em vez do estilo claro padrão
+hl.env("QT_QUICK_CONTROLS_STYLE", "org.kde.desktop")
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")

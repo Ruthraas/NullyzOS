@@ -10,6 +10,8 @@ for _, m in ipairs(dialogs) do
   hl.window_rule({ match = m, float = true, center = true })
 end
 hl.window_rule({ match = { title = "^(Picture-in-Picture|Imagem em imagem)$" }, float = true, pin = true })
+-- Instalador: janela própria no centro (não divide a tela com o que estiver aberto)
+hl.window_rule({ match = { class = "^(calamares|io.calamares.calamares)$" }, float = true, center = true })
 
 -- Camadas do shell: vidro onde há fundo translúcido (fora do modo VM).
 if not lib.vm then

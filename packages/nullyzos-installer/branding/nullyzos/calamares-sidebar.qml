@@ -15,6 +15,9 @@ Rectangle {
     readonly property color text: "#ededf2"
     readonly property color muted: "#a3a3b3"
     readonly property color line: "#2b2b37"
+    // Janela baixa: marca mais perto do topo e passos mais juntos, sem invadir o rodapé
+    readonly property bool compact: height < 760
+    readonly property real stepH: Math.max(30, Math.min(48, (height - steps.y - 72) / Math.max(1, rep.count)))
 
     // Borda direita
     Rectangle { anchors { right: parent.right; top: parent.top; bottom: parent.bottom } width: 1; color: side.line }
@@ -22,8 +25,8 @@ Rectangle {
     // ---- marca ------------------------------------------------------------------------
     Column {
         id: brand
-        x: 32; y: 40
-        spacing: 14
+        x: 32; y: side.compact ? 26 : 40
+        spacing: side.compact ? 10 : 14
         Grid {
             columns: 7
             spacing: 2
@@ -42,9 +45,10 @@ Rectangle {
     // ---- passos -----------------------------------------------------------------------
     Column {
         id: steps
-        anchors { top: brand.bottom; topMargin: 44; left: parent.left; leftMargin: 32; right: parent.right; rightMargin: 20 }
+        anchors { top: brand.bottom; topMargin: side.compact ? 24 : 44; left: parent.left; leftMargin: 32; right: parent.right; rightMargin: 20 }
         spacing: 0
         Repeater {
+            id: rep
             model: ViewManager
             Item {
                 id: step
@@ -52,12 +56,12 @@ Rectangle {
                 readonly property bool done: index < cur
                 readonly property bool now: index === cur
                 width: steps.width
-                height: 48
+                height: side.stepH
                 // Linha do tempo entre os círculos
                 Rectangle {
                     visible: index > 0
-                    x: 11; y: -24 + 12
-                    width: 2; height: 24
+                    x: 11; y: 12 - step.height / 2
+                    width: 2; height: step.height - 24
                     color: step.done || step.now ? side.accent : side.line
                 }
                 Rectangle {

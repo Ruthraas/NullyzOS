@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=39
+pkgrel=40
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -16,7 +16,7 @@ depends=(
   'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'fakeroot' 'libnotify' 'jq' 'kdialog' 'accountsservice' 'fastfetch' 'grim' 'slurp' 'wl-clipboard'
   'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais'
   'hyprsunset' 'cliphist' 'wtype' 'satty'
-  'plasma-integration' 'breeze' 'breeze-icons' 'adw-gtk-theme' 'kconfig'
+  'plasma-integration' 'qqc2-desktop-style' 'breeze' 'breeze-icons' 'adw-gtk-theme' 'kconfig'
 )
 makedepends=('python')
 source=()
