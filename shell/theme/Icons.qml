@@ -49,5 +49,9 @@ Singleton {
     readonly property string bluetooth: "M7 7.5l10 9-5 4.5V3l5 4.5-10 9"
     readonly property string clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 7v5l3.5 2"
     readonly property string disk: "M3.5 6.5h17v11h-17z M3.5 13h17 M7 15.3h.01"
+    readonly property string user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M4.5 20a7.5 7.5 0 0 1 15 0"
+    readonly property string printer: "M7 9V4h10v5 M5 9h14a1.5 1.5 0 0 1 1.5 1.5V16H17 M7 16H3.5v-5.5A1.5 1.5 0 0 1 5 9 M7 14h10v6H7z"
+    readonly property string globe: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M3 12h18 M12 3a14 14 0 0 1 0 18 M12 3a14 14 0 0 0 0 18"
+    readonly property string rocket: "M12 15l-3-3 M14.5 4.5C17 2 21 3 21 3s1 4-1.5 6.5L13 16l-5-5z M8.5 11H5l3-3h3 M13 15.5V19l3-3v-3"
     readonly property string logout: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 8l-4 4 4 4 M6 12h10"
 }

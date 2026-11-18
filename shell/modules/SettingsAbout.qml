@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell.Io
 import qs.theme
+import qs.services
 import qs.components
 
 // Configurações → Sobre: o símbolo e os dados do computador (scripts/sobre.sh).
@@ -65,6 +66,11 @@ SettingsPage {
         }
     }
 
+    Chip {
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: "Ver as boas-vindas de novo"
+        onClicked: { Panels.closeAll(); Panels.welcome = true; }
+    }
     Txt {
         anchors.horizontalCenter: parent.horizontalCenter
         text: "github.com/Ruthraas/NullyzOS"

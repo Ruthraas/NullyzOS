@@ -57,6 +57,9 @@ Singleton {
     readonly property bool nightLight: prefs.nightLight
     readonly property bool nightAuto: prefs.nightAuto
     readonly property int nightTemp: prefs.nightTemp
+    readonly property var startupApps: { try { return JSON.parse(prefs.startupApps); } catch (e) { return []; } }
+    readonly property int notifSeconds: prefs.notifSeconds
+    readonly property bool welcomed: prefs.welcomed
     readonly property real glassOpacity: prefs.glassOpacity
     readonly property int cursorSize: prefs.cursorSize
     readonly property bool clock24: prefs.clock24
@@ -122,7 +125,8 @@ Singleton {
                           "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "uiFont", "textScale",
                           "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
                           "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
-                          "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp"];
+                          "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp", "startupApps", "notifSeconds",
+                          "welcomed"];
             if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
         }
         adapter: JsonAdapter {
@@ -168,6 +172,9 @@ Singleton {
             property bool nightLight: false
             property bool nightAuto: false
             property int nightTemp: 4000
+            property string startupApps: "[]"
+            property int notifSeconds: 6
+            property bool welcomed: false
         }
     }
 

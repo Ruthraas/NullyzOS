@@ -52,7 +52,7 @@ Singleton {
             id: wrapper
             required property var notification
             readonly property int timeout: notification.urgency === NotificationUrgency.Critical ? 0
-                : (notification.expireTimeout > 0 ? notification.expireTimeout * 1000 : 6000)
+                : (notification.expireTimeout > 0 ? notification.expireTimeout * 1000 : Prefs.notifSeconds * 1000)
             property bool hovered: false
             property Timer timer: Timer {
                 interval: wrapper.timeout

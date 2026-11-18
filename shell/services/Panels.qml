@@ -9,6 +9,7 @@ Singleton {
     property bool launcher: false
     property bool quick: false
     property bool calendar: false
+    property bool welcome: false
     property bool settings: false
     property string settingsPage: "aparencia"
     // Escondidas enquanto uma janela do sistema (ex.: pedido de senha) precisa aparecer.

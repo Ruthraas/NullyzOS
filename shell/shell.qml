@@ -56,6 +56,10 @@ ShellRoot {
     Connections { target: Panels; function onLockRequested() { screenLock.lock(); } }
     Idle { onLockNow: { Panels.closeAll(); screenLock.lock(); } }
     Osd {}
+    Startup {}
+    // Boas-vindas: no primeiro login (depois que as preferências carregaram) e pelo IPC welcome
+    LazyLoader { active: Panels.welcome; Welcome {} }
+    Timer { interval: 2500; running: true; onTriggered: if (!Prefs.welcomed) Panels.welcome = true }
     // Luz noturna roda enquanto ativa (hyprsunset); referência para o serviço existir já no login.
     readonly property bool nightLight: NightLight.active
     // Apps Qt/KDE e GTK nas cores do Nullyz (#16): aplica ao subir e quando o tema muda.
@@ -67,6 +71,7 @@ ShellRoot {
         function toggleLauncher(): void { Panels.toggleLauncher(); }
         function settings(): void { Panels.toggleSettings(); }
         function quick(): void { Panels.toggleQuick(); }
+        function welcome(): void { Panels.closeAll(); Panels.welcome = true; }
         function calendar(): void { Panels.toggleCalendar(); }
         // Teclas de brilho: relê o valor e mostra o aviso na tela
         function osdBrightness(): void { Brightness.refresh(); }
