@@ -1,0 +1,15 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [ { "Name": "NullyzOS" } ],
+        "Category": "",
+        "Description": "O visual do NullyzOS no Plasma: barra em cima, dock flutuante, cores Nullyz e Geist.",
+        "Description[pt_BR]": "O visual do NullyzOS no Plasma: barra em cima, dock flutuante, cores Nullyz e Geist.",
+        "Id": "org.nullyzos.desktop",
+        "License": "GPL-3.0-or-later",
+        "Name": "NullyzOS",
+        "Version": "0.2",
+        "Website": "https://github.com/Ruthraas/NullyzOS"
+    },
+    "X-Plasma-APIVersion": "2"
+}

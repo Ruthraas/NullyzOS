@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=NullyzOS: primeiro login no KDE
+Exec=/usr/lib/nullyzos/kde-primeiro
+OnlyShowIn=KDE;
+NoDisplay=true
+X-KDE-autostart-phase=2

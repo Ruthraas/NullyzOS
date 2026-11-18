@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["packages/**", "branding/**", "shell/**", "hypr/**", "session/**", "apps/**", "terminal/**", "rices/**", ".github/workflows/repo.yml"]
+    paths: ["packages/**", "branding/**", "shell/**", "hypr/**", "session/**", "apps/**", "terminal/**", "rices/**", "plasma/**", ".github/workflows/repo.yml"]
 
 permissions:
   contents: write

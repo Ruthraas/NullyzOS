@@ -1,0 +1,18 @@
+# Padrões do NullyzOS no KDE (/etc/xdg: o usuário muda por cima em ~/.config).
+[KDE]
+LookAndFeelPackage=org.nullyzos.desktop
+widgetStyle=Breeze
+
+[General]
+ColorScheme=NullyzEscuro
+font=Geist,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+menuFont=Geist,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+toolBarFont=Geist,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+smallestReadableFont=Geist,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+fixed=Geist Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+
+[WM]
+activeFont=Geist,10,-1,5,600,0,0,0,0,0,0,0,0,0,0,1
+
+[Icons]
+Theme=breeze-dark

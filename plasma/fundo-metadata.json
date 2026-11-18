@@ -1,0 +1,8 @@
+{
+    "KPlugin": {
+        "Authors": [ { "Name": "NullyzOS" } ],
+        "Id": "Nullyz",
+        "License": "GPL-3.0-or-later",
+        "Name": "Nullyz"
+    }
+}

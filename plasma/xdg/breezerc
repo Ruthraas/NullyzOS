@@ -1,0 +1,8 @@
+# Decoração Breeze no estilo Nullyz: título discreto, sem contorno, sombra média.
+[Common]
+OutlineIntensity=OutlineOff
+ShadowSize=ShadowMedium
+
+[Windeco]
+TitleAlignment=AlignCenterFullWidth
+DrawBackgroundGradient=false

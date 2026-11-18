@@ -1,0 +1,21 @@
+# Janelas no NullyzOS: botões à esquerda (fechar, minimizar, maximizar), sem borda grossa,
+# desfoque e cantos do Breeze; trocar de janela com a mesma cara do Breeze.
+[org.kde.kdecoration2]
+library=org.kde.breeze
+theme=Breeze
+BorderSize=None
+BorderSizeAuto=false
+ButtonsOnLeft=XIA
+ButtonsOnRight=
+
+[Plugins]
+blurEnabled=true
+contrastEnabled=true
+wobblywindowsEnabled=false
+
+[Effect-blur]
+BlurStrength=8
+NoiseStrength=0
+
+[Windows]
+BorderlessMaximizedWindows=false

@@ -1,0 +1,9 @@
+#!/bin/sh
+# Primeiro login no KDE (autostart): aplica o tema global NullyzOS por inteiro (cores, ícones,
+# decoração, layout com a barra e o dock). Uma vez só; depois o usuário muda o que quiser.
+marca="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos/kde-aplicado"
+[ -e "$marca" ] && exit 0
+mkdir -p "$(dirname "$marca")"
+plasma-apply-lookandfeel -a org.nullyzos.desktop --resetLayout >/dev/null 2>&1 || exit 0
+plasma-apply-colorscheme NullyzEscuro >/dev/null 2>&1
+date > "$marca"

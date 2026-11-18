@@ -1,0 +1,48 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Desktop do NullyzOS para KDE Plasma 6 (#8): tema global NullyzOS (barra em cima, dock
+# flutuante, tela de abertura), cores Nullyz, fontes Geist, decoração com botões à esquerda,
+# Konsole Nullyz e o fundo. Aplicado por inteiro no primeiro login.
+
+pkgname=nullyzos-desktop-kde
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="Visual do NullyzOS para KDE Plasma"
+arch=('any')
+url="https://github.com/Ruthraas/NullyzOS"
+license=('GPL-3.0-only')
+options=('!debug')
+backup=('etc/xdg/kdeglobals' 'etc/xdg/kwinrc' 'etc/xdg/breezerc' 'etc/xdg/ksplashrc' 'etc/xdg/konsolerc')
+depends=('plasma-desktop' 'plasma-workspace' 'kwin' 'breeze' 'breeze-icons' 'konsole' 'dolphin'
+         'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais')
+makedepends=('python')
+source=()
+
+_root() { cd "$startdir/../.." && pwd; }
+
+build() {
+  python "$(_root)/plasma/gerar.py" "$srcdir/cores"
+  python "$(_root)/branding/gerar-fundo.py" "$srcdir/960x540.png" padrao
+}
+
+package() {
+  local src p
+  src="$(_root)"
+  p="$src/plasma"
+  # Tema global
+  install -dm755 "$pkgdir/usr/share/plasma/look-and-feel"
+  cp -r "$p/look-and-feel/org.nullyzos.desktop" "$pkgdir/usr/share/plasma/look-and-feel/"
+  chmod -R u=rwX,go=rX "$pkgdir/usr/share/plasma/look-and-feel/org.nullyzos.desktop"
+  # Cores (Plasma e Konsole) e perfil do Konsole
+  install -Dm644 -t "$pkgdir/usr/share/color-schemes" "$srcdir/cores/NullyzEscuro.colors" "$srcdir/cores/NullyzClaro.colors"
+  install -Dm644 "$srcdir/cores/Nullyz.colorscheme" "$pkgdir/usr/share/konsole/Nullyz.colorscheme"
+  install -Dm644 "$p/konsole/Nullyz.profile" "$pkgdir/usr/share/konsole/Nullyz.profile"
+  # Fundo como pacote de wallpaper do Plasma
+  install -Dm644 "$p/fundo-metadata.json" "$pkgdir/usr/share/wallpapers/Nullyz/metadata.json"
+  install -Dm644 "$srcdir/960x540.png" "$pkgdir/usr/share/wallpapers/Nullyz/contents/images/960x540.png"
+  # Padrões do sistema
+  install -Dm644 -t "$pkgdir/etc/xdg" "$p"/xdg/*
+  # Primeiro login
+  install -Dm755 "$p/nullyzos-kde-primeiro" "$pkgdir/usr/lib/nullyzos/kde-primeiro"
+  install -Dm644 "$p/nullyzos-kde-primeiro.desktop" "$pkgdir/etc/xdg/autostart/nullyzos-kde-primeiro.desktop"
+  install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
