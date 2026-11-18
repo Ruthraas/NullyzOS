@@ -4,6 +4,7 @@ Font=Geist Mono,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 
 [General]
 Name=Nullyz
+Command=/usr/lib/nullyzos/terminal-shell
 Parent=FALLBACK/
 TerminalMargin=12
 TerminalCenter=true

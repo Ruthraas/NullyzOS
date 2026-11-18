@@ -1,0 +1,25 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# Terminal do NullyzOS, igual em qualquer desktop (kitty no Hyprland, Konsole no KDE):
+# prompt e saudação do Nullyz no bash, o N em binário no fastfetch.
+
+pkgname=nullyzos-terminal
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="Terminal do NullyzOS: prompt, saudação e o N no fastfetch"
+arch=('any')
+url="https://github.com/Ruthraas/NullyzOS"
+license=('GPL-3.0-only')
+options=('!debug')
+depends=('bash' 'fastfetch')
+source=()
+
+_root() { cd "$startdir/../.." && pwd; }
+
+package() {
+  local src
+  src="$(_root)"
+  install -Dm755 "$src/terminal/terminal-shell" "$pkgdir/usr/lib/nullyzos/terminal-shell"
+  install -Dm644 "$src/terminal/bashrc" "$pkgdir/usr/share/nullyzos/terminal/bashrc"
+  install -Dm644 -t "$pkgdir/usr/share/nullyzos/terminal" "$src"/terminal/logo-*.txt "$src/terminal/fastfetch.jsonc"
+  install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
