@@ -1,4 +1,5 @@
-// Slideshow durante a instalação (NullyzOS): três mensagens curtas com o N pixelado.
+// Tela durante a instalação (NullyzOS): o N pixelado acendendo pixel a pixel e mensagens
+// sobre o sistema que trocam com fade (a cada 8 s), com pontinhos de progresso.
 import QtQuick
 import calamares.slideshow 1.0
 
@@ -8,50 +9,105 @@ Presentation {
     // Fundo da área inteira (sem isto o Calamares deixa uma moldura branca em volta dos slides).
     Rectangle { anchors.fill: parent; color: "#0e0e13"; z: -1 }
 
-    function nextSlide() { presentation.goToNextSlide(); }
+    property int shown: 0
+    readonly property var messages: [
+        ["Instalando o NullyzOS", "Copiando o sistema e baixando o desktop que você escolheu. Leva alguns minutos; pode relaxar."],
+        ["Começa do zero", "Um Arch Linux limpo, com o visual Nullyz pronto. Nada de AUR nem script de terceiros: só pacotes oficiais e assinados."],
+        ["Do seu jeito", "Super + vírgula abre as Configurações: tema claro ou escuro, cor de destaque, dock, fontes, terminal e muito mais."],
+        ["Seguro para atualizar", "Antes de cada atualização é tirado um snapshot. Se algo quebrar, é só escolher o ponto anterior no menu do boot."],
+        ["Apps", "O Brave já vem como navegador. Outros apps saem do Flathub pelas Configurações, sem senha."]
+    ]
 
     Timer {
-        interval: 7000
+        interval: 8000
         running: presentation.activatedInCalamares
         repeat: true
-        onTriggered: presentation.nextSlide()
+        onTriggered: fade.restart()
     }
-
-    component NSlide: Slide {
-        property string title
-        property string body
-        Rectangle { anchors.fill: parent; color: "#0e0e13" }
-        Column {
-            anchors.centerIn: parent
-            spacing: 22
-            width: parent.width * 0.7
-            Grid {
-                anchors.horizontalCenter: parent.horizontalCenter
-                columns: 7
-                spacing: 3
-                Repeater {
-                    model: "##...#####..######.####.######..#####...####...##".split("")
-                    Rectangle { width: 12; height: 12; radius: 2; color: modelData === "#" ? "#9d8cff" : "transparent" }
-                }
-            }
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: title
-                color: "#ededf2"
-                font { family: "Geist"; pixelSize: 28; weight: Font.DemiBold }
-            }
-            Text {
-                width: parent.width
-                horizontalAlignment: Text.AlignHCenter
-                wrapMode: Text.WordWrap
-                text: body
-                color: "#a3a3b3"
-                font { family: "Geist"; pixelSize: 16 }
-            }
+    SequentialAnimation {
+        id: fade
+        NumberAnimation { target: textBlock; property: "opacity"; to: 0; duration: 350; easing.type: Easing.InCubic }
+        ScriptAction { script: presentation.shown = (presentation.shown + 1) % presentation.messages.length }
+        ParallelAnimation {
+            NumberAnimation { target: textBlock; property: "opacity"; to: 1; duration: 500; easing.type: Easing.OutCubic }
+            NumberAnimation { target: textBlock; property: "y"; from: 12; to: 0; duration: 500; easing.type: Easing.OutCubic }
         }
     }
 
-    NSlide { title: "Instalando o NullyzOS"; body: "Copiando o sistema e baixando o desktop que você escolheu. Pode levar alguns minutos." }
-    NSlide { title: "Do seu jeito"; body: "Depois de instalado, a loja de rices deixa trocar todo o visual, com uma foto do sistema antes de cada troca." }
-    NSlide { title: "Seguro por padrão"; body: "Sem AUR e sem scripts de terceiros: tudo vem dos repositórios oficiais do Arch ou do repositório NullyzOS, assinado." }
+    Slide {
+        anchors.fill: parent
+        Rectangle { anchors.fill: parent; color: "#0e0e13" }
+
+        Column {
+            anchors.centerIn: parent
+            width: Math.min(parent.width * 0.72, 620)
+            spacing: 34
+
+            // N acendendo pixel a pixel (em loop, devagar)
+            Grid {
+                anchors.horizontalCenter: parent.horizontalCenter
+                columns: 7
+                spacing: 4
+                Repeater {
+                    model: "##...#####..######.####.######..#####...####...##".split("")
+                    Rectangle {
+                        required property string modelData
+                        required property int index
+                        width: 16; height: 16; radius: 3
+                        color: modelData === "#" ? "#9d8cff" : "#17171f"
+                        opacity: modelData === "#" ? 0.25 : 1
+                        SequentialAnimation on opacity {
+                            running: modelData === "#"
+                            loops: Animation.Infinite
+                            PauseAnimation { duration: index * 45 }
+                            NumberAnimation { to: 1; duration: 420; easing.type: Easing.OutCubic }
+                            PauseAnimation { duration: 2600 }
+                            NumberAnimation { to: 0.25; duration: 700; easing.type: Easing.InOutQuad }
+                            PauseAnimation { duration: (49 - index) * 45 }
+                        }
+                    }
+                }
+            }
+
+            Item {
+                width: parent.width
+                height: textBlock.implicitHeight
+                Column {
+                    id: textBlock
+                    width: parent.width
+                    spacing: 12
+                    Text {
+                        width: parent.width
+                        horizontalAlignment: Text.AlignHCenter
+                        text: presentation.messages[presentation.shown][0]
+                        color: "#ededf2"
+                        font { family: "Geist"; pixelSize: 30; weight: Font.DemiBold }
+                    }
+                    Text {
+                        width: parent.width
+                        horizontalAlignment: Text.AlignHCenter
+                        wrapMode: Text.WordWrap
+                        text: presentation.messages[presentation.shown][1]
+                        color: "#a3a3b3"
+                        lineHeight: 1.25
+                        font { family: "Geist"; pixelSize: 17 }
+                    }
+                }
+            }
+
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 6
+                Repeater {
+                    model: presentation.messages.length
+                    Rectangle {
+                        required property int index
+                        width: index === presentation.shown ? 22 : 7; height: 7; radius: 3.5
+                        color: index === presentation.shown ? "#9d8cff" : "#2b2b37"
+                        Behavior on width { NumberAnimation { duration: 260; easing.type: Easing.OutBack } }
+                    }
+                }
+            }
+        }
+    }
 }

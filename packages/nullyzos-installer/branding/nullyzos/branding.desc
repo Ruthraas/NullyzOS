@@ -5,8 +5,8 @@ welcomeExpandingLogo: false
 windowExpanding: fullscreen
 windowSize: 1024px,640px
 windowPlacement: center
-sidebar: widget
-navigation: widget
+sidebar: qml
+navigation: qml
 
 strings:
     productName:         "NullyzOS"
