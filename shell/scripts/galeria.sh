@@ -1,7 +1,7 @@
 #!/bin/sh
 # Galeria online de wallpapers para Configurações → Wallpapers. Duas fontes:
 #  - KDE Plasma (invent.kde.org/plasma/plasma-workspace-wallpapers): licenças livres; autor
-#    e licença do metadata.json de cada um. Cache de 1 dia em ~/.cache/nullyzos/galeria.tsv.
+#    e licença do metadata.json de cada um. Cache de 1 dia em ~/.cache/nullyzos/galeria-kde.tsv.
 #  - Wallhaven (wallhaven.cc, API pública): anime, natureza, espaço… Só SFW e no mínimo
 #    1920x1080. Cada imagem tem a licença do artista/obra: serve de fundo, não se redistribui
 #    (o sistema não traz nenhuma; a pessoa escolhe e baixa).
@@ -14,7 +14,7 @@
 set -u
 api="https://invent.kde.org/api/v4/projects/plasma%2Fplasma-workspace-wallpapers/repository"
 raw="https://invent.kde.org/plasma/plasma-workspace-wallpapers/-/raw/master"
-cache="${XDG_CACHE_HOME:-$HOME/.cache}/nullyzos/galeria.tsv"
+cache="${XDG_CACHE_HOME:-$HOME/.cache}/nullyzos/galeria-kde.tsv"
 
 if [ "${1:-}" = baixar ]; then
     pics=$(xdg-user-dir PICTURES 2>/dev/null); [ -n "$pics" ] || pics="$HOME/Imagens"
@@ -64,10 +64,11 @@ lista=""
 p=1
 while [ "$p" -le 10 ]; do
     # As pastas vêm primeiro: uma página só de pastas não é o fim; o fim é a página vazia.
-    pg=$(curl -fsSL --max-time 20 "$api/tree?recursive=true&per_page=100&page=$p" | jq -r '.[] | .type + " " + .path') || break
+    # Só arquivos de verdade (100644): vários tamanhos são symlinks (texto de 13 bytes).
+    pg=$(curl -fsSL --max-time 20 "$api/tree?recursive=true&per_page=100&page=$p" | jq -r '.[] | .type + " " + .mode + " " + .path') || break
     [ -n "$pg" ] || break
     lista="$lista
-$(printf '%s\n' "$pg" | sed -n 's/^blob //p')"
+$(printf '%s\n' "$pg" | sed -n 's/^blob 100644 //p')"
     p=$((p + 1))
 done
 
