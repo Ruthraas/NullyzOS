@@ -59,3 +59,20 @@
   com mapa (`/`=73 f3, `:`=2a 35 b5 aa, `'`=29 a9, `"`=2a 29 a9 aa, `{`=2a 1b 9b aa, `}`=2a 2b ab aa,
   `;`=35 b5, `|`=2a 56 d6 aa) e nunca `rm -rf` com caminho digitado; preferir `mv` para lixo.
 - Configurações abertas (camada Overlay, foco sob demanda) recebem o teclado: Esc antes de digitar.
+
+## Configurações e desktop (17/11/2026, desktop até 0.1.0-19)
+- Configurações (Super + vírgula; IPC settings/settingsPage <id>): tópicos Personalização
+  (Aparência, Tela de bloqueio, Barra e dock, Janelas, Fontes, Terminal), Sistema (Rede, Som,
+  Teclado e mouse, Monitores, Energia, Desempenho) e Geral (Atalhos, Sobre).
+- Arquivos do usuário em ~/.config/nullyzos/: shell.json (Prefs; regravado com chaves novas ao
+  carregar), hyprland.json → hyprland.lua (HyprConf; carregado pela config do sistema antes de
+  ~/.config/hypr/nullyzos.lua), terminal.json → kitty.conf + terminal.sh (Terminal), agenda.json.
+- Root via pkexec + polkit: /usr/lib/nullyzos/fundo-login (sddm) e /usr/lib/nullyzos/limpeza
+  (pacotes, orfaos, energia, fonte <pacote da lista>). Configurações se escondem (settingsAside)
+  enquanto o pedido de senha está aberto.
+- Painéis na barra: painel rápido (status), calendário + agenda (data/hora; IPC calendar,
+  agendaAdd). Tok tem tema claro/escuro, 6 destaques, vidro, fonte e escala (Txt.size).
+- Terminal: /etc/xdg/kitty/kitty.conf + /usr/lib/nullyzos/terminal-shell (bash com prompt e
+  saudação do N pixelado; lê ~/.bashrc antes).
+- Testar shell novo na VM sem pacote: baixar o tar do commit para ~/.config/quickshell/nullyzos
+  (sobrepõe /etc/xdg); tirar (mv) antes do pacman -Syu. Painel aberto pega o teclado: Esc antes.
