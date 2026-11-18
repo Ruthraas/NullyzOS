@@ -18,8 +18,9 @@ SettingsPage {
         command: ["sh", Qt.resolvedUrl("../scripts/wallpapers.sh").toString().replace("file://", "")]
         stdout: StdioCollector {
             onStreamFinished: {
-                const list = text.split("\n").filter(l => l !== "");
-                if (!list.includes(Prefs.defaultWallpaper)) list.unshift(Prefs.defaultWallpaper);
+                // O padrão sempre primeiro; o resto na ordem das pastas.
+                const list = text.split("\n").filter(l => l !== "" && l !== Prefs.defaultWallpaper);
+                list.unshift(Prefs.defaultWallpaper);
                 // O escolhido fica na lista mesmo se estiver fora das pastas vasculhadas.
                 if (!list.includes(page.current)) list.push(page.current);
                 page.images = list;
