@@ -5,8 +5,9 @@ import qs.theme
 import qs.services
 import qs.components
 
-// Configurações → Usuário: foto (de uma imagem da pasta Imagens; vira ~/.face), nome e
-// senha (estes dois abrem o terminal, que pede a senha atual com segurança).
+// Configurações → Usuário: foto de perfil (opcional: de uma imagem da pasta Imagens ou de
+// qualquer arquivo; vale no shell, no bloqueio e na tela de login, via scripts/avatar.sh),
+// nome e senha (estes dois abrem o terminal, que pede a senha atual com segurança).
 SettingsPage {
     id: page
     title: "Usuário"
@@ -29,6 +30,8 @@ SettingsPage {
             }
         }
     }
+    readonly property string avatarScript: Qt.resolvedUrl("../scripts/avatar.sh").toString().replace("file://", "")
+    function avatar(args) { copy.command = ["sh", page.avatarScript].concat(args); copy.running = true; }
     Process { id: copy; onExited: page.faceStamp++ }
 
     Rectangle {
@@ -61,11 +64,19 @@ SettingsPage {
         }
     }
 
-    Txt { visible: page.pictures.length > 0; text: "Foto"; font.weight: Font.DemiBold }
+    Item {
+        width: parent.width; height: 30
+        Txt { anchors.verticalCenter: parent.verticalCenter; text: "Foto de perfil (opcional)"; font.weight: Font.DemiBold }
+        Row {
+            anchors { right: parent.right; verticalCenter: parent.verticalCenter }
+            spacing: 8
+            Chip { text: "Escolher arquivo…"; active: true; onClicked: page.avatar(["escolher"]) }
+            Chip { visible: faceImg.status === Image.Ready; text: "Tirar a foto"; onClicked: page.avatar(["tirar"]) }
+        }
+    }
     Txt {
-        visible: page.pictures.length === 0
         width: parent.width
-        text: "Para escolher uma foto, coloque a imagem na pasta Imagens."
+        text: page.pictures.length ? "Ou uma da pasta Imagens:" : "Sem foto, aparece a inicial do seu nome."
         muted: true; size: 13
     }
     Flow {
@@ -87,7 +98,7 @@ SettingsPage {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: { copy.command = ["sh", "-c", "cp -f \"$1\" \"$HOME/.face\" && cp -f \"$1\" \"$HOME/.face.icon\"", "sh", parent.modelData]; copy.running = true; }
+                    onClicked: page.avatar(["usar", parent.modelData])
                 }
             }
         }

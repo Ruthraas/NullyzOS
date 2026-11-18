@@ -1,0 +1,226 @@
+import QtQuick
+import Quickshell
+import Quickshell.Io
+import qs.theme
+import qs.services
+import qs.components
+
+// Configurações → Wallpapers: os seus fundos (padrão Nullyz + pasta Imagens), ajuste,
+// escurecer e trocar sozinho; e a galeria online (wallpapers do KDE Plasma, licenças livres,
+// com o autor de cada um). Baixar salva em Imagens/Wallpapers, aplica e anota o crédito.
+SettingsPage {
+    id: page
+    title: "Wallpapers"
+    subtitle: "O fundo da área de trabalho. Os seus ou da galeria online."
+
+    property var images: []
+    readonly property string current: Prefs.currentWallpaper
+    property var gallery: []            // [{ id, name, author, license, thumb, full }]
+    property bool galleryLoading: false
+    property bool galleryFailed: false
+    property int galleryShown: 12
+    property string downloading: ""     // id em download
+
+    readonly property string script: Qt.resolvedUrl("../scripts/galeria.sh").toString().replace("file://", "")
+
+    function loadLocal() { if (!local.running) local.running = true; }
+    function loadGallery() {
+        if (galleryLoading) return;
+        galleryLoading = true; galleryFailed = false;
+        galleryProc.running = true;
+    }
+    function download(w) {
+        if (downloading) return;
+        downloading = w.id;
+        dl.command = ["sh", page.script, "baixar", w.full, w.name, w.author || "?", w.license || "?"];
+        dl.running = true;
+    }
+
+    Process {
+        id: local
+        running: true
+        command: ["sh", Qt.resolvedUrl("../scripts/wallpapers.sh").toString().replace("file://", "")]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                // O padrão sempre primeiro; o resto na ordem das pastas.
+                const list = text.split("\n").filter(l => l !== "" && l !== Prefs.defaultWallpaper);
+                list.unshift(Prefs.defaultWallpaper);
+                if (!list.includes(page.current)) list.push(page.current);
+                page.images = list;
+            }
+        }
+    }
+    Process {
+        id: galleryProc
+        command: ["sh", page.script]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                page.gallery = text.split("\n").filter(l => l.split("\t").length >= 6).map(l => {
+                    const f = l.split("\t");
+                    return { id: f[0], name: f[1], author: f[2], license: f[3], thumb: f[4], full: f[5] };
+                });
+                page.galleryFailed = page.gallery.length === 0;
+                page.galleryLoading = false;
+            }
+        }
+    }
+    Process {
+        id: dl
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const path = text.trim();
+                if (path) { Prefs.set("wallpaper", path); page.loadLocal(); }
+            }
+        }
+        onExited: code => { page.downloading = ""; if (code !== 0) page.galleryFailed = true; }
+    }
+
+    // ---- os seus --------------------------------------------------------------------------
+    Txt { text: "Seus fundos"; font.weight: Font.DemiBold }
+    Flow {
+        width: parent.width
+        spacing: 12
+        Repeater {
+            model: page.images
+            SettingsThumb {
+                required property string modelData
+                path: modelData
+                selected: modelData === page.current
+                onPicked: Prefs.set("wallpaper", modelData === Prefs.defaultWallpaper ? "" : modelData)
+            }
+        }
+    }
+    Row {
+        spacing: 8
+        Txt { anchors.verticalCenter: parent.verticalCenter; text: "Os da pasta Imagens aparecem aqui."; muted: true; size: 13 }
+        Chip { text: "Abrir a pasta"; height: 28; onClicked: Quickshell.execDetached(["sh", "-c", "xdg-open \"$(xdg-user-dir PICTURES)\""]) }
+    }
+
+    SettingsRow {
+        title: "Ajuste da imagem"
+        description: "Preencher corta as sobras; Ajustar mostra a imagem inteira; Centralizar usa o tamanho original."
+        Segmented {
+            options: [["preencher", "Preencher"], ["ajustar", "Ajustar"], ["centralizar", "Centralizar"]]
+            current: Prefs.wallpaperFit
+            onPicked: v => Prefs.set("wallpaperFit", v)
+        }
+    }
+    SettingsRow {
+        title: "Escurecer o fundo"
+        description: Prefs.wallpaperDim > 0 ? Math.round(Prefs.wallpaperDim * 100) + "% mais escuro" : "Sem escurecer"
+        Slider {
+            width: 220
+            value: Prefs.wallpaperDim / 0.6
+            onMoved: v => Prefs.set("wallpaperDim", Math.round(v * 0.6 * 100) / 100)
+        }
+    }
+    SettingsRow {
+        title: "Trocar sozinho"
+        description: "Passa para o próximo dos seus fundos de tempos em tempos."
+        Segmented {
+            options: [[0, "Não"], [15, "15 min"], [60, "1 hora"], [1440, "1 dia"]]
+            current: Prefs.wallpaperCycle
+            onPicked: v => Prefs.set("wallpaperCycle", v)
+        }
+    }
+
+    Item { width: 1; height: 8 }
+
+    // ---- galeria online ---------------------------------------------------------------------
+    Item {
+        width: parent.width; height: 22
+        Txt { anchors.verticalCenter: parent.verticalCenter; text: "Galeria online"; font.weight: Font.DemiBold }
+        Txt { anchors { right: parent.right; verticalCenter: parent.verticalCenter } text: "Wallpapers do KDE Plasma · licenças livres"; muted: true; size: 12 }
+    }
+    Rectangle {
+        visible: page.gallery.length === 0
+        width: parent.width; height: 76
+        radius: Tok.rField
+        color: Tok.surface
+        border { width: 1; color: Tok.border }
+        Txt {
+            x: 16; anchors.verticalCenter: parent.verticalCenter
+            width: parent.width - 200
+            text: page.galleryLoading ? "Buscando a galeria…" : page.galleryFailed ? "Não deu para buscar agora (sem internet?)." : "Dezenas de fundos prontos para baixar, com o crédito de quem fez."
+            muted: true; size: 13
+            wrapMode: Text.Wrap; elide: Text.ElideNone
+        }
+        Chip {
+            anchors { right: parent.right; rightMargin: 16; verticalCenter: parent.verticalCenter }
+            text: page.galleryLoading ? "…" : "Ver a galeria"
+            active: true
+            onClicked: page.loadGallery()
+        }
+    }
+    Flow {
+        visible: page.gallery.length > 0
+        width: parent.width
+        spacing: 12
+        Repeater {
+            model: page.gallery.slice(0, page.galleryShown)
+            Item {
+                id: gw
+                required property var modelData
+                width: 200; height: 150
+                Rectangle {
+                    id: frame
+                    width: parent.width; height: 112
+                    radius: Tok.rButton + 2
+                    color: Tok.surfaceHi
+                    clip: true
+                    scale: gArea.pressed ? 0.96 : (gArea.containsMouse ? 1.03 : 1)
+                    Behavior on scale { NumberAnimation { duration: Tok.fast; easing.type: Easing.OutBack } }
+                    Image {
+                        anchors { fill: parent; margins: 2 }
+                        source: gw.modelData.thumb
+                        sourceSize: Qt.size(400, 224)
+                        fillMode: Image.PreserveAspectCrop
+                        asynchronous: true
+                        opacity: status === Image.Ready ? 1 : 0
+                        Behavior on opacity { NumberAnimation { duration: Tok.panel } }
+                    }
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: parent.radius
+                        color: "transparent"
+                        border { width: 1; color: Tok.edge }
+                    }
+                    // Baixando: véu com a mensagem
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: parent.radius
+                        color: Tok.scrim
+                        visible: page.downloading === gw.modelData.id
+                        Txt { anchors.centerIn: parent; text: "Baixando…"; size: 13; font.weight: Font.DemiBold }
+                    }
+                    MouseArea {
+                        id: gArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: page.download(gw.modelData)
+                        Accessible.name: "Usar " + gw.modelData.name
+                    }
+                }
+                Column {
+                    anchors { top: frame.bottom; topMargin: 6 }
+                    width: parent.width
+                    Txt { width: parent.width; text: gw.modelData.name; size: 13; font.weight: Font.Medium }
+                    Txt { width: parent.width; text: gw.modelData.author ? "por " + gw.modelData.author : ""; muted: true; size: 11 }
+                }
+            }
+        }
+    }
+    Chip {
+        visible: page.gallery.length > page.galleryShown
+        text: "Mostrar mais"
+        onClicked: page.galleryShown += 12
+    }
+    Txt {
+        visible: page.gallery.length > 0
+        width: parent.width
+        text: "Clique para baixar e usar. Ficam em Imagens/Wallpapers, com os créditos em CREDITOS.txt."
+        muted: true; size: 12
+        wrapMode: Text.Wrap; elide: Text.ElideNone
+    }
+}

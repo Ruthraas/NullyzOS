@@ -1,33 +1,14 @@
 import QtQuick
-import Quickshell.Io
 import qs.theme
 import qs.services
 import qs.components
 
-// Configurações → Aparência: fundo da área de trabalho e o dock.
+// Configurações → Aparência: tema, cor de destaque, cantos, animações, vidro e cursor.
+// (O fundo tem página própria: Wallpapers.)
 SettingsPage {
     id: page
     title: "Aparência"
-    subtitle: "O fundo e o que aparece na área de trabalho."
-
-    property var images: []
-    readonly property string current: Prefs.currentWallpaper
-
-    Process {
-        running: true
-        command: ["sh", Qt.resolvedUrl("../scripts/wallpapers.sh").toString().replace("file://", "")]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                // O padrão sempre primeiro; o resto na ordem das pastas.
-                const list = text.split("\n").filter(l => l !== "" && l !== Prefs.defaultWallpaper);
-                list.unshift(Prefs.defaultWallpaper);
-                // O escolhido fica na lista mesmo se estiver fora das pastas vasculhadas.
-                if (!list.includes(page.current)) list.push(page.current);
-                page.images = list;
-            }
-        }
-    }
-
+    subtitle: "Tema, cores e o jeito do sistema."
 
     // ---- tema ----------------------------------------------------------------------------
     Txt { text: "Tema"; font.weight: Font.DemiBold }
@@ -182,56 +163,6 @@ SettingsPage {
             options: [[24, "Normal"], [32, "Grande"], [48, "Enorme"]]
             current: Prefs.cursorSize
             onPicked: v => Prefs.set("cursorSize", v)
-        }
-    }
-
-    Item { width: 1; height: 6 }
-
-    Txt { text: "Fundo da área de trabalho"; font.weight: Font.DemiBold }
-    Flow {
-        width: parent.width
-        spacing: 12
-        Repeater {
-            model: page.images
-            SettingsThumb {
-                required property string modelData
-                path: modelData
-                selected: modelData === page.current
-                onPicked: Prefs.set("wallpaper", modelData === Prefs.defaultWallpaper ? "" : modelData)
-            }
-        }
-    }
-    Txt {
-        width: parent.width
-        text: "Para aparecer aqui, coloque a imagem na pasta Imagens."
-        muted: true
-        size: 13
-    }
-    SettingsRow {
-        title: "Ajuste da imagem"
-        description: "Preencher corta as sobras; Ajustar mostra a imagem inteira; Centralizar usa o tamanho original."
-        Segmented {
-            options: [["preencher", "Preencher"], ["ajustar", "Ajustar"], ["centralizar", "Centralizar"]]
-            current: Prefs.wallpaperFit
-            onPicked: v => Prefs.set("wallpaperFit", v)
-        }
-    }
-    SettingsRow {
-        title: "Escurecer o fundo"
-        description: Prefs.wallpaperDim > 0 ? Math.round(Prefs.wallpaperDim * 100) + "% mais escuro" : "Sem escurecer"
-        Slider {
-            width: 220
-            value: Prefs.wallpaperDim / 0.6
-            onMoved: v => Prefs.set("wallpaperDim", Math.round(v * 0.6 * 100) / 100)
-        }
-    }
-    SettingsRow {
-        title: "Trocar sozinho"
-        description: "Passa para a próxima imagem da lista de tempos em tempos."
-        Segmented {
-            options: [[0, "Não"], [15, "15 min"], [60, "1 hora"], [1440, "1 dia"]]
-            current: Prefs.wallpaperCycle
-            onPicked: v => Prefs.set("wallpaperCycle", v)
         }
     }
 }

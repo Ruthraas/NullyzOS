@@ -57,7 +57,27 @@ Item {
                 width: parent.width - 56
                 spacing: 14
 
-                PixelN { anchors.horizontalCenter: parent.horizontalCenter; cell: 7 }
+                // Foto de perfil (Configurações → Usuário), se tiver; senão o N pixelado
+                Item {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 64; height: 64
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
+                        color: Tok.accent
+                        clip: true
+                        visible: lockFace.status === Image.Ready
+                        Image {
+                            id: lockFace
+                            anchors.fill: parent
+                            source: "file://" + Quickshell.env("HOME") + "/.face"
+                            sourceSize: Qt.size(128, 128)
+                            fillMode: Image.PreserveAspectCrop
+                            cache: false
+                        }
+                    }
+                    PixelN { visible: lockFace.status !== Image.Ready; anchors.centerIn: parent; cell: 7 }
+                }
                 Txt {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: Quickshell.env("USER") || ""

@@ -19,6 +19,8 @@ Rectangle {
     property int sessionIndex: sessionModel.lastIndex >= 0 ? sessionModel.lastIndex : 0
     property string userName: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 1) || userModel.lastUser
     property string realName: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 2) || userName
+    // Foto de perfil (AccountsService ou ~/.face.icon), escolhida nas Configurações → Usuário
+    property string userIcon: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 4) || ""
     property bool busy: false
 
     // Fundo: o escolhido em Configurações → Tela de bloqueio → Tela de login (copiado para
@@ -99,13 +101,32 @@ Rectangle {
             spacing: 14
             width: parent.width - 56
 
-            // N pixelado 7x7 (mesmo desenho do símbolo)
-            Grid {
+            // Foto de perfil, se tiver; senão o N pixelado 7x7 (mesmo desenho do símbolo)
+            Item {
                 anchors.horizontalCenter: parent.horizontalCenter
-                columns: 7; spacing: 2
-                Repeater {
-                    model: "##...#####..######.####.######..#####...####...##".split("")
-                    Rectangle { width: 7; height: 7; radius: 1; color: modelData === "#" ? root.accent : "transparent" }
+                width: 72; height: 72
+                Rectangle {
+                    anchors.fill: parent
+                    radius: width / 2
+                    color: root.accent
+                    clip: true
+                    visible: avatarImg.status === Image.Ready
+                    Image {
+                        id: avatarImg
+                        anchors.fill: parent
+                        source: root.userIcon ? "file://" + root.userIcon : ""
+                        sourceSize: Qt.size(144, 144)
+                        fillMode: Image.PreserveAspectCrop
+                    }
+                }
+                Grid {
+                    visible: avatarImg.status !== Image.Ready
+                    anchors.centerIn: parent
+                    columns: 7; spacing: 2
+                    Repeater {
+                        model: "##...#####..######.####.######..#####...####...##".split("")
+                        Rectangle { width: 7; height: 7; radius: 1; color: modelData === "#" ? root.accent : "transparent" }
+                    }
                 }
             }
 

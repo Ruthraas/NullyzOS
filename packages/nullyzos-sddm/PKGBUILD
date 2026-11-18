@@ -3,7 +3,7 @@
 
 pkgname=nullyzos-sddm
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Tema da tela de login (SDDM) do NullyzOS"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
