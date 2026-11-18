@@ -17,6 +17,7 @@ PanelWindow {
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "nullyzos-settings"
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+    visible: !Panels.settingsAside
 
     readonly property var pages: [
         { id: "aparencia", label: "Aparência",

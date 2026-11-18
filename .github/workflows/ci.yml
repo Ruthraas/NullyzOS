@@ -23,4 +23,4 @@ jobs:
       - name: Shell scripts
         run: |
           sudo apt-get install -y shellcheck
-          shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/* shell/scripts/*.sh
+          shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/* shell/scripts/*.sh packages/nullyzos-sddm/fundo-login

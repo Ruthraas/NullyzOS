@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <vendor>NullyzOS</vendor>
+  <vendor_url>https://github.com/Ruthraas/NullyzOS</vendor_url>
+  <action id="org.nullyzos.fundo-login">
+    <description>Change the login screen background</description>
+    <description xml:lang="pt_BR">Trocar o fundo da tela de login</description>
+    <message>Authentication is required to change the login screen background</message>
+    <message xml:lang="pt_BR">Digite sua senha para trocar o fundo da tela de login</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/lib/nullyzos/fundo-login</annotate>
+  </action>
+</policyconfig>

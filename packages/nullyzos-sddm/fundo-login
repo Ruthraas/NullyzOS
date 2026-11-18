@@ -1,0 +1,31 @@
+#!/bin/sh
+# Troca o fundo da tela de login do NullyzOS. Roda como root (pkexec, regra
+# org.nullyzos.fundo-login). Copia a imagem para /var/lib/nullyzos/login/fundo, que o tema
+# do SDDM lê (o greeter roda como usuário sddm e não lê a pasta pessoal de ninguém).
+#   fundo-login <imagem>    usa a imagem
+#   fundo-login padrao      volta às manchas Nullyz
+set -eu
+dest=/var/lib/nullyzos/login
+alvo="${1:-}"
+
+if [ "$alvo" = "padrao" ]; then
+    rm -f "$dest/fundo"
+    exit 0
+fi
+
+[ -n "$alvo" ] && [ -f "$alvo" ] && [ -r "$alvo" ] || { echo "imagem não encontrada: $alvo" >&2; exit 2; }
+[ ! -L "$alvo" ] || alvo=$(readlink -f "$alvo")
+tam=$(stat -c %s "$alvo")
+[ "$tam" -le 41943040 ] || { echo "imagem grande demais (máx. 40 MB)" >&2; exit 3; }
+# Só PNG, JPEG ou WebP (pelos primeiros bytes, não pelo nome)
+cab=$(od -An -tx1 -N12 "$alvo" | tr -d ' \n')
+case "$cab" in
+    89504e47*|ffd8ff*|52494646????????57454250) ;;
+    *) echo "não é PNG, JPEG nem WebP" >&2; exit 4 ;;
+esac
+
+install -dm755 "$dest"
+tmp=$(mktemp "$dest/.fundo.XXXXXX")
+cat "$alvo" > "$tmp"
+chmod 644 "$tmp"
+mv -f "$tmp" "$dest/fundo"

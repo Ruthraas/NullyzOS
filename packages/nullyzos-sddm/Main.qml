@@ -21,11 +21,30 @@ Rectangle {
     property string realName: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 2) || userName
     property bool busy: false
 
+    // Fundo: o escolhido em Configurações → Tela de bloqueio → Tela de login (copiado para
+    // /var/lib/nullyzos/login/fundo pelo /usr/lib/nullyzos/fundo-login), senão as manchas Nullyz.
+    Image {
+        id: custom
+        anchors.fill: parent
+        source: "file:///var/lib/nullyzos/login/fundo"
+        fillMode: Image.PreserveAspectCrop
+        sourceSize: Qt.size(root.width, root.height)
+        smooth: true
+        cache: false
+        visible: status === Image.Ready
+    }
     Image {
         anchors.fill: parent
         source: "fundo.png"
         fillMode: Image.PreserveAspectCrop
         smooth: true
+        visible: !custom.visible
+    }
+    // Imagem do usuário: escurece um pouco para o relógio e o cartão ficarem legíveis.
+    Rectangle {
+        anchors.fill: parent
+        color: Qt.rgba(0, 0, 0, 0.3)
+        visible: custom.visible
     }
 
     // ---- relógio -------------------------------------------------------------------

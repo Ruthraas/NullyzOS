@@ -12,7 +12,7 @@ Flickable {
     boundsBehavior: Flickable.StopAtBounds
 
     property var images: []
-    readonly property string current: Prefs.wallpaper || Prefs.defaultWallpaper
+    readonly property string current: Prefs.currentWallpaper
 
     Process {
         running: true

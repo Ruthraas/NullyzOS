@@ -11,6 +11,8 @@ import Quickshell.Io
 //   wallpaper      caminho da imagem de fundo ("" = fundo padrão do Nullyz)
 //   lockWallpaper  fundo da tela de bloqueio: "padrao" ou "desktop" (o mesmo da área de trabalho)
 //   lockDim        escurece o fundo do bloqueio para o relógio e a senha ficarem legíveis
+//   loginWallpaper imagem copiada para a tela de login ("" = fundo Nullyz); só registro, quem
+//                  aplica é /usr/lib/nullyzos/fundo-login (root, via pkexec)
 Singleton {
     id: root
 
@@ -21,6 +23,8 @@ Singleton {
     readonly property string wallpaper: prefs.wallpaper
     readonly property string lockWallpaper: prefs.lockWallpaper
     readonly property bool lockDim: prefs.lockDim
+    readonly property string loginWallpaper: prefs.loginWallpaper
+    readonly property string currentWallpaper: prefs.wallpaper || defaultWallpaper
 
     readonly property string wallpaperUrl: url(prefs.wallpaper || defaultWallpaper)
     readonly property string lockUrl: prefs.lockWallpaper === "desktop" ? wallpaperUrl : url(defaultWallpaper)
@@ -46,6 +50,7 @@ Singleton {
             property string wallpaper: ""
             property string lockWallpaper: "padrao"
             property bool lockDim: true
+            property string loginWallpaper: ""
         }
     }
 

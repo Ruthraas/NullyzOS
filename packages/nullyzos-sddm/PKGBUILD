@@ -3,13 +3,13 @@
 
 pkgname=nullyzos-sddm
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Tema da tela de login (SDDM) do NullyzOS"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
 options=('!debug')
-depends=('sddm' 'qt6-declarative' 'ttf-geist' 'xorg-server' 'adwaita-cursors')
+depends=('sddm' 'qt6-declarative' 'ttf-geist' 'xorg-server' 'adwaita-cursors' 'polkit')
 makedepends=('python')
 backup=('etc/sddm.conf.d/nullyzos.conf')
 source=()
@@ -24,5 +24,9 @@ package() {
   local dest="$pkgdir/usr/share/sddm/themes/nullyzos"
   install -Dm644 -t "$dest" "$(_here)"/{Main.qml,metadata.desktop,theme.conf} "$srcdir/fundo.png"
   install -Dm644 "$(_here)/nullyzos.conf" "$pkgdir/etc/sddm.conf.d/nullyzos.conf"
+  # Fundo escolhido pelo usuário: ajudante root (via pkexec) + regra do polkit + pasta lida pelo sddm
+  install -Dm755 "$(_here)/fundo-login" "$pkgdir/usr/lib/nullyzos/fundo-login"
+  install -Dm644 "$(_here)/org.nullyzos.fundo-login.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.fundo-login.policy"
+  install -dm755 "$pkgdir/var/lib/nullyzos/login"
   install -Dm644 "$(_here)/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
