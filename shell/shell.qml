@@ -53,6 +53,7 @@ ShellRoot {
         function toggleLauncher(): void { Panels.toggleLauncher(); }
         function settings(): void { Panels.toggleSettings(); }
         function quick(): void { Panels.toggleQuick(); }
+        function calendar(): void { Panels.toggleCalendar(); }
         function settingsPage(page: string): void { Panels.openSettings(page); }
         function lock(): void { Panels.closeAll(); screenLock.lock(); }
         function isLocked(): bool { return screenLock.locked; }
