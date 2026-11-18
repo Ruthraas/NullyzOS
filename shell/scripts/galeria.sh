@@ -1,12 +1,16 @@
 #!/bin/sh
-# Galeria online de wallpapers para Configurações → Wallpapers.
-# Fonte: wallpapers oficiais do KDE Plasma (invent.kde.org/plasma/plasma-workspace-wallpapers),
-# licenças livres; autor e licença vêm do metadata.json de cada um.
-# Saída (TSV), um por linha: id  nome  autor  licença  url-miniatura  url-imagem
-# Guarda em ~/.cache/nullyzos/galeria.tsv por 1 dia (não consulta a internet toda vez).
-#   galeria.sh            lista (do cache, se novo)
-#   galeria.sh baixar <url> <nome> <autor> <licença>   baixa para Imagens/Wallpapers e
-#                                                      imprime o caminho do arquivo
+# Galeria online de wallpapers para Configurações → Wallpapers. Duas fontes:
+#  - KDE Plasma (invent.kde.org/plasma/plasma-workspace-wallpapers): licenças livres; autor
+#    e licença do metadata.json de cada um. Cache de 1 dia em ~/.cache/nullyzos/galeria.tsv.
+#  - Wallhaven (wallhaven.cc, API pública): anime, natureza, espaço… Só SFW e no mínimo
+#    1920x1080. Cada imagem tem a licença do artista/obra: serve de fundo, não se redistribui
+#    (o sistema não traz nenhuma; a pessoa escolhe e baixa).
+# Saída (TSV), um por linha: id  nome  autor  licença/fonte  url-miniatura  url-imagem
+#   galeria.sh                                  KDE Plasma (do cache, se novo)
+#   galeria.sh wallhaven <categoria> <página> [busca]
+#        categorias: anime natureza espaco minimalista cidades escuro busca
+#   galeria.sh baixar <url> <nome> <autor> <fonte>   baixa para Imagens/Wallpapers e
+#                                                    imprime o caminho do arquivo
 set -u
 api="https://invent.kde.org/api/v4/projects/plasma%2Fplasma-workspace-wallpapers/repository"
 raw="https://invent.kde.org/plasma/plasma-workspace-wallpapers/-/raw/master"
@@ -16,11 +20,34 @@ if [ "${1:-}" = baixar ]; then
     pics=$(xdg-user-dir PICTURES 2>/dev/null); [ -n "$pics" ] || pics="$HOME/Imagens"
     dir="$pics/Wallpapers"
     mkdir -p "$dir"
-    arq="$dir/$(printf '%s' "$3" | tr -c 'A-Za-z0-9._-' '_').png"
+    ext=${2##*.}; case "$ext" in png|jpg|jpeg|webp) ;; *) ext=png ;; esac
+    arq="$dir/$(printf '%s' "$3" | tr -c 'A-Za-z0-9._-' '_' | cut -c1-60).$ext"
     curl -fsSL --max-time 120 -o "$arq.part" "$2" && mv -f "$arq.part" "$arq" || { rm -f "$arq.part"; exit 1; }
     grep -qF "$3 " "$dir/CREDITOS.txt" 2>/dev/null ||
-        printf '%s — %s — %s (KDE Plasma, invent.kde.org/plasma/plasma-workspace-wallpapers)\n' "$3" "$4" "$5" >> "$dir/CREDITOS.txt"
+        printf '%s — %s — %s\n' "$3" "$4" "$5" >> "$dir/CREDITOS.txt"
     echo "$arq"
+    exit 0
+fi
+
+if [ "${1:-}" = wallhaven ]; then
+    cat=010 q=""
+    case "${2:-anime}" in
+        anime) cat=010 ;;
+        natureza) cat=100 q="nature landscape" ;;
+        espaco) cat=110 q="space" ;;
+        minimalista) cat=110 q="minimalist" ;;
+        cidades) cat=100 q="city" ;;
+        escuro) cat=110 q="dark" ;;
+        busca) cat=110 q="${4:-}" ;;
+    esac
+    # Autor: o site de origem da imagem (fonte informada no Wallhaven), quando houver.
+    curl -fsSL --max-time 20 -G "https://wallhaven.cc/api/v1/search" \
+        --data-urlencode "q=$q" --data-urlencode "categories=$cat" --data-urlencode "purity=100" \
+        --data-urlencode "sorting=toplist" --data-urlencode "topRange=1y" --data-urlencode "atleast=1920x1080" \
+        --data-urlencode "ratios=16x9,16x10" --data-urlencode "page=${3:-1}" |
+        jq -r '.data[] | ["wh-" + .id, "Wallhaven " + .id + " · " + .resolution,
+                          ((.source // "") | sub("^https?://"; "") | sub("^www[.]"; "") | split("/")[0]),
+                          .url, .thumbs.small, .path] | @tsv'
     exit 0
 fi
 

@@ -69,7 +69,7 @@ Singleton {
         if (!conf.blur) out.push("hl.config({ decoration = { blur = { enabled = false } } })");
         if (!conf.shadow) out.push("hl.config({ decoration = { shadow = { enabled = false } } })");
         if (Tok.accentName !== "violeta" || Tok.light) {
-            const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
+            const e = Tok.accentEntry;
             const hex = String(Tok.light ? e.light : e.color).replace("#", "");
             out.push(`hl.config({ general = { col = { active_border = { colors = { "rgba(${hex}ff)", "rgba(${hex}66)" }, angle = 45 } } } })`);
         }

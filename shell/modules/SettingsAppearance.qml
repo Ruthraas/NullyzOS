@@ -84,7 +84,7 @@ SettingsPage {
     Item {
         width: parent.width; height: 20
         Txt { text: "Cor de destaque"; font.weight: Font.DemiBold }
-        Txt { anchors.right: parent.right; text: (Tok.accents[Tok.accentName] || Tok.accents.violeta).name; muted: true; size: 13}
+        Txt { anchors.right: parent.right; text: Tok.accentEntry.name; muted: true; size: 13}
     }
     Row {
         spacing: 14
@@ -123,6 +123,47 @@ SettingsPage {
                 }
             }
         }
+        // Do wallpaper: a cor sai do fundo e acompanha quando ele troca
+        Item {
+            id: autoDot
+            readonly property bool chosen: Tok.accentName === "auto"
+            width: 36; height: 36
+            Rectangle {
+                anchors.fill: parent
+                radius: width / 2
+                color: "transparent"
+                border { width: 2; color: Tok.autoAccent }
+                scale: autoDot.chosen ? 1 : 0.6
+                opacity: autoDot.chosen ? 1 : 0
+                Behavior on scale { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutBack } }
+                Behavior on opacity { NumberAnimation { duration: Tok.fast } }
+            }
+            Rectangle {
+                anchors.centerIn: parent
+                width: 26; height: 26; radius: 13
+                color: Tok.autoAccent
+                scale: autoArea.pressed ? 0.85 : (autoArea.containsMouse ? 1.1 : 1)
+                Behavior on scale { NumberAnimation { duration: Tok.fast; easing.type: Easing.OutBack } }
+                Behavior on color { ColorAnimation { duration: Tok.slow } }
+                Ico { anchors.centerIn: parent; size: 14; d: Icons.image; color: Tok.textOnAccent }
+            }
+            MouseArea {
+                id: autoArea
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Prefs.set("accent", "auto")
+                Accessible.name: "Cor do wallpaper"
+            }
+        }
+    }
+    Txt {
+        width: parent.width
+        text: Tok.accentName === "auto"
+            ? "Sincronizada com o wallpaper: trocou o fundo, a cor acompanha (shell, bordas das janelas, terminal e apps)."
+            : "A última bolinha tira a cor do seu wallpaper e acompanha quando ele troca."
+        muted: true; size: 12
+        wrapMode: Text.Wrap; elide: Text.ElideNone
     }
 
     Item { width: 1; height: 6 }

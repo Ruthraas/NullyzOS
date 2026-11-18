@@ -6,8 +6,9 @@ import qs.services
 import qs.components
 
 // Configurações → Wallpapers: os seus fundos (padrão Nullyz + pasta Imagens), ajuste,
-// escurecer e trocar sozinho; e a galeria online (wallpapers do KDE Plasma, licenças livres,
-// com o autor de cada um). Baixar salva em Imagens/Wallpapers, aplica e anota o crédito.
+// escurecer e trocar sozinho; e a galeria online por categoria (anime, natureza, espaço…,
+// do Wallhaven; e os do KDE Plasma, licenças livres) com busca. Baixar salva em
+// Imagens/Wallpapers, aplica e anota de onde veio em CREDITOS.txt.
 SettingsPage {
     id: page
     title: "Wallpapers"
@@ -19,16 +20,28 @@ SettingsPage {
     property bool galleryLoading: false
     property bool galleryFailed: false
     property int galleryShown: 12
+    property string category: "anime"
+    property int galleryPage: 1
+    readonly property var categories: [["anime", "Anime"], ["natureza", "Natureza"], ["espaco", "Espaço"],
+        ["minimalista", "Minimalista"], ["cidades", "Cidades"], ["escuro", "Escuro"], ["kde", "KDE Plasma"]]
+    Component.onCompleted: loadGallery()
     property string downloading: ""     // id em download
 
     readonly property string script: Qt.resolvedUrl("../scripts/galeria.sh").toString().replace("file://", "")
 
     function loadLocal() { if (!local.running) local.running = true; }
-    function loadGallery() {
+    // Categoria nova (ou busca) começa do zero; "Mostrar mais" pede a próxima página.
+    function loadGallery(more) {
         if (galleryLoading) return;
         galleryLoading = true; galleryFailed = false;
+        if (!more) { gallery = []; galleryPage = 1; galleryShown = 12; }
+        else galleryPage++;
+        galleryProc.append = !!more;
+        galleryProc.command = category === "kde" ? ["sh", page.script]
+            : ["sh", page.script, "wallhaven", category, String(galleryPage), query.text];
         galleryProc.running = true;
     }
+    function pick(c) { if (c === category && gallery.length) return; category = c; loadGallery(false); }
     function download(w) {
         if (downloading) return;
         downloading = w.id;
@@ -52,13 +65,15 @@ SettingsPage {
     }
     Process {
         id: galleryProc
-        command: ["sh", page.script]
+        property bool append: false
         stdout: StdioCollector {
             onStreamFinished: {
-                page.gallery = text.split("\n").filter(l => l.split("\t").length >= 6).map(l => {
+                const got = text.split("\n").filter(l => l.split("\t").length >= 6).map(l => {
                     const f = l.split("\t");
                     return { id: f[0], name: f[1], author: f[2], license: f[3], thumb: f[4], full: f[5] };
                 });
+                page.gallery = galleryProc.append ? page.gallery.concat(got) : got;
+                if (galleryProc.append) page.galleryShown = page.gallery.length;
                 page.galleryFailed = page.gallery.length === 0;
                 page.galleryLoading = false;
             }
@@ -130,27 +145,47 @@ SettingsPage {
     Item {
         width: parent.width; height: 22
         Txt { anchors.verticalCenter: parent.verticalCenter; text: "Galeria online"; font.weight: Font.DemiBold }
-        Txt { anchors { right: parent.right; verticalCenter: parent.verticalCenter } text: "Wallpapers do KDE Plasma · licenças livres"; muted: true; size: 12 }
+        Txt {
+            anchors { right: parent.right; verticalCenter: parent.verticalCenter }
+            text: page.category === "kde" ? "KDE Plasma · licenças livres" : "wallhaven.cc · só SFW, 1920×1080 ou mais"
+            muted: true; size: 12
+        }
+    }
+    Flow {
+        width: parent.width
+        spacing: 8
+        Repeater {
+            model: page.categories
+            Chip {
+                required property var modelData
+                text: modelData[1]
+                active: page.category === modelData[0]
+                onClicked: { query.text = ""; page.pick(modelData[0]); }
+            }
+        }
     }
     Rectangle {
+        width: parent.width; height: 38
+        radius: Tok.rButton + 2
+        color: Tok.surfaceHi
+        border { width: 1; color: query.activeFocus ? Tok.accent : Tok.border }
+        Ico { x: 12; anchors.verticalCenter: parent.verticalCenter; size: 15; d: Icons.search; color: Tok.muted }
+        TextInput {
+            id: query
+            anchors { fill: parent; leftMargin: 36; rightMargin: 12 }
+            verticalAlignment: TextInput.AlignVCenter
+            clip: true
+            color: Tok.text
+            font { family: Tok.font; pixelSize: Math.round(14 * Tok.fontScale) }
+            Keys.onReturnPressed: if (text.trim()) { page.category = "busca"; page.loadGallery(false); }
+        }
+        Txt { x: 36; anchors.verticalCenter: parent.verticalCenter; visible: query.text === ""; text: "Procurar (em inglês): cyberpunk, mountains, ghibli… e Enter"; muted: true }
+    }
+    Txt {
         visible: page.gallery.length === 0
-        width: parent.width; height: 76
-        radius: Tok.rField
-        color: Tok.surface
-        border { width: 1; color: Tok.border }
-        Txt {
-            x: 16; anchors.verticalCenter: parent.verticalCenter
-            width: parent.width - 200
-            text: page.galleryLoading ? "Buscando a galeria…" : page.galleryFailed ? "Não deu para buscar agora (sem internet?)." : "Dezenas de fundos prontos para baixar, com o crédito de quem fez."
-            muted: true; size: 13
-            wrapMode: Text.Wrap; elide: Text.ElideNone
-        }
-        Chip {
-            anchors { right: parent.right; rightMargin: 16; verticalCenter: parent.verticalCenter }
-            text: page.galleryLoading ? "…" : "Ver a galeria"
-            active: true
-            onClicked: page.loadGallery()
-        }
+        width: parent.width
+        text: page.galleryLoading ? "Buscando…" : page.galleryFailed ? "Não deu para buscar agora (sem internet?)." : "Nada encontrado."
+        muted: true; size: 13
     }
     Flow {
         visible: page.gallery.length > 0
@@ -206,20 +241,25 @@ SettingsPage {
                     anchors { top: frame.bottom; topMargin: 6 }
                     width: parent.width
                     Txt { width: parent.width; text: gw.modelData.name; size: 13; font.weight: Font.Medium }
-                    Txt { width: parent.width; text: gw.modelData.author ? "por " + gw.modelData.author : ""; muted: true; size: 11 }
+                    Txt { width: parent.width; text: gw.modelData.id.startsWith("wh-") ? (gw.modelData.author ? "fonte: " + gw.modelData.author : "wallhaven.cc") : (gw.modelData.author ? "por " + gw.modelData.author : ""); muted: true; size: 11 }
                 }
             }
         }
     }
     Chip {
-        visible: page.gallery.length > page.galleryShown
-        text: "Mostrar mais"
-        onClicked: page.galleryShown += 12
+        visible: page.gallery.length > 0
+        text: page.galleryLoading ? "Buscando…" : "Mostrar mais"
+        onClicked: {
+            if (page.gallery.length > page.galleryShown) page.galleryShown += 12;
+            else if (page.category !== "kde") page.loadGallery(true);
+        }
     }
     Txt {
         visible: page.gallery.length > 0
         width: parent.width
-        text: "Clique para baixar e usar. Ficam em Imagens/Wallpapers, com os créditos em CREDITOS.txt."
+        text: page.category === "kde"
+            ? "Clique para baixar e usar. Ficam em Imagens/Wallpapers, com o autor e a licença em CREDITOS.txt."
+            : "Clique para baixar e usar. Cada imagem é do artista ou da obra de origem: serve de fundo, não para redistribuir. A fonte fica anotada em Imagens/Wallpapers/CREDITOS.txt."
         muted: true; size: 12
         wrapMode: Text.Wrap; elide: Text.ElideNone
     }

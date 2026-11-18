@@ -16,7 +16,7 @@ Singleton {
 
     // Só reaplica quando muda (a assinatura aplicada fica gravada): antes rodava ~60
     // kwriteconfig6 a cada login à toa.
-    readonly property string signature: ["v1", Tok.light, Tok.accentName, Tok.font].join("|")
+    readonly property string signature: ["v1", Tok.light, Tok.accentName, String(Tok.accentEntry.color), Tok.font].join("|")
     onSignatureChanged: debounce.restart()
     Timer { id: debounce; interval: 800; onTriggered: if (applied.loaded && applied.text().trim() !== root.signature) root.apply() }
     FileView {
@@ -39,7 +39,7 @@ Singleton {
     function scheme() {
         const L = Tok.light;
         const p = L ? Tok.palettes.claro : Tok.palettes.escuro;
-        const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
+        const e = Tok.accentEntry;
         const acc = L ? e.light : e.color;
         const onAcc = L ? p.surface : p.bg;
         const err = Tok.error, ok = Tok.success, warn = Tok.warning, hi = Tok.surfaceHi;
@@ -71,7 +71,7 @@ Singleton {
     }
 
     function apply() {
-        const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
+        const e = Tok.accentEntry;
         const acc = String(Tok.light ? e.light : e.color);
         colorsFile.setText(scheme());
         job.command = ["sh", Qt.resolvedUrl("../scripts/tema-apps.sh").toString().replace("file://", ""),

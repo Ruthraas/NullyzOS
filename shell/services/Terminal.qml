@@ -39,7 +39,7 @@ Singleton {
     function hex(c) { return String(c).replace("#", ""); }
     function kitty() {
         const L = Tok.light;
-        const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
+        const e = Tok.accentEntry;
         const acc = L ? e.light : e.color;
         const p = L ? Tok.palettes.claro : Tok.palettes.escuro;
         const ansi = L ? Tok.ansiLight : Tok.ansiDark;
@@ -82,7 +82,7 @@ Singleton {
         ["cores", "Paleta de cores", null]
     ]
     function fastfetch() {
-        const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
+        const e = Tok.accentEntry;
         const acc = ansi(Tok.light ? e.light : e.color);
         const dim = ansi(Tok.light ? Tok.palettes.claro.border : Tok.ansiDark[8]);
         const keys = root.infoKeys;
@@ -101,7 +101,7 @@ Singleton {
         }, null, 2) + "\n";
     }
     function shell() {
-        const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
+        const e = Tok.accentEntry;
         return "# Gerado pelas Configurações do NullyzOS (Terminal): não edite, mude por lá.\n"
             + `NULLYZ_PROMPT=${conf.prompt ? 1 : 0}\n`
             + `NULLYZ_GREETING=${conf.greeting}\n`

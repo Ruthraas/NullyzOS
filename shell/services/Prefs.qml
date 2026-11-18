@@ -71,6 +71,12 @@ Singleton {
     readonly property bool showStatus: prefs.showStatus
     readonly property int barHeight: ({ compacta: 30, normal: 36, alta: 42 })[prefs.barSize] || 36
     Binding { target: Tok; property: "accentName"; value: prefs.accent }
+    // Destaque do wallpaper: a cor amostrada mudou → borda das janelas e terminal acompanham
+    Connections {
+        target: Tok
+        function onAutoAccentChanged() { if (prefs.accent === "auto") autoSave.restart(); }
+    }
+    Timer { id: autoSave; interval: 600; onTriggered: { HyprConf.save(); Terminal.save(); } }
     Binding { target: Tok; property: "light"; value: root.light }
     Binding { target: Tok; property: "roundness"; value: prefs.roundness }
     Binding { target: Tok; property: "motion"; value: prefs.motion }

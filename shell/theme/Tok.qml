@@ -46,7 +46,12 @@ Singleton {
         rosa: { name: "Rosa", color: "#f07ab8", light: "#c23a82" }
     })
     readonly property var accentOrder: ["violeta", "azul", "ciano", "verde", "coral", "rosa"]
-    readonly property var accentEntry: accents[accentName] || accents.violeta
+    // "auto" = cor tirada do wallpaper (modules/AccentSampler): no escuro a amostra, no claro
+    // uma versão mais fechada para ter contraste.
+    property color autoAccent: "#9d8cff"
+    readonly property var accentEntry: accentName === "auto"
+        ? { name: "Do wallpaper", color: autoAccent, light: Qt.darker(autoAccent, 1.55) }
+        : (accents[accentName] || accents.violeta)
     readonly property color accent: light ? accentEntry.light : accentEntry.color
     readonly property color textOnAccent: light ? "#ffffff" : "#0e0e13"
 
