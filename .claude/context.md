@@ -52,3 +52,10 @@
 - Detalhe estético: entrada do GRUB fica "NullyzOS Linux, with Linux linux" (texto padrão do grub-mkconfig).
 - Verificar na VM sem senha: Super+Enter abre o kitty; digitar com keyboardputstring + Enter 1c 9c;
   `/` = scancode 73 f3 (ABNT2). VM fechada com "salvar estado" volta com `startvm`.
+
+## Lição (17/11/2026): digitar na VM só pelo script com mapa ABNT2
+- `keyboardputstring` manda `/` como `;` no ABNT2: `rm -rf .config/quickshell` virou
+  `rm -rf .config;quickshell` e apagou o ~/.config do usuário de teste. Sempre usar o digitador
+  com mapa (`/`=73 f3, `:`=2a 35 b5 aa, `'`=29 a9, `"`=2a 29 a9 aa, `{`=2a 1b 9b aa, `}`=2a 2b ab aa,
+  `;`=35 b5, `|`=2a 56 d6 aa) e nunca `rm -rf` com caminho digitado; preferir `mv` para lixo.
+- Configurações abertas (camada Overlay, foco sob demanda) recebem o teclado: Esc antes de digitar.

@@ -40,7 +40,7 @@ PanelWindow {
     Rectangle {
         id: card
         width: Math.min(900, root.width - 48)
-        height: Math.min(600, root.height - 96)
+        height: Math.min(660, root.height - 72)
         anchors.centerIn: parent
         radius: Tok.rPanel
         color: Tok.bg
