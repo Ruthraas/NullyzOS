@@ -44,3 +44,11 @@
   `loadkeys us` antes de digitar símbolos. Atualizar config no live sem nova ISO: curl dos arquivos do
   raw.githubusercontent.com para /etc/calamares e `pkill calamares`; reabrir com `nullyzos-instalar` no tty1.
 - Repositório: nunca recompilar versão igual (CI reaproveita); mudou pacote → subir pkgrel.
+
+## Teste limpo final — v0.1 completa (17/11/2026, ISO 2026.11.17, VM UEFI 3D, disco novo)
+- Passou tudo: instalação até o fim; GRUB "NullyzOS Linux" + `splash` no kernel; Plymouth N pixelado +
+  NULLYZ OS no sistema instalado; SDDM novo (sessão no topo, energia em ícones empilhados); login → desktop
+  sobe sozinho; `pgrep -c qs` = 1; DNS ok; resolved, NetworkManager e sddm ativos. #5, #6, #7 fechadas.
+- Detalhe estético: entrada do GRUB fica "NullyzOS Linux, with Linux linux" (texto padrão do grub-mkconfig).
+- Verificar na VM sem senha: Super+Enter abre o kitty; digitar com keyboardputstring + Enter 1c 9c;
+  `/` = scancode 73 f3 (ABNT2). VM fechada com "salvar estado" volta com `startvm`.
