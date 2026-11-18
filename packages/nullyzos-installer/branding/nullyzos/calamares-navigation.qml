@@ -12,6 +12,8 @@ Rectangle {
     height: 76
 
     readonly property color accent: "#9d8cff"
+    // Última tela (Concluir): o botão de sair vira "Concluído" (reinicia se marcado)
+    readonly property bool last: ViewManager.currentStepIndex === ViewManager.rowCount() - 1
 
     Rectangle { anchors { left: parent.left; right: parent.right; top: parent.top } height: 1; color: "#2b2b37" }
 
@@ -50,7 +52,7 @@ Rectangle {
 
     // Cancelar: só texto, discreto
     Text {
-        visible: ViewManager.quitVisible && ViewManager.currentStepIndex < ViewManager.rowCount() - 1
+        visible: ViewManager.quitVisible && !nav.last
         anchors { left: parent.left; leftMargin: 32; verticalCenter: parent.verticalCenter }
         text: ViewManager.quitLabel.replace("&", "")
         color: quitArea.containsMouse ? "#ededf2" : "#a3a3b3"
@@ -61,8 +63,8 @@ Rectangle {
     Row {
         anchors { right: parent.right; rightMargin: 32; verticalCenter: parent.verticalCenter }
         spacing: 12
-        visible: ViewManager.backAndNextVisible
-        NavButton { label: ViewManager.backLabel; active: ViewManager.backEnabled; onClicked: ViewManager.back() }
-        NavButton { label: ViewManager.nextLabel; primary: true; active: ViewManager.nextEnabled; onClicked: ViewManager.next() }
+        NavButton { visible: ViewManager.backAndNextVisible && !nav.last; label: ViewManager.backLabel; active: ViewManager.backEnabled; onClicked: ViewManager.back() }
+        NavButton { visible: ViewManager.backAndNextVisible && !nav.last; label: ViewManager.nextLabel; primary: true; active: ViewManager.nextEnabled; onClicked: ViewManager.next() }
+        NavButton { visible: nav.last && ViewManager.quitVisible; label: ViewManager.quitLabel; primary: true; active: ViewManager.quitEnabled; onClicked: ViewManager.quit() }
     }
 }
