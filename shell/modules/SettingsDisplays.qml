@@ -86,7 +86,12 @@ SettingsPage {
                     const k = m.w + "x" + m.h;
                     if (!seen[k]) { seen[k] = true; out.push({ w: m.w, h: m.h }); }
                 }
-                return out.sort((a, b) => b.w * b.h - a.w * a.h).slice(0, 8);
+                // As 8 maiores e sempre a atual (mesmo que seja menor).
+                out.sort((a, b) => b.w * b.h - a.w * a.h);
+                const top = out.slice(0, 8);
+                const cur = out.find(s => s.w === mon.modelData.width && s.h === mon.modelData.height);
+                if (cur && !top.includes(cur)) top.push(cur);
+                return top;
             }
             readonly property var rates: {
                 const out = [];
@@ -116,7 +121,8 @@ SettingsPage {
                     Txt {
                         muted: true; font.pixelSize: 13
                         text: mon.modelData.width + " × " + mon.modelData.height + " · " + mon.hz + " Hz · tamanho "
-                              + Math.round((mon.modelData.scale || 1) * 100) + "% · " + mon.modelData.name
+                              + Math.round((mon.modelData.scale || 1) * 100) + "%"
+                              + (mon.modelData.description ? " · " + mon.modelData.name : "")
                     }
                 }
 
