@@ -1,0 +1,58 @@
+# NullyzOS — bash do terminal (via /usr/lib/nullyzos/terminal-shell).
+# Primeiro o ~/.bashrc do usuário: aliases, PATH e o que mais ele tiver continuam valendo.
+# Depois, se ligados em Configurações → Terminal (~/.config/nullyzos/terminal.sh), o prompt
+# e a saudação do Nullyz. Para desligar à mão: NULLYZ_PROMPT=0 / NULLYZ_GREETING=nunca.
+
+# shellcheck disable=SC1090,SC1091
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+
+NULLYZ_PROMPT=${NULLYZ_PROMPT:-1}
+NULLYZ_GREETING=${NULLYZ_GREETING:-sessao}     # sempre | sessao | nunca
+NULLYZ_ACCENT=${NULLYZ_ACCENT:-9d8cff}
+conf="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos/terminal.sh"
+[ -f "$conf" ] && . "$conf"
+
+# Cor 24 bits a partir de "rrggbb"
+__nz_rgb() { printf '\033[38;2;%d;%d;%dm' "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
+
+# ---- saudação: N pixelado + sistema ------------------------------------------------------
+__nz_greet() {
+    local a r m n i
+    a=$(__nz_rgb "$NULLYZ_ACCENT"); r=$'\033[0m'; m=$'\033[2m'
+    local -a N=("##...##" "###..##" "####.##" "##.####" "##..###" "##...##" "##...##")
+    local -a info
+    info[0]="${a}NullyzOS${r} ${m}· Hyprland${r}"
+    info[1]="${USER}@${HOSTNAME}"
+    info[2]="${m}kernel${r}  $(uname -r)"
+    info[3]="${m}ligado${r}  $(uptime -p 2>/dev/null | sed 's/^up //; s/hours\?/h/; s/minutes\?/min/; s/days\?/d/; s/,//g')"
+    info[4]="${m}memória${r} $(free -h --si 2>/dev/null | awk '/^Mem/ { print $3 " de " $2 }')"
+    printf '\n'
+    for i in 0 1 2 3 4 5 6; do
+        n=${N[$i]//#/██}; n=${n//./  }
+        printf '  %s%s%s   %s\n' "$a" "$n" "$r" "${info[$i]}"
+    done
+    printf '\n'
+}
+case "$NULLYZ_GREETING" in
+    sempre) __nz_greet ;;
+    sessao)
+        flag="${XDG_RUNTIME_DIR:-/tmp}/nullyzos-saudacao"
+        [ -e "$flag" ] || { __nz_greet; : > "$flag"; }
+        ;;
+esac
+unset flag conf
+
+# ---- prompt: pasta, branch do git, › na cor de destaque (vermelho se o último falhou) -----
+if [ "$NULLYZ_PROMPT" = 1 ]; then
+    __nz_prompt() {
+        local s=$? a r d b m e br
+        a=$(__nz_rgb "$NULLYZ_ACCENT"); r='\[\033[0m\]'; d='\[\033[1m\]'; m='\[\033[2m\]'; e='\[\033[38;2;240;106;106m\]'
+        br=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
+        b=""; [ -n "$br" ] && b=" ${m}${br}${r}"
+        local arrow="\[${a}\]›${r}"; [ "$s" -ne 0 ] && arrow="${e}›${r}"
+        PS1="${d}\w${r}${b} ${arrow} "
+        # Título da janela: pasta atual
+        printf '\033]0;%s\007' "${PWD/#$HOME/\~}"
+    }
+    PROMPT_COMMAND="__nz_prompt${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+fi

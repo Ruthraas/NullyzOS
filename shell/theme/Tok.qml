@@ -19,6 +19,12 @@ Singleton {
         claro: { bg: "#f4f4f7", surface: "#ffffff", border: "#d9d9e2", text: "#15151c", muted: "#5a5a6a" }
     })
 
+    // 16 cores do terminal (kitty). No claro, tons mais fechados para ler no fundo branco.
+    readonly property var ansiDark: ["#17171f", "#f06a6a", "#5fd18b", "#f0b45e", "#6e8cff", "#9d8cff", "#2bb6c9", "#c8c8d4",
+                                     "#4a4a5a", "#ff8f8f", "#86e3a8", "#f7cb85", "#96acff", "#bcb0ff", "#5fd0de", "#ededf2"]
+    readonly property var ansiLight: ["#2b2b37", "#c93a3a", "#1f8a4c", "#a8650f", "#3a5ad9", "#5b46e0", "#0f8394", "#5a5a6a",
+                                      "#4a4a5a", "#e05252", "#2aa862", "#c27a14", "#5672e8", "#7560ee", "#1aa0b3", "#15151c"]
+
     readonly property color bg: light ? "#f4f4f7" : "#0e0e13"
     readonly property color surface: light ? "#ffffff" : "#17171f"
     readonly property color surfaceHi: light ? "#ececf1" : "#1f1f29"

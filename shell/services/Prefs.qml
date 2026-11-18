@@ -64,7 +64,7 @@ Singleton {
         if (prefs[key] === value) return;
         prefs[key] = value;
         file.writeAdapter();
-        if (key === "accent" || key === "theme") HyprConf.save();    // borda das janelas na cor nova
+        if (key === "accent" || key === "theme") { HyprConf.save(); Terminal.save(); }   // borda e terminal na cor nova
         if (key === "cursorSize") {
             Quickshell.execDetached(["hyprctl", "setcursor", "Adwaita", String(value)]);
             HyprConf.save();                                           // XCURSOR_SIZE para os apps

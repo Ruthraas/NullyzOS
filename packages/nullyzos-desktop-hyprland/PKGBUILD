@@ -4,12 +4,13 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=17
+pkgrel=18
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
 options=('!debug')
+backup=('etc/xdg/kitty/kitty.conf')
 depends=(
   'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'polkit-kde-agent'
   'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'libnotify' 'grim' 'slurp' 'wl-clipboard'
@@ -43,6 +44,10 @@ package() {
   # Limpeza (Configurações → Desempenho): ajudante root via pkexec + regra do polkit
   install -Dm755 "$src/apps/limpeza" "$pkgdir/usr/lib/nullyzos/limpeza"
   install -Dm644 "$src/apps/org.nullyzos.limpeza.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.limpeza.policy"
+  # Terminal: kitty do sistema, shell com prompt/saudação do Nullyz
+  install -Dm644 "$src/terminal/kitty.conf" "$pkgdir/etc/xdg/kitty/kitty.conf"
+  install -Dm755 "$src/terminal/terminal-shell" "$pkgdir/usr/lib/nullyzos/terminal-shell"
+  install -Dm644 "$src/terminal/bashrc" "$pkgdir/usr/share/nullyzos/terminal/bashrc"
   # Configurações na busca de apps
   install -Dm644 -t "$pkgdir/usr/share/applications" "$src"/apps/*.desktop
   # Fundos: o padrão (o mesmo da tela de login) e as variações de cor

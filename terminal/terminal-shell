@@ -1,0 +1,8 @@
+#!/bin/sh
+# Shell do terminal do NullyzOS (kitty: `shell` em /etc/xdg/kitty/kitty.conf).
+# Bash ganha o prompt e a saudação do Nullyz (o ~/.bashrc do usuário é lido antes);
+# qualquer outro shell abre do jeito normal.
+case "$(basename "${SHELL:-/bin/bash}")" in
+    bash) exec bash --rcfile /usr/share/nullyzos/terminal/bashrc -i ;;
+    *) exec "${SHELL:-/bin/sh}" -i ;;
+esac

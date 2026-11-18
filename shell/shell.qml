@@ -44,6 +44,8 @@ ShellRoot {
     LazyLoader { active: Panels.calendar; CalendarPanel {} }
     // A agenda precisa existir desde o começo para os lembretes chegarem na hora.
     readonly property int agendaEvents: Agenda.events.length
+    // E o terminal: na primeira vez gera ~/.config/nullyzos/kitty.conf com o tema atual.
+    readonly property real terminalFont: Terminal.fontSize
     Connections { target: Panels; function onLockRequested() { screenLock.lock(); } }
     Idle { onLockNow: { Panels.closeAll(); screenLock.lock(); } }
 
