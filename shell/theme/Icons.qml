@@ -43,5 +43,7 @@ Singleton {
     readonly property string prev: "M18 5.5L9 12l9 6.5z M6 5.5v13"
     readonly property string bell: "M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z M10 20.5a2 2 0 0 0 4 0"
     readonly property string bellOff: "M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z M10 20.5a2 2 0 0 0 4 0 M3.5 3.5l17 17"
+    readonly property string download: "M12 4v11 M7 10.5l5 5 5-5 M5 19.5h14"
+    readonly property string check: "M5 12.5l4.5 4.5L19 7.5"
     readonly property string logout: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 8l-4 4 4 4 M6 12h10"
 }

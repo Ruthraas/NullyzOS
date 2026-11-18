@@ -2,7 +2,8 @@
 # Roda DENTRO do sistema novo (chroot do Calamares, shellprocess@finalizar), depois do
 # módulo packages: o que depende dos pacotes já instalados.
 #  1) Flathub + Brave (navegador padrão; /etc/xdg/mimeapps.list do nullyzos-essenciais);
-#  2) firewall ligado (ufw: bloqueia conexões de fora, deixa as de dentro).
+#  2) firewall ligado (ufw: bloqueia conexões de fora, deixa as de dentro);
+#  3) snapper no / (btrfs): snapshots antes/depois de cada pacman (snap-pac) e no boot.
 # Nada aqui pode quebrar a instalação: sem internet, o Brave fica para depois.
 set -uo pipefail
 
@@ -14,5 +15,23 @@ fi
 if [ -f /etc/ufw/ufw.conf ]; then
     echo ":: firewall (ufw) ligado no boot"
     sed -i 's/^ENABLED=.*/ENABLED=yes/' /etc/ufw/ufw.conf
+fi
+# Snapper: o Calamares já monta o subvolume @snapshots em /.snapshots; o create-config quer
+# criar o dele, então: desmonta, cria, troca pelo @snapshots e remonta (receita da wiki).
+if command -v snapper >/dev/null 2>&1 && [ "$(stat -f -c %T /)" = "btrfs" ] && [ ! -f /etc/snapper/configs/root ]; then
+    echo ":: snapshots (snapper)"
+    umount /.snapshots 2>/dev/null
+    rmdir /.snapshots 2>/dev/null
+    if snapper --no-dbus -c root create-config /; then
+        btrfs subvolume delete /.snapshots >/dev/null 2>&1
+        mkdir -p /.snapshots
+        mount /.snapshots 2>/dev/null || true
+        chmod 750 /.snapshots
+        # Sem snapshot de hora em hora; guarda os 10 últimos (5 importantes); grupo wheel lê.
+        sed -i -e 's/^TIMELINE_CREATE=.*/TIMELINE_CREATE="no"/'                -e 's/^NUMBER_LIMIT=.*/NUMBER_LIMIT="10"/'                -e 's/^NUMBER_LIMIT_IMPORTANT=.*/NUMBER_LIMIT_IMPORTANT="5"/'                -e 's/^ALLOW_GROUPS=.*/ALLOW_GROUPS="wheel"/'                -e 's/^SYNC_ACL=.*/SYNC_ACL="yes"/' /etc/snapper/configs/root
+    else
+        mkdir -p /.snapshots
+        mount /.snapshots 2>/dev/null || true
+    fi
 fi
 exit 0

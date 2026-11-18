@@ -7,7 +7,7 @@
 
 pkgname=nullyzos-essenciais
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Apps e serviços básicos do NullyzOS (Hyprland e KDE)"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -27,6 +27,8 @@ depends=(
   'flatpak' 'xdg-desktop-portal-gtk'
   # Bluetooth, impressora, firewall, memória comprimida
   'bluez' 'bluez-utils' 'cups' 'system-config-printer' 'ufw' 'zram-generator'
+  # Snapshots do btrfs antes/depois de cada atualização, e no menu do boot
+  'snapper' 'snap-pac' 'grub-btrfs' 'inotify-tools'
 )
 backup=('etc/xdg/mimeapps.list' 'etc/systemd/zram-generator.conf')
 source=()

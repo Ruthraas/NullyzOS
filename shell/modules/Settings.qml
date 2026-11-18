@@ -34,6 +34,7 @@ PanelWindow {
         { id: "monitores", label: "Monitores", icon: Icons.monitor, file: "SettingsDisplays.qml", group: "Sistema" },
         { id: "energia", label: "Energia", icon: Icons.bolt, file: "SettingsPower.qml", group: "Sistema" },
         { id: "desempenho", label: "Desempenho", icon: Icons.gauge, file: "SettingsPerformance.qml", group: "Sistema" },
+        { id: "atualizacoes", label: "Atualizações", icon: Icons.download, file: "SettingsUpdates.qml", group: "Geral" },
         { id: "atalhos", label: "Atalhos", icon: Icons.command, file: "SettingsShortcuts.qml", group: "Geral" },
         { id: "sobre", label: "Sobre", icon: Icons.info, file: "SettingsAbout.qml", group: "Geral" }
     ]

@@ -101,6 +101,29 @@ PanelWindow {
         anchors { right: parent.right; rightMargin: 8; verticalCenter: parent.verticalCenter }
         spacing: 4
 
+        // Atualizações disponíveis: seta com o número; clique abre a página
+        Rectangle {
+            visible: Updates.count > 0 || Updates.updating
+            anchors.verticalCenter: parent.verticalCenter
+            width: updRow.implicitWidth + 14; height: 26; radius: Tok.rButton
+            color: updArea.containsMouse ? Tok.hover : "transparent"
+            Behavior on color { ColorAnimation { duration: Tok.fast } }
+            Row {
+                id: updRow
+                anchors.centerIn: parent
+                spacing: 4
+                Ico { anchors.verticalCenter: parent.verticalCenter; size: 16; d: Icons.download; color: Tok.accent }
+                Txt { anchors.verticalCenter: parent.verticalCenter; text: Updates.count; size: 13; color: Tok.accent; font.weight: Font.DemiBold }
+            }
+            MouseArea {
+                id: updArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: Panels.openSettings("atualizacoes")
+                Accessible.name: Updates.count + " atualizações disponíveis"
+            }
+        }
+
         // Status: um alvo só (como no macOS); rolar a roda em cima muda o volume.
         Rectangle {
             visible: Prefs.showStatus

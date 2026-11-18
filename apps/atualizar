@@ -1,0 +1,19 @@
+#!/bin/sh
+# Atualiza o sistema (Configurações → Atualizações). Roda como root via pkexec, regra
+# org.nullyzos.atualizar. Com o snapper configurado, o snap-pac tira um snapshot antes e
+# outro depois, e o grub-btrfs põe os dois no menu do boot (dá para voltar se quebrar).
+# Saída linha a linha: as Configurações mostram o andamento.
+set -u
+echo ":: Atualizando o sistema (pacman)"
+pacman -Syu --noconfirm
+rc=$?
+if command -v flatpak >/dev/null 2>&1; then
+    echo ":: Atualizando os apps do Flathub"
+    flatpak update -y --noninteractive --system || true
+fi
+if [ "$rc" -eq 0 ]; then
+    echo ":: Pronto"
+    # Kernel novo: só vale depois de reiniciar
+    if [ -d "/usr/lib/modules/$(uname -r)" ]; then :; else echo ":: Reinicie para usar o kernel novo"; fi
+fi
+exit "$rc"
