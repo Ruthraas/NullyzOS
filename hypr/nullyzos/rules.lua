@@ -21,3 +21,5 @@ if not lib.vm then
 end
 hl.layer_rule({ match = { namespace = "nullyzos-launcher" }, animation = "popin 94%" })
 hl.layer_rule({ match = { namespace = "nullyzos-wallpaper" }, no_anim = true })
+-- As Configurações já animam o próprio cartão.
+hl.layer_rule({ match = { namespace = "nullyzos-settings" }, no_anim = true })

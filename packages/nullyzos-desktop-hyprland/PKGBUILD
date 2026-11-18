@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -37,6 +37,8 @@ package() {
   # Sessão (a tela de login lista "Hyprland" apontando para o nosso lançador)
   install -Dm755 "$src/session/nullyzos-hyprland" "$pkgdir/usr/bin/nullyzos-hyprland"
   install -Dm644 "$src/session/nullyzos-hyprland.desktop" "$pkgdir/usr/share/wayland-sessions/nullyzos-hyprland.desktop"
+  # Configurações na busca de apps
+  install -Dm644 -t "$pkgdir/usr/share/applications" "$src"/apps/*.desktop
   # Fundo padrão (o mesmo da tela de login)
   install -Dm644 "$srcdir/padrao.png" "$pkgdir/usr/share/nullyzos/wallpapers/padrao.png"
   install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

@@ -5,7 +5,7 @@
 //
 // Sempre carregados: fundo, barra de menus, notificações e o bloqueio (que só cria
 // superfícies quando bloqueia). Sob demanda (LazyLoader): a busca e o dock (só se ligado
-// nas preferências, services/Prefs.qml; no Hyprland vem desligado).
+// nas preferências, services/Prefs.qml; no Hyprland vem desligado) e as Configurações.
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -30,11 +30,14 @@ ShellRoot {
     Popups {}
     Lock { id: screenLock }
     LazyLoader { active: Panels.launcher; Launcher {} }
+    LazyLoader { active: Panels.settings; Settings {} }
 
     // Atalhos do Hyprland chamam: qs -c nullyzos ipc call nullyzos <função>
     IpcHandler {
         target: "nullyzos"
         function toggleLauncher(): void { Panels.toggleLauncher(); }
+        function settings(): void { Panels.toggleSettings(); }
+        function settingsPage(page: string): void { Panels.openSettings(page); }
         function lock(): void { Panels.closeAll(); screenLock.lock(); }
         function isLocked(): bool { return screenLock.locked; }
     }

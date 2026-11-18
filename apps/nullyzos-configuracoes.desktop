@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Configurações
+GenericName=Configurações do sistema
+Comment=Aparência, wallpaper, dock e tela de bloqueio do NullyzOS
+Keywords=configurações;preferências;ajustes;wallpaper;fundo;dock;aparência;bloqueio;sobre;settings;
+Exec=qs -c nullyzos ipc call nullyzos settings
+Icon=preferences-system
+Categories=Settings;
+OnlyShowIn=Hyprland;

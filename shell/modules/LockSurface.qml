@@ -10,11 +10,18 @@ Item {
     id: root
     property var lock
 
+    // Fundo escolhido em Configurações → Tela de bloqueio, escurecido se pedido.
     Image {
         anchors.fill: parent
-        source: "file:///usr/share/nullyzos/wallpapers/padrao.png"
+        source: Prefs.lockUrl
         fillMode: Image.PreserveAspectCrop
+        sourceSize: Qt.size(root.width, root.height)
         smooth: true
+    }
+    Rectangle {
+        anchors.fill: parent
+        color: Qt.rgba(0, 0, 0, 0.35)
+        visible: Prefs.lockDim
     }
 
     // Relógio, data e cartão numa coluna só, centralizada: não se sobrepõem em tela baixa.

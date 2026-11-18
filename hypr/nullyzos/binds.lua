@@ -7,6 +7,7 @@ local sh = lib.shell
 -- Sistema e apps
 hl.bind("SUPER + space", exec(sh("toggleLauncher")), { description = "Buscar apps" })
 hl.bind("SUPER + L", exec(sh("lock")), { description = "Bloquear a tela" })
+hl.bind("SUPER + comma", exec(sh("settings")), { description = "Configurações" })
 hl.bind("SUPER + Return", exec(lib.apps.terminal), { description = "Terminal" })
 hl.bind("SUPER + E", exec(lib.apps.files), { description = "Arquivos" })
 
