@@ -58,6 +58,8 @@ ShellRoot {
     Osd {}
     // Luz noturna roda enquanto ativa (hyprsunset); referência para o serviço existir já no login.
     readonly property bool nightLight: NightLight.active
+    // Apps Qt/KDE e GTK nas cores do Nullyz (#16): aplica ao subir e quando o tema muda.
+    readonly property string appTheme: AppTheme.signature
 
     // Atalhos do Hyprland chamam: qs -c nullyzos ipc call nullyzos <função>
     IpcHandler {

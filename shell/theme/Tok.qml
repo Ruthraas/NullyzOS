@@ -32,6 +32,8 @@ Singleton {
     readonly property color text: light ? "#15151c" : "#ededf2"
     readonly property color muted: light ? "#5a5a6a" : "#a3a3b3"
     readonly property color error: light ? "#c93a3a" : "#f06a6a"
+    readonly property color success: light ? "#1f8a4c" : "#5fd18b"
+    readonly property color warning: light ? "#a8650f" : "#f0b45e"
 
     // Cor de destaque (branding/tokens.json → destaques). No claro, um tom mais fechado para
     // ter contraste com o fundo branco.

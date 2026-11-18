@@ -1,6 +1,8 @@
 -- Variáveis de ambiente da sessão.
 local lib = require("nullyzos.lib")
 
+-- Apps Qt/KDE seguem o esquema de cores Nullyz do kdeglobals (plasma-integration, #16)
+hl.env("QT_QPA_PLATFORMTHEME", "kde")
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
