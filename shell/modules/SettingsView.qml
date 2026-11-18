@@ -20,27 +20,27 @@ Item {
 
     // Páginas por tópico (a ordem é a da lateral); `k` = palavras para a busca.
     readonly property var allPages: [
-        { id: "aparencia", label: "Aparência", icon: Icons.palette, file: "SettingsAppearance.qml", group: "Personalização", k: "tema claro escuro cor destaque wallpaper fundo vidro cursor cantos animações" },
+        { kde: true, kdeFile: "SettingsKdeAppearance.qml", id: "aparencia", label: "Aparência", icon: Icons.palette, file: "SettingsAppearance.qml", group: "Personalização", k: "tema claro escuro cor destaque wallpaper fundo vidro cursor cantos animações" },
         { kde: true, id: "rices", label: "Rices", icon: Icons.sparkles, file: "SettingsRices.qml", group: "Personalização", k: "tema visual pronto estilo rice preset" },
         { kde: true, id: "wallpapers", label: "Wallpapers", icon: Icons.image, file: "SettingsWallpapers.qml", group: "Personalização", k: "fundo imagem galeria baixar papel de parede" },
         { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml", group: "Personalização", k: "login senha fundo" },
-        { id: "barra", label: "Barra", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização", k: "relógio hora data workspaces menu" },
-        { id: "dock", label: "Dock", icon: Icons.dock, file: "SettingsDock.qml", group: "Personalização", k: "apps fixados ampliar ocultar" },
+        { kde: true, kdeFile: "SettingsKdeBar.qml", id: "barra", label: "Barra", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização", k: "relógio hora data workspaces menu" },
+        { kde: true, kdeFile: "SettingsKdeDock.qml", id: "dock", label: "Dock", icon: Icons.dock, file: "SettingsDock.qml", group: "Personalização", k: "apps fixados ampliar ocultar" },
         { id: "janelas", label: "Janelas", icon: Icons.windows, file: "SettingsWindows.qml", group: "Personalização", k: "espaço cantos animações desfoque" },
-        { id: "fontes", label: "Fontes", icon: Icons.type, file: "SettingsFonts.qml", group: "Personalização", k: "letra texto tamanho instalar" },
+        { kde: true, id: "fontes", label: "Fontes", icon: Icons.type, file: "SettingsFonts.qml", group: "Personalização", k: "letra texto tamanho instalar" },
         { id: "terminal", label: "Terminal", icon: Icons.terminal, file: "SettingsTerminal.qml", group: "Personalização", k: "kitty prompt fastfetch logo" },
-        { id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml", group: "Sistema", k: "wifi internet cabo" },
-        { id: "bluetooth", label: "Bluetooth", icon: Icons.bluetooth, file: "SettingsBluetooth.qml", group: "Sistema", k: "fone mouse parear" },
-        { id: "som", label: "Som", icon: Icons.volumeHigh, file: "SettingsSound.qml", group: "Sistema", k: "volume microfone saída" },
+        { kde: true, id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml", group: "Sistema", k: "wifi internet cabo" },
+        { kde: true, id: "bluetooth", label: "Bluetooth", icon: Icons.bluetooth, file: "SettingsBluetooth.qml", group: "Sistema", k: "fone mouse parear" },
+        { kde: true, id: "som", label: "Som", icon: Icons.volumeHigh, file: "SettingsSound.qml", group: "Sistema", k: "volume microfone saída" },
         { id: "monitores", label: "Monitores", icon: Icons.monitor, file: "SettingsDisplays.qml", group: "Sistema", k: "tela resolução escala hz" },
         { id: "teclado", label: "Teclado e mouse", icon: Icons.keyboard, file: "SettingsKeyboard.qml", group: "Sistema", k: "layout abnt2 ponteiro touchpad" },
-        { id: "impressoras", label: "Impressoras", icon: Icons.printer, file: "SettingsPrinters.qml", group: "Sistema", k: "imprimir scanner" },
+        { kde: true, id: "impressoras", label: "Impressoras", icon: Icons.printer, file: "SettingsPrinters.qml", group: "Sistema", k: "imprimir scanner" },
         { id: "notificacoes", label: "Notificações", icon: Icons.bell, file: "SettingsNotifications.qml", group: "Sistema", k: "não perturbe avisos" },
         { id: "energia", label: "Energia", icon: Icons.bolt, file: "SettingsPower.qml", group: "Sistema", k: "bloquear suspender bateria" },
         { kde: true, id: "desempenho", label: "Desempenho", icon: Icons.gauge, file: "SettingsPerformance.qml", group: "Sistema", k: "memória processador limpeza leve perfil" },
         { kde: true, id: "armazenamento", label: "Armazenamento", icon: Icons.disk, file: "SettingsStorage.qml", group: "Sistema", k: "disco espaço pastas" },
-        { id: "data", label: "Data e hora", icon: Icons.clock, file: "SettingsDateTime.qml", group: "Sistema", k: "fuso horário relógio" },
-        { id: "idioma", label: "Idioma", icon: Icons.globe, file: "SettingsLanguage.qml", group: "Sistema", k: "língua português inglês" },
+        { kde: true, id: "data", label: "Data e hora", icon: Icons.clock, file: "SettingsDateTime.qml", group: "Sistema", k: "fuso horário relógio" },
+        { kde: true, id: "idioma", label: "Idioma", icon: Icons.globe, file: "SettingsLanguage.qml", group: "Sistema", k: "língua português inglês" },
         { kde: true, id: "usuario", label: "Usuário", icon: Icons.user, file: "SettingsUsers.qml", group: "Geral", k: "foto nome senha conta" },
         { kde: true, id: "apps", label: "Apps", icon: Icons.apps, file: "SettingsApps.qml", group: "Geral", k: "flathub loja instalar navegador brave padrão" },
         { id: "iniciar", label: "Apps ao iniciar", icon: Icons.rocket, file: "SettingsStartup.qml", group: "Geral", k: "abrir sozinho login" },
@@ -281,7 +281,7 @@ Item {
                 height: contentArea.height - (card.rail ? 36 : 56)
                 x: (contentArea.width - width) / 2
                 y: card.rail ? 18 : 28
-                source: root.pages[root.pageIndex].file
+                source: (root.kde && root.pages[root.pageIndex].kdeFile) || root.pages[root.pageIndex].file
                 // Troca de página: o conteúdo novo entra subindo um pouco (follow-through).
                 onLoaded: { item.opacity = 0; slideIn.restart(); }
                 ParallelAnimation {

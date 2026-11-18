@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=NullyzOS: cores do KDE
+Exec=/usr/lib/nullyzos/kde-sessao
+OnlyShowIn=KDE;
+NoDisplay=true
+X-KDE-autostart-phase=1

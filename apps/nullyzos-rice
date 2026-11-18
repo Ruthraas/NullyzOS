@@ -4,6 +4,8 @@
 #   nullyzos-rice atual                    id do rice em uso
 #   nullyzos-rice aplicar <id> [--inicial] aplica (--inicial: primeiro login, sem snapshot)
 #   nullyzos-rice desfazer                 volta as configurações de antes do último rice
+# Cada desktop tem o seu rice: no Hyprland vale shell.json/hyprland.json e o shell; no KDE,
+# kde.json e o esquema de cores do Plasma (anotado em kde-cores, que o KDE reaplica ao entrar).
 #   nullyzos-rice inicial                  primeiro login: aplica o rice do instalador
 #                                          (/etc/nullyzos/rice-inicial), uma vez só
 # Antes de aplicar: cópia das configurações tocadas (~/.local/share/nullyzos/rices/volta) e,
@@ -30,10 +32,22 @@ desktop_atual() {
     esac
 }
 
+# Arquivos deste desktop
+if [ "$(desktop_atual)" = kde ]; then
+    PREFS="$CONF/kde.json" RICE="$CONF/rice-kde" VOLTA="$VOLTA-kde"
+else
+    PREFS="$CONF/shell.json" RICE="$CONF/rice"
+fi
+
 # Manda preferências para o shell (que regenera barra, bordas, terminal…); sem shell rodando,
 # escreve direto nos arquivos (o shell lê ao subir).
 preferencias() {
     local prefs=$1 hypr=$2 r
+    if [ "$(desktop_atual)" = kde ]; then
+        mkdir -p "$CONF"; [ -s "$PREFS" ] || echo '{}' > "$PREFS"
+        jq --argjson n "$prefs" '. + $n' "$PREFS" > "$PREFS.tmp" && mv -f "$PREFS.tmp" "$PREFS"
+        return 0
+    fi
     r=$(qs -c nullyzos ipc call nullyzos rice "$prefs" "$hypr" 2>/dev/null)
     [ "$r" = ok ] && return 0
     mkdir -p "$CONF"
@@ -50,7 +64,7 @@ guardar_volta() {
     # Valores atuais das chaves que o rice muda (para desfazer pelo mesmo caminho)
     local kp kh
     kp=$(jq -c '.preferencias // {} | keys' <<<"$r"); kh=$(jq -c '.hyprland // {} | keys' <<<"$r")
-    jq -c --argjson k "$kp" 'with_entries(select(.key as $x | $k | index($x)))' "$CONF/shell.json" > "$VOLTA/prefs.json" 2>/dev/null || echo '{}' > "$VOLTA/prefs.json"
+    jq -c --argjson k "$kp" 'with_entries(select(.key as $x | $k | index($x)))' "$PREFS" > "$VOLTA/prefs.json" 2>/dev/null || echo '{}' > "$VOLTA/prefs.json"
     jq -c --argjson k "$kh" 'with_entries(select(.key as $x | $k | index($x)))' "$CONF/hyprland.json" > "$VOLTA/hypr.json" 2>/dev/null || echo '{}' > "$VOLTA/hypr.json"
     # Destinos dos arquivos (rice de terceiro)
     jq -r '.arquivos // [] | .[].para' <<<"$r" | while read -r para; do
@@ -61,7 +75,7 @@ guardar_volta() {
         fi
         printf '%s\n' "$para" >> "$VOLTA/destinos"
     done
-    cat "$CONF/rice" 2>/dev/null > "$VOLTA/anterior" || true
+    cat "$RICE" 2>/dev/null > "$VOLTA/anterior" || true
     if [ "$(desktop_atual)" = kde ]; then
         kreadconfig6 --file kdeglobals --group General --key ColorScheme > "$VOLTA/kde-esquema" 2>/dev/null || true
     fi
@@ -113,9 +127,10 @@ aplicar() {
         if [ -n "$esq" ]; then
             say "cores do Plasma: $esq"
             plasma-apply-colorscheme "$esq" >/dev/null 2>&1 || true
+            echo "$esq" > "$CONF/kde-cores"
         fi
     fi
-    mkdir -p "$CONF"; echo "$id" > "$CONF/rice"
+    mkdir -p "$CONF"; echo "$id" > "$RICE"
     say "pronto"
 }
 
@@ -131,8 +146,9 @@ desfazer() {
     preferencias "$(cat "$VOLTA/prefs.json")" "$(cat "$VOLTA/hypr.json")"
     if [ "$(desktop_atual)" = kde ] && [ -s "$VOLTA/kde-esquema" ]; then
         plasma-apply-colorscheme "$(cat "$VOLTA/kde-esquema")" >/dev/null 2>&1 || true
+        cp -f "$VOLTA/kde-esquema" "$CONF/kde-cores"
     fi
-    if [ -s "$VOLTA/anterior" ]; then cp -f "$VOLTA/anterior" "$CONF/rice"; else rm -f "$CONF/rice"; fi
+    if [ -s "$VOLTA/anterior" ]; then cp -f "$VOLTA/anterior" "$RICE"; else rm -f "$RICE"; fi
     rm -rf "$VOLTA"
     say "voltou como estava. (Pacotes instalados ficam; o snapshot do sistema está em Atualizações.)"
 }
@@ -140,12 +156,12 @@ desfazer() {
 [ -r "$CATALOGO" ] || die "catálogo não encontrado: $CATALOGO"
 case "${1:-}" in
     lista) cat "$CATALOGO" ;;
-    atual) cat "$CONF/rice" 2>/dev/null || echo nullyz ;;
+    atual) cat "$RICE" 2>/dev/null || echo nullyz ;;
     aplicar) [ -n "${2:-}" ] || die "uso: nullyzos-rice aplicar <id>"; aplicar "$2" "${3:-}" ;;
     desfazer) desfazer ;;
     inicial)
         id=$(cat /etc/nullyzos/rice-inicial 2>/dev/null) || exit 0
-        [ -n "$id" ] && [ ! -e "$CONF/rice" ] || exit 0
+        [ -n "$id" ] && [ ! -e "$RICE" ] || exit 0
         # Espera o shell subir (até 30 s) para as preferências passarem por ele
         for _ in $(seq 60); do
             [ "$(qs -c nullyzos ipc call nullyzos rice '{}' '{}' 2>/dev/null)" = ok ] && break

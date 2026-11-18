@@ -25,4 +25,4 @@ jobs:
       - name: Shell scripts
         run: |
           sudo apt-get install -y shellcheck
-          shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/* shell/scripts/*.sh packages/nullyzos-sddm/fundo-login apps/limpeza apps/atualizar apps/nullyzos-rice apps/rice-root apps/nullyzos-configuracoes packages/nullyzos-essenciais/nullyzos-flathub terminal/terminal-shell && shellcheck -S warning -s bash terminal/bashrc
+          shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/* shell/scripts/*.sh packages/nullyzos-sddm/fundo-login apps/limpeza apps/atualizar apps/nullyzos-rice apps/rice-root apps/nullyzos-configuracoes plasma/nullyzos-kde-primeiro plasma/nullyzos-kde-sessao packages/nullyzos-essenciais/nullyzos-flathub terminal/terminal-shell && shellcheck -S warning -s bash terminal/bashrc

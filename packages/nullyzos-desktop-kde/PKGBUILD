@@ -5,7 +5,7 @@
 
 pkgname=nullyzos-desktop-kde
 pkgver=0.2.0
-pkgrel=8
+pkgrel=9
 pkgdesc="Visual do NullyzOS para KDE Plasma"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -50,5 +50,8 @@ package() {
   # Primeiro login
   install -Dm755 "$p/nullyzos-kde-primeiro" "$pkgdir/usr/lib/nullyzos/kde-primeiro"
   install -Dm644 "$p/nullyzos-kde-primeiro.desktop" "$pkgdir/etc/xdg/autostart/nullyzos-kde-primeiro.desktop"
+  # Todo login: as cores do KDE de volta (o Hyprland divide o kdeglobals)
+  install -Dm755 "$p/nullyzos-kde-sessao" "$pkgdir/usr/lib/nullyzos/kde-sessao"
+  install -Dm644 "$p/nullyzos-kde-sessao.desktop" "$pkgdir/etc/xdg/autostart/nullyzos-kde-sessao.desktop"
   install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

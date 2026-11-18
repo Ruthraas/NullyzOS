@@ -5,7 +5,8 @@ import Quickshell
 import Quickshell.Io
 import qs.theme
 
-// Preferências do usuário em ~/.config/nullyzos/shell.json, escritas pelas Configurações.
+// Preferências do usuário em ~/.config/nullyzos/shell.json (Hyprland) ou kde.json (KDE: cada
+// desktop com o seu rice, paleta e fundo), escritas pelas Configurações.
 // Sem o arquivo, o shell cria um com os padrões (assim dá para vigiar desde o começo);
 // mudou o arquivo (pelas Configurações ou à mão), aplica na hora.
 //   dock           mostra o dock (padrão no Hyprland: desligado)
@@ -31,6 +32,7 @@ Singleton {
     id: root
 
     readonly property string defaultWallpaper: "/usr/share/nullyzos/wallpapers/padrao.png"
+    readonly property bool kde: (Quickshell.env("XDG_CURRENT_DESKTOP") || "").indexOf("KDE") >= 0
     readonly property string dir: (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/nullyzos"
 
     readonly property bool dock: prefs.dock
@@ -48,6 +50,9 @@ Singleton {
 
     // Paleta de rice (Tok.schemes): define claro/escuro sozinha
     readonly property string palette: prefs.palette
+    readonly property bool kdeGlass: prefs.kdeGlass
+    readonly property real kdeAnim: prefs.kdeAnim
+    readonly property bool kdeButtonsLeft: prefs.kdeButtonsLeft
     readonly property bool light: Tok.schemes[prefs.palette] ? Tok.schemes[prefs.palette].light : prefs.theme === "claro" || (prefs.theme === "auto" && Clock.now.getHours() >= 7 && Clock.now.getHours() < 19)
     readonly property string theme: prefs.theme
     readonly property real roundness: prefs.roundness
@@ -137,7 +142,7 @@ Singleton {
 
     FileView {
         id: file
-        path: root.dir + "/shell.json"
+        path: root.dir + (root.kde ? "/kde.json" : "/shell.json")
         watchChanges: true
         onFileChanged: reload()
         onLoadFailed: err => { if (err === FileViewError.FileNotFound) mkdir.running = true; }
@@ -148,7 +153,7 @@ Singleton {
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
                           "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
                           "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
-                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "palette", "uiFont", "textScale",
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "palette", "kdeGlass", "kdeAnim", "kdeButtonsLeft", "uiFont", "textScale",
                           "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
                           "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
                           "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp", "startupApps", "notifSeconds",
@@ -181,6 +186,9 @@ Singleton {
             property string barSize: "normal"
             property string barStyle: "classica"
             property string palette: ""
+            property bool kdeGlass: true
+            property real kdeAnim: 1
+            property bool kdeButtonsLeft: true
             property string uiFont: "Geist"
             property real textScale: 1
             property string dockPosition: "baixo"
