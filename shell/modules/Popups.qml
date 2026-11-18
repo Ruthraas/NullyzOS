@@ -20,6 +20,8 @@ PanelWindow {
     mask: Region { item: column }
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "nullyzos-notifications"
+    // Com o painel rápido aberto a notificação já aparece no histórico dele
+    visible: !Panels.quick
 
     Column {
         id: column
