@@ -7,7 +7,7 @@
 [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 
 NULLYZ_PROMPT=${NULLYZ_PROMPT:-1}
-NULLYZ_GREETING=${NULLYZ_GREETING:-sessao}     # sempre | sessao | nunca
+NULLYZ_GREETING=${NULLYZ_GREETING:-sempre}     # sempre | sessao | nunca
 NULLYZ_ACCENT=${NULLYZ_ACCENT:-9d8cff}
 conf="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos/terminal.sh"
 [ -f "$conf" ] && . "$conf"

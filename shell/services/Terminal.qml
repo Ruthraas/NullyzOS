@@ -81,7 +81,7 @@ Singleton {
             property string cursor: "beam"
             property int padding: 12
             property bool prompt: true
-            property string greeting: "sessao"
+            property string greeting: "sempre"
         }
     }
     FileView { id: kittyFile; path: Prefs.dir + "/kitty.conf" }

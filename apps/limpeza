@@ -5,7 +5,7 @@
 #                     e apaga as de pacotes que já foram removidos
 #   limpeza orfaos    remove pacotes instalados como dependência que nada mais usa
 #   limpeza energia   liga o power-profiles-daemon (perfis de energia)
-#   limpeza fonte P   instala o pacote de fonte P (só os da lista abaixo, repositórios oficiais)
+#   limpeza fonte P   instala o pacote de fonte P (ttf-*, otf-*, *-fonts; só dos repositórios)
 set -eu
 
 case "${1:-}" in
@@ -23,14 +23,18 @@ case "${1:-}" in
         systemctl enable --now power-profiles-daemon.service
         ;;
     fonte)
-        case "${2:-}" in
-            inter-font | ttf-jetbrains-mono | ttf-fira-code | ttf-cascadia-code | ttf-ibm-plex | noto-fonts | \
-            ttf-roboto | ttf-ubuntu-font-family | ttf-fira-sans | adobe-source-code-pro-fonts | ttf-hack | \
-            cantarell-fonts | ttf-opensans | ttf-dejavu)
-                pacman -S --needed --noconfirm "$2"
-                ;;
-            *) echo "fonte fora da lista: ${2:-}" >&2; exit 3 ;;
+        # Só pacote de fonte (pelo nome) que exista nos repositórios configurados (oficiais +
+        # [nullyzos]; o NullyzOS não usa AUR). Nada de opções extras para o pacman.
+        p=${2:-}
+        case "$p" in
+            -* | *[!a-z0-9.+_-]* | "") echo "nome de pacote inválido: $p" >&2; exit 3 ;;
         esac
+        case "$p" in
+            ttf-* | otf-* | *-font | *-fonts | noto-fonts*) ;;
+            *) echo "não é pacote de fonte: $p" >&2; exit 3 ;;
+        esac
+        pacman -Si -- "$p" >/dev/null 2>&1 || { echo "pacote não encontrado: $p" >&2; exit 4; }
+        pacman -S --needed --noconfirm -- "$p"
         ;;
     *)
         echo "uso: limpeza pacotes|orfaos|energia|fonte <pacote>" >&2
