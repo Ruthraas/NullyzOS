@@ -1,4 +1,5 @@
 -- Programas que sobem com a sessão.
+local lib = require("nullyzos.lib")
 hl.on("hyprland.start", function()
   -- Shell do NullyzOS (barra de menus, dock, busca, notificações, bloqueio); -n impede duas
   -- cópias (cada cópia desenha outra barra e outro dock por cima). Espera o PipeWire
@@ -6,7 +7,13 @@ hl.on("hyprland.start", function()
   hl.exec_cmd('for i in $(seq 50); do [ -S "$XDG_RUNTIME_DIR/pipewire-0" ] && break; sleep 0.1; done; qs -n -c nullyzos -d')
   -- Agente polkit: pede a senha quando algum app precisa de permissão de administrador.
   -- hyprpolkitagent (pacote de 300 KB) no lugar do agente do KDE, que ocupava ~80 MB.
-  hl.exec_cmd("systemctl --user start hyprpolkitagent")
+  -- Em VM ele cai ao desenhar a janela (wl_surface.attach inválido, 18/11/2026): lá vai o
+  -- agente do GNOME, que desenha por software.
+  if lib.vm then
+    hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
+  else
+    hl.exec_cmd("systemctl --user start hyprpolkitagent")
+  end
   hl.exec_cmd("hyprctl setcursor Adwaita ${XCURSOR_SIZE:-24}")
   -- Pastas do usuário (Imagens, Downloads, Documentos...) na língua do sistema
   hl.exec_cmd("xdg-user-dirs-update")

@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=43
+pkgrel=44
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -12,7 +12,7 @@ license=('GPL-3.0-only')
 options=('!debug')
 backup=('etc/xdg/kitty/kitty.conf')
 depends=(
-  'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'hyprpolkitagent'
+  'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'hyprpolkitagent' 'polkit-gnome'
   'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'fakeroot' 'libnotify' 'jq' 'kdialog' 'accountsservice' 'fastfetch' 'grim' 'slurp' 'wl-clipboard'
   'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais'
   'hyprsunset' 'cliphist' 'wtype' 'satty'
