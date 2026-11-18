@@ -57,6 +57,14 @@ Singleton {
         watchChanges: true
         onFileChanged: reload()
         onLoadFailed: err => { if (err === FileViewError.FileNotFound) mkdir.running = true; }
+        // Arquivo de versão antiga (sem as opções novas): regrava uma vez com todas, para quem
+        // edita à mão enxergar tudo. Não entra em laço: na releitura já não falta nenhuma.
+        onLoaded: {
+            const t = text();
+            const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
+                          "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend"];
+            if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
+        }
         adapter: JsonAdapter {
             id: prefs
             property bool dock: false
