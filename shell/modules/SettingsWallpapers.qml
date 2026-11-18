@@ -118,7 +118,9 @@ SettingsPage {
         Chip { text: "Abrir a pasta"; height: 28; onClicked: Quickshell.execDetached(["sh", "-c", "xdg-open \"$(xdg-user-dir PICTURES)\""]) }
     }
 
+    // Ajuste, escurecer e trocar sozinho: é o shell do Hyprland que desenha o fundo
     SettingsRow {
+        visible: !page.kde
         title: "Ajuste da imagem"
         description: "Preencher corta as sobras; Ajustar mostra a imagem inteira; Centralizar usa o tamanho original."
         Segmented {
@@ -128,6 +130,7 @@ SettingsPage {
         }
     }
     SettingsRow {
+        visible: !page.kde
         title: "Escurecer o fundo"
         description: Prefs.wallpaperDim > 0 ? Math.round(Prefs.wallpaperDim * 100) + "% mais escuro" : "Sem escurecer"
         Slider {
@@ -137,6 +140,7 @@ SettingsPage {
         }
     }
     SettingsRow {
+        visible: !page.kde
         title: "Trocar sozinho"
         description: "Passa para o próximo dos seus fundos de tempos em tempos."
         Segmented {

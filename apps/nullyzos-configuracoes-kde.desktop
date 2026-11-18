@@ -8,3 +8,4 @@ Exec=nullyzos-configuracoes
 Icon=nullyzos
 Categories=Settings;
 OnlyShowIn=KDE;
+StartupWMClass=org.quickshell

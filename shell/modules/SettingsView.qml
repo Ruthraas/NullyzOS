@@ -119,7 +119,7 @@ Item {
             Behavior on width { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutCubic } }
             height: parent.height
             color: Tok.surface
-            radius: Tok.rPanel
+            radius: root.windowed ? 0 : Tok.rPanel
             // Canto direito reto (só o cartão é arredondado)
             Rectangle { anchors.right: parent.right; width: parent.radius; height: parent.height; color: parent.color }
             Rectangle { anchors.right: parent.right; width: 1; height: parent.height; color: Tok.border }
