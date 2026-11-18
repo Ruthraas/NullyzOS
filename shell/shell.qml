@@ -19,7 +19,16 @@ ShellRoot {
             id: perScreen
             required property var modelData
             Wallpaper { modelData: perScreen.modelData }
-            MenuBar { modelData: perScreen.modelData }
+            // Barra recriada quando a altura muda (janela de tamanho fixo, ver MenuBar.qml).
+            LazyLoader {
+                id: barLoader
+                active: true
+                MenuBar { modelData: perScreen.modelData }
+            }
+            Connections {
+                target: Prefs
+                function onBarHeightChanged() { barLoader.active = false; Qt.callLater(() => barLoader.active = true); }
+            }
             LazyLoader {
                 active: Prefs.dock
                 Dock { modelData: perScreen.modelData }
@@ -32,6 +41,9 @@ ShellRoot {
     LazyLoader { active: Panels.launcher; Launcher {} }
     LazyLoader { active: Panels.settings; Settings {} }
     LazyLoader { active: Panels.quick; QuickPanel {} }
+    LazyLoader { active: Panels.calendar; CalendarPanel {} }
+    // A agenda precisa existir desde o começo para os lembretes chegarem na hora.
+    readonly property int agendaEvents: Agenda.events.length
     Connections { target: Panels; function onLockRequested() { screenLock.lock(); } }
     Idle { onLockNow: { Panels.closeAll(); screenLock.lock(); } }
 

@@ -40,7 +40,7 @@ PanelWindow {
         width: 340
         height: col.implicitHeight + 32
         x: parent.width - width - 10
-        y: 36 + 8
+        y: Prefs.barHeight + 8
         radius: Tok.rPanel - 4
         focus: true
         Keys.onEscapePressed: Panels.closeAll()

@@ -18,6 +18,8 @@ import qs.theme
 //   clockSeconds, showDate, showAppName   o que a barra de menus mostra
 //   idleLock, idleSuspend                 minutos parado até bloquear / suspender (0 = nunca)
 //   theme ("escuro" | "claro"), glassOpacity (0.35..0.9), cursorSize (24, 32, 48)
+//   clock24, dateStyle ("curta" | "longa" | "numerica"), weekStart ("domingo" | "segunda")
+//   showLogo, showWorkspaces, workspaceCount, showStatus, barSize ("compacta" | "normal" | "alta")
 Singleton {
     id: root
 
@@ -40,6 +42,14 @@ Singleton {
     readonly property bool light: prefs.theme === "claro"
     readonly property real glassOpacity: prefs.glassOpacity
     readonly property int cursorSize: prefs.cursorSize
+    readonly property bool clock24: prefs.clock24
+    readonly property string dateStyle: prefs.dateStyle
+    readonly property bool weekStartsMonday: prefs.weekStart === "segunda"
+    readonly property bool showLogo: prefs.showLogo
+    readonly property bool showWorkspaces: prefs.showWorkspaces
+    readonly property int workspaceCount: prefs.workspaceCount
+    readonly property bool showStatus: prefs.showStatus
+    readonly property int barHeight: ({ compacta: 30, normal: 36, alta: 42 })[prefs.barSize] || 36
     Binding { target: Tok; property: "accentName"; value: prefs.accent }
     Binding { target: Tok; property: "light"; value: prefs.theme === "claro" }
     Binding { target: Tok; property: "glassOpacity"; value: prefs.glassOpacity }
@@ -73,7 +83,8 @@ Singleton {
             const t = text();
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
                           "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
-                          "theme", "glassOpacity", "cursorSize"];
+                          "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize"];
             if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
         }
         adapter: JsonAdapter {
@@ -92,6 +103,14 @@ Singleton {
             property string theme: "escuro"
             property real glassOpacity: 0.55
             property int cursorSize: 24
+            property bool clock24: true
+            property string dateStyle: "curta"
+            property string weekStart: "domingo"
+            property bool showLogo: true
+            property bool showWorkspaces: true
+            property int workspaceCount: 5
+            property bool showStatus: true
+            property string barSize: "normal"
         }
     }
 
