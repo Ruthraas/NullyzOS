@@ -19,7 +19,13 @@ SettingsPage {
     readonly property string script: Qt.resolvedUrl("../scripts/fontes.sh").toString().replace("file://", "")
     // Fontes "de sistema" que não fazem sentido como fonte de interface
     readonly property var hidden: /^(Noto Color Emoji|Symbols|Font Awesome|Material|DejaVu Math|Noto (Sans|Serif) (Symbols|Math)|Twemoji|Emoji)/
-    readonly property var allFonts: Qt.fontFamilies().filter(f => !page.hidden.test(f) && !f.startsWith("."))
+    // Uma entrada por família: "Geist Black", "Geist Light"… somem quando "Geist" existe.
+    readonly property var weights: / (Thin|Hairline|ExtraLight|UltraLight|Light|Book|Regular|Medium|SemiBold|DemiBold|Bold|ExtraBold|UltraBold|Black|Heavy|ExtraBlack|Condensed|SemiCondensed|Narrow|Display|Text)( (Thin|Light|Medium|SemiBold|Bold|Italic))*$/
+    readonly property var allFonts: {
+        const all = Qt.fontFamilies().filter(f => !page.hidden.test(f) && !f.startsWith("."));
+        const set = new Set(all);
+        return all.filter(f => { const base = f.replace(page.weights, ""); return base === f || !set.has(base); });
+    }
     property var monoFonts: ["Geist Mono"]
     property string uiQuery: ""
     property string monoQuery: ""
