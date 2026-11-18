@@ -1,7 +1,7 @@
 # Janelas no NullyzOS: decoração Nullyz (Aurorae: botões redondos à esquerda, título discreto),
 # sem borda grossa, desfoque atrás de painéis e menus (o tema Nullyz Vidro é translúcido).
 [org.kde.kdecoration2]
-library=org.kde.kwin.aurorae
+library=org.kde.kwin.aurorae.v2
 theme=__aurorae__svg__Nullyz
 BorderSize=None
 BorderSizeAuto=false

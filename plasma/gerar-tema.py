@@ -71,6 +71,7 @@ def desktoptheme(out: Path):
     (t / "translucent/widgets").mkdir(parents=True, exist_ok=True)
     (t / "translucent/dialogs").mkdir(parents=True, exist_ok=True)
     (t / "metadata.json").write_text(json.dumps({
+        "KPackageStructure": "Plasma/Theme",
         "KPlugin": {
             "Authors": [{"Name": "NullyzOS"}],
             "Description": "Vidro do NullyzOS: painéis e menus translúcidos com cantos grandes.",

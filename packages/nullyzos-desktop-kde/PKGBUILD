@@ -5,14 +5,14 @@
 
 pkgname=nullyzos-desktop-kde
 pkgver=0.2.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Visual do NullyzOS para KDE Plasma"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
 options=('!debug')
 backup=('etc/xdg/kdeglobals' 'etc/xdg/kwinrc' 'etc/xdg/breezerc' 'etc/xdg/ksplashrc' 'etc/xdg/konsolerc' 'etc/xdg/plasmarc' 'etc/xdg/kscreenlockerrc')
-depends=('plasma-desktop' 'plasma-workspace' 'kwin' 'breeze' 'breeze-icons' 'konsole' 'dolphin'
+depends=('plasma-desktop' 'plasma-workspace' 'kwin' 'breeze' 'breeze-icons' 'aurorae' 'konsole' 'dolphin'
          'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais')
 makedepends=('python')
 source=()
