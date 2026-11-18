@@ -113,6 +113,9 @@ PanelWindow {
                         readonly property bool current: index === root.pageIndex
                         readonly property bool firstOfGroup: index === 0 || root.pages[index - 1].group !== modelData.group
                         width: parent.width
+                        // Fora da parte visível da lista: esconde (no desenho por software os
+                        // ícones ignoram o recorte e vazavam para fora do cartão)
+                        opacity: y + height - navFlick.contentY <= navFlick.height + 1 && y + height - navFlick.contentY >= 0 ? 1 : 0
                         spacing: 2
                         // Título do tópico
                         // Na lateral estreita, uma linha no lugar do título do tópico

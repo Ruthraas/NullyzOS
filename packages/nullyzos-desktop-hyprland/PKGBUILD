@@ -13,7 +13,7 @@ options=('!debug')
 backup=('etc/xdg/kitty/kitty.conf')
 depends=(
   'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'polkit-kde-agent'
-  'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'libnotify' 'fastfetch' 'grim' 'slurp' 'wl-clipboard'
+  'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'fakeroot' 'libnotify' 'fastfetch' 'grim' 'slurp' 'wl-clipboard'
   'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais'
   'hyprsunset' 'cliphist' 'wtype' 'satty'
 )
