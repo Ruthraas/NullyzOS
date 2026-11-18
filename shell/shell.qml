@@ -3,8 +3,9 @@
 // NullyzOS — desktop para Hyprland (Quickshell 0.3). Instalado em /etc/xdg/quickshell/nullyzos,
 // aberto pelo Hyprland com `qs -c nullyzos -d`. Testar no repositório: `qs -p shell/`.
 //
-// Sempre carregados: fundo, barra de menus, dock, notificações e o bloqueio (que só cria
-// superfícies quando bloqueia). Sob demanda (LazyLoader): a busca.
+// Sempre carregados: fundo, barra de menus, notificações e o bloqueio (que só cria
+// superfícies quando bloqueia). Sob demanda (LazyLoader): a busca e o dock (só se ligado
+// nas preferências, services/Prefs.qml; no Hyprland vem desligado).
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -19,7 +20,10 @@ ShellRoot {
             required property var modelData
             Wallpaper { modelData: perScreen.modelData }
             MenuBar { modelData: perScreen.modelData }
-            Dock { modelData: perScreen.modelData }
+            LazyLoader {
+                active: Prefs.dock
+                Dock { modelData: perScreen.modelData }
+            }
         }
     }
 
