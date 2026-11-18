@@ -1,0 +1,24 @@
+id = "nullyz-papel"
+nome = "Nullyz Papel"
+descricao = "Claro e calmo: tema claro, azul, dock sólido e cantos suaves."
+autor = "NullyzOS"
+licenca = "GPL-3.0-or-later"
+origem = "https://github.com/Ruthraas/NullyzOS"
+desktop = "hyprland"
+tipo = "preset"
+
+[preferencias]
+theme = "claro"
+accent = "azul"
+glassOpacity = 0.8
+roundness = 0.55
+motion = 1
+barSize = "normal"
+dockStyle = "solido"
+dockIndicator = "traco"
+dockMagnify = 0
+uiFont = "Geist"
+
+[hyprland]
+gaps = "amplo"
+rounding = 8

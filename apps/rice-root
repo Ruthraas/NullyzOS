@@ -1,0 +1,26 @@
+#!/bin/bash
+# Parte com root do nullyzos-rice (via pkexec, política org.nullyzos.rice):
+#   rice-root snapshot <id>   snapshot do sistema (snapper) antes de aplicar o rice
+#   rice-root pacotes <id>    instala os pacotes que a RECEITA do rice lista (não aceita nomes
+#                             de fora: lê do catálogo instalado, que veio assinado no pacote)
+set -euo pipefail
+CATALOGO=/usr/share/nullyzos/rices/catalogo.json
+id=${2:-}
+[[ "$id" =~ ^[a-z0-9][a-z0-9-]{1,40}$ ]] || { echo "id inválido" >&2; exit 2; }
+jq -e --arg id "$id" 'any(.[]; .id == $id)' "$CATALOGO" >/dev/null || { echo "rice desconhecido" >&2; exit 2; }
+
+case "${1:-}" in
+    snapshot)
+        if command -v snapper >/dev/null && [ -f /etc/snapper/configs/root ]; then
+            snapper -c root create --cleanup-algorithm number --description "antes do rice $id" --print-number
+        else
+            echo "sem snapper configurado: seguindo sem snapshot" >&2
+        fi
+        ;;
+    pacotes)
+        mapfile -t pk < <(jq -r --arg id "$id" '.[] | select(.id == $id) | .pacotes // [] | .[]' "$CATALOGO")
+        [ "${#pk[@]}" -gt 0 ] || exit 0
+        pacman -S --needed --noconfirm -- "${pk[@]}"
+        ;;
+    *) echo "uso: rice-root snapshot|pacotes <id>" >&2; exit 2 ;;
+esac

@@ -1,0 +1,81 @@
+[
+  {
+    "id": "nullyz",
+    "nome": "Nullyz",
+    "descricao": "O padrão: escuro, vidro, violeta e cantos arredondados.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "theme": "escuro",
+      "accent": "violeta",
+      "glassOpacity": 0.55,
+      "roundness": 1,
+      "motion": 1,
+      "barSize": "normal",
+      "dockStyle": "vidro",
+      "dockIndicator": "ponto",
+      "dockMagnify": 0.35,
+      "uiFont": "Geist",
+      "wallpaper": ""
+    },
+    "hyprland": {
+      "gaps": "",
+      "rounding": -1
+    }
+  },
+  {
+    "id": "nullyz-mono",
+    "nome": "Nullyz Mono",
+    "descricao": "Para quem vive no teclado: compacto, reto, sem animação e sem vidro. O mais leve.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "theme": "escuro",
+      "accent": "verde",
+      "glassOpacity": 1,
+      "roundness": 0,
+      "motion": 0,
+      "barSize": "compacta",
+      "dockStyle": "transparente",
+      "dockIndicator": "nenhum",
+      "dockMagnify": 0,
+      "uiFont": "Geist Mono"
+    },
+    "hyprland": {
+      "gaps": "compacto",
+      "rounding": 0
+    }
+  },
+  {
+    "id": "nullyz-papel",
+    "nome": "Nullyz Papel",
+    "descricao": "Claro e calmo: tema claro, azul, dock sólido e cantos suaves.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "theme": "claro",
+      "accent": "azul",
+      "glassOpacity": 0.8,
+      "roundness": 0.55,
+      "motion": 1,
+      "barSize": "normal",
+      "dockStyle": "solido",
+      "dockIndicator": "traco",
+      "dockMagnify": 0,
+      "uiFont": "Geist"
+    },
+    "hyprland": {
+      "gaps": "amplo",
+      "rounding": 8
+    }
+  }
+]

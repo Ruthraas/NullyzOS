@@ -82,6 +82,16 @@ ShellRoot {
         function calendar(): void { Panels.toggleCalendar(); }
         // Teclas de brilho: relê o valor e mostra o aviso na tela
         function osdBrightness(): void { Brightness.refresh(); }
+        // Rices (nullyzos-rice): aplica preferências do shell e do Hyprland de uma vez
+        // (JSON de objeto); cada chave passa pelo Prefs/HyprConf, que regeneram o que depende.
+        function rice(prefs: string, hypr: string): string {
+            try {
+                const p = JSON.parse(prefs || "{}"), h = JSON.parse(hypr || "{}");
+                for (const k in p) Prefs.set(k, p[k]);
+                for (const k in h) HyprConf.set(k, h[k]);
+                return "ok";
+            } catch (e) { return "erro: " + e; }
+        }
         // Para scripts: qs -c nullyzos ipc call nullyzos agendaAdd 2026-11-20 14:00 "Dentista"
         function agendaAdd(day: string, time: string, title: string): bool { return Agenda.add(day, time, title); }
         function settingsPage(page: string): void { Panels.openSettings(page); }

@@ -1,0 +1,26 @@
+# O visual padrão do NullyzOS. Aplicar volta tudo o que os outros rices mudam.
+id = "nullyz"
+nome = "Nullyz"
+descricao = "O padrão: escuro, vidro, violeta e cantos arredondados."
+autor = "NullyzOS"
+licenca = "GPL-3.0-or-later"
+origem = "https://github.com/Ruthraas/NullyzOS"
+desktop = "hyprland"
+tipo = "preset"
+
+[preferencias]
+theme = "escuro"
+accent = "violeta"
+glassOpacity = 0.55
+roundness = 1
+motion = 1
+barSize = "normal"
+dockStyle = "vidro"
+dockIndicator = "ponto"
+dockMagnify = 0.35
+uiFont = "Geist"
+wallpaper = ""
+
+[hyprland]
+gaps = ""
+rounding = -1

@@ -10,6 +10,8 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("hyprctl setcursor Adwaita ${XCURSOR_SIZE:-24}")
   -- Pastas do usuário (Imagens, Downloads, Documentos...) na língua do sistema
   hl.exec_cmd("xdg-user-dirs-update")
+  -- Rice escolhido no instalador (passo Visual): aplica uma vez, no primeiro login
+  hl.exec_cmd("nullyzos-rice inicial")
   -- Histórico da área de transferência (texto e imagens), lido pela busca do shell
   hl.exec_cmd("wl-paste --type text --watch cliphist store")
   hl.exec_cmd("wl-paste --type image --watch cliphist store")

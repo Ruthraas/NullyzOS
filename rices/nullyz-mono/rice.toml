@@ -1,0 +1,24 @@
+id = "nullyz-mono"
+nome = "Nullyz Mono"
+descricao = "Para quem vive no teclado: compacto, reto, sem animação e sem vidro. O mais leve."
+autor = "NullyzOS"
+licenca = "GPL-3.0-or-later"
+origem = "https://github.com/Ruthraas/NullyzOS"
+desktop = "hyprland"
+tipo = "preset"
+
+[preferencias]
+theme = "escuro"
+accent = "verde"
+glassOpacity = 1
+roundness = 0
+motion = 0
+barSize = "compacta"
+dockStyle = "transparente"
+dockIndicator = "nenhum"
+dockMagnify = 0
+uiFont = "Geist Mono"
+
+[hyprland]
+gaps = "compacto"
+rounding = 0

@@ -1,0 +1,141 @@
+#!/bin/bash
+# Aplica um rice (rices/*/rice.toml → /usr/share/nullyzos/rices/catalogo.json), com volta:
+#   nullyzos-rice lista                    catálogo (JSON)
+#   nullyzos-rice atual                    id do rice em uso
+#   nullyzos-rice aplicar <id> [--inicial] aplica (--inicial: primeiro login, sem snapshot)
+#   nullyzos-rice desfazer                 volta as configurações de antes do último rice
+#   nullyzos-rice inicial                  primeiro login: aplica o rice do instalador
+#                                          (/etc/nullyzos/rice-inicial), uma vez só
+# Antes de aplicar: cópia das configurações tocadas (~/.local/share/nullyzos/rices/volta) e,
+# se o rice instala pacotes ou arquivos, snapshot do sistema (snapper, via pkexec).
+# Rice de terceiro: baixa o commit exato da receita, confere o sha256 e só copia os arquivos
+# listados para dentro de ~/.config ou ~/.local/share. Nenhum script do rice é executado.
+set -uo pipefail
+
+CATALOGO=${NULLYZ_RICES:-/usr/share/nullyzos/rices/catalogo.json}
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos"
+VOLTA="${XDG_DATA_HOME:-$HOME/.local/share}/nullyzos/rices/volta"
+ROOT=/usr/lib/nullyzos/rice-root
+
+say() { printf ':: %s\n' "$*"; }
+die() { printf 'erro: %s\n' "$*" >&2; exit 1; }
+
+receita() { jq -e --arg id "$1" '.[] | select(.id == $id)' "$CATALOGO"; }
+
+desktop_atual() {
+    case "${XDG_CURRENT_DESKTOP:-}" in
+        *Hyprland*) echo hyprland ;;
+        *KDE*) echo kde ;;
+        *) echo "?" ;;
+    esac
+}
+
+# Manda preferências para o shell (que regenera barra, bordas, terminal…); sem shell rodando,
+# escreve direto nos arquivos (o shell lê ao subir).
+preferencias() {
+    local prefs=$1 hypr=$2 r
+    r=$(qs -c nullyzos ipc call nullyzos rice "$prefs" "$hypr" 2>/dev/null)
+    [ "$r" = ok ] && return 0
+    mkdir -p "$CONF"
+    for par in "shell.json:$prefs" "hyprland.json:$hypr"; do
+        local arq="$CONF/${par%%:*}" novo=${par#*:}
+        [ -s "$arq" ] || echo '{}' > "$arq"
+        jq --argjson n "$novo" '. + $n' "$arq" > "$arq.tmp" && mv -f "$arq.tmp" "$arq"
+    done
+}
+
+guardar_volta() {
+    local r=$1
+    rm -rf "$VOLTA"; mkdir -p "$VOLTA/arquivos"
+    # Valores atuais das chaves que o rice muda (para desfazer pelo mesmo caminho)
+    local kp kh
+    kp=$(jq -c '.preferencias // {} | keys' <<<"$r"); kh=$(jq -c '.hyprland // {} | keys' <<<"$r")
+    jq -c --argjson k "$kp" 'with_entries(select(.key as $x | $k | index($x)))' "$CONF/shell.json" > "$VOLTA/prefs.json" 2>/dev/null || echo '{}' > "$VOLTA/prefs.json"
+    jq -c --argjson k "$kh" 'with_entries(select(.key as $x | $k | index($x)))' "$CONF/hyprland.json" > "$VOLTA/hypr.json" 2>/dev/null || echo '{}' > "$VOLTA/hypr.json"
+    # Destinos dos arquivos (rice de terceiro)
+    jq -r '.arquivos // [] | .[].para' <<<"$r" | while read -r para; do
+        local alvo="${para/#\~/$HOME}"
+        if [ -e "$alvo" ]; then
+            mkdir -p "$VOLTA/arquivos/$(dirname "${para#\~/}")"
+            cp -a "$alvo" "$VOLTA/arquivos/${para#\~/}"
+        fi
+        printf '%s\n' "$para" >> "$VOLTA/destinos"
+    done
+    cat "$CONF/rice" 2>/dev/null > "$VOLTA/anterior" || true
+}
+
+aplicar() {
+    local id=$1 inicial=${2:-} r tipo
+    r=$(receita "$id") || die "rice desconhecido: $id"
+    local desk; desk=$(jq -r .desktop <<<"$r")
+    if [ "$id" != nullyz ] && [ "$(desktop_atual)" != "?" ] && [ "$desk" != "$(desktop_atual)" ]; then
+        die "o rice $(jq -r .nome <<<"$r") é para $desk; este desktop é $(desktop_atual)"
+    fi
+    tipo=$(jq -r .tipo <<<"$r")
+    say "rice: $(jq -r .nome <<<"$r") ($(jq -r .autor <<<"$r"), $(jq -r .licenca <<<"$r"))"
+    guardar_volta "$r"
+
+    if [ "$tipo" = arquivos ]; then
+        if [ "$inicial" != --inicial ] && [ -x "$ROOT" ]; then
+            say "snapshot do sistema antes de aplicar"
+            pkexec "$ROOT" snapshot "$id" || die "sem snapshot, sem rice (cancelado)"
+        fi
+        if [ "$(jq '.pacotes // [] | length' <<<"$r")" -gt 0 ]; then
+            say "pacotes: $(jq -r '.pacotes | join(" ")' <<<"$r")"
+            pkexec "$ROOT" pacotes "$id" || die "não deu para instalar os pacotes"
+        fi
+        local origem commit sha tmp
+        origem=$(jq -r .origem <<<"$r"); commit=$(jq -r .commit <<<"$r"); sha=$(jq -r .sha256 <<<"$r")
+        tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+        say "baixando ${origem#https://github.com/} @ ${commit:0:10}"
+        curl -fsSL --max-time 300 -o "$tmp/rice.tar.gz" "https://codeload.github.com/${origem#https://github.com/}/tar.gz/$commit" ||
+            die "falhou o download"
+        echo "$sha  $tmp/rice.tar.gz" | sha256sum -c --status || die "o arquivo baixado não confere com a receita (sha256)"
+        mkdir "$tmp/x"; tar -xzf "$tmp/rice.tar.gz" -C "$tmp/x" --strip-components=1 --no-same-owner
+        jq -c '.arquivos[]' <<<"$r" | while read -r a; do
+            local de para alvo
+            de=$(jq -r .de <<<"$a"); para=$(jq -r .para <<<"$a"); alvo="${para/#\~/$HOME}"
+            case "$para" in "~/.config/"*|"~/.local/share/"*) ;; *) die "destino fora do permitido: $para" ;; esac
+            [ -e "$tmp/x/$de" ] || die "a receita aponta para $de, que não existe no commit"
+            say "$de → $para"
+            mkdir -p "$(dirname "$alvo")"; rm -rf "$alvo"; cp -a "$tmp/x/$de" "$alvo"
+        done
+    fi
+
+    preferencias "$(jq -c '.preferencias // {}' <<<"$r")" "$(jq -c '.hyprland // {}' <<<"$r")"
+    mkdir -p "$CONF"; echo "$id" > "$CONF/rice"
+    say "pronto"
+}
+
+desfazer() {
+    [ -d "$VOLTA" ] || die "nada para desfazer"
+    if [ -f "$VOLTA/destinos" ]; then
+        while read -r para; do
+            local alvo="${para/#\~/$HOME}"
+            rm -rf "$alvo"
+            [ -e "$VOLTA/arquivos/${para#\~/}" ] && cp -a "$VOLTA/arquivos/${para#\~/}" "$alvo"
+        done < "$VOLTA/destinos"
+    fi
+    preferencias "$(cat "$VOLTA/prefs.json")" "$(cat "$VOLTA/hypr.json")"
+    if [ -s "$VOLTA/anterior" ]; then cp -f "$VOLTA/anterior" "$CONF/rice"; else rm -f "$CONF/rice"; fi
+    rm -rf "$VOLTA"
+    say "voltou como estava. (Pacotes instalados ficam; o snapshot do sistema está em Atualizações.)"
+}
+
+[ -r "$CATALOGO" ] || die "catálogo não encontrado: $CATALOGO"
+case "${1:-}" in
+    lista) cat "$CATALOGO" ;;
+    atual) cat "$CONF/rice" 2>/dev/null || echo nullyz ;;
+    aplicar) [ -n "${2:-}" ] || die "uso: nullyzos-rice aplicar <id>"; aplicar "$2" "${3:-}" ;;
+    desfazer) desfazer ;;
+    inicial)
+        id=$(cat /etc/nullyzos/rice-inicial 2>/dev/null) || exit 0
+        [ -n "$id" ] && [ ! -e "$CONF/rice" ] || exit 0
+        # Espera o shell subir (até 30 s) para as preferências passarem por ele
+        for _ in $(seq 60); do
+            [ "$(qs -c nullyzos ipc call nullyzos rice '{}' '{}' 2>/dev/null)" = ok ] && break
+            sleep 0.5
+        done
+        aplicar "$id" --inicial ;;
+    *) sed -n '2,10p' "$0"; exit 1 ;;
+esac

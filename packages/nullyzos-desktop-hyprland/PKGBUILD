@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=40
+pkgrel=41
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -54,6 +54,11 @@ package() {
   # Atualizar o sistema pelas Configurações (pkexec)
   install -Dm755 "$src/apps/atualizar" "$pkgdir/usr/lib/nullyzos/atualizar"
   install -Dm644 "$src/apps/org.nullyzos.atualizar.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.atualizar.policy"
+  # Rices: aplicador, parte root (snapshot + pacotes da receita) e o catálogo verificado
+  install -Dm755 "$src/apps/nullyzos-rice" "$pkgdir/usr/bin/nullyzos-rice"
+  install -Dm755 "$src/apps/rice-root" "$pkgdir/usr/lib/nullyzos/rice-root"
+  install -Dm644 "$src/apps/org.nullyzos.rice.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.rice.policy"
+  install -Dm644 "$src/rices/catalogo.json" "$pkgdir/usr/share/nullyzos/rices/catalogo.json"
   # Configurações na busca de apps
   install -Dm644 -t "$pkgdir/usr/share/applications" "$src"/apps/*.desktop
   # Fundos: o padrão (o mesmo da tela de login) e as variações de cor

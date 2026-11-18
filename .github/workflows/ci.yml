@@ -20,7 +20,9 @@ jobs:
           python scripts/check-hypr.py
       - name: QML do shell
         run: python scripts/check-qml.py
+      - name: Receitas de rice (#9)
+        run: python scripts/check-rices.py --verificar
       - name: Shell scripts
         run: |
           sudo apt-get install -y shellcheck
-          shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/* shell/scripts/*.sh packages/nullyzos-sddm/fundo-login apps/limpeza apps/atualizar packages/nullyzos-essenciais/nullyzos-flathub terminal/terminal-shell && shellcheck -S warning -s bash terminal/bashrc
+          shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/* shell/scripts/*.sh packages/nullyzos-sddm/fundo-login apps/limpeza apps/atualizar apps/nullyzos-rice apps/rice-root packages/nullyzos-essenciais/nullyzos-flathub terminal/terminal-shell && shellcheck -S warning -s bash terminal/bashrc
