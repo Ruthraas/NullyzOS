@@ -46,7 +46,8 @@ hl.bind("XF86MonBrightnessDown", exec("brightnessctl set 5%-"), lr)
 
 -- Captura de tela (grim + slurp + wl-clipboard)
 hl.bind("Print", exec("grim - | wl-copy"), { description = "Capturar a tela" })
-hl.bind("SUPER + SHIFT + S", exec('grim -g "$(slurp)" - | wl-copy'), { description = "Capturar uma área" })
+hl.bind("SUPER + SHIFT + S", exec('grim -g "$(slurp)" - | satty --filename - --early-exit --copy-command wl-copy --output-filename "$(xdg-user-dir PICTURES)/captura-$(date +%Y%m%d-%H%M%S).png"'),
+  { description = "Capturar uma área (e editar)" })
 
 -- Sessão
 hl.bind("SUPER + SHIFT + Escape", hl.dsp.exit(), { description = "Sair da sessão" })

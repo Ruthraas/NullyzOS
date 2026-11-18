@@ -7,4 +7,9 @@ hl.on("hyprland.start", function()
   -- Agente polkit: pede a senha quando algum app precisa de permissão de administrador.
   hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
   hl.exec_cmd("hyprctl setcursor Adwaita ${XCURSOR_SIZE:-24}")
+  -- Pastas do usuário (Imagens, Downloads, Documentos...) na língua do sistema
+  hl.exec_cmd("xdg-user-dirs-update")
+  -- Histórico da área de transferência (texto e imagens), lido pela busca do shell
+  hl.exec_cmd("wl-paste --type text --watch cliphist store")
+  hl.exec_cmd("wl-paste --type image --watch cliphist store")
 end)

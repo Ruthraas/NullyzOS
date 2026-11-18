@@ -1,0 +1,41 @@
+# Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
+# O básico de um desktop de uso diário, igual para Hyprland e KDE: apps (ver imagem, PDF,
+# vídeo, texto, compactados, calculadora, discos), pendrive/celular/lixeira, fontes reserva
+# (emoji, CJK), codecs, pastas do usuário, Flatpak + Flathub, Bluetooth, impressora, firewall,
+# zram e os apps padrão (navegador: Brave pelo Flathub, instalado pelo instalador).
+# Só repositórios oficiais.
+
+pkgname=nullyzos-essenciais
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Apps e serviços básicos do NullyzOS (Hyprland e KDE)"
+arch=('any')
+url="https://github.com/Ruthraas/NullyzOS"
+license=('GPL-3.0-only')
+options=('!debug')
+depends=(
+  # Arquivos, pendrive, celular (MTP), câmera, lixeira
+  'udisks2' 'gvfs' 'gvfs-mtp' 'gvfs-gphoto2' 'xdg-user-dirs' 'xdg-utils'
+  # Apps
+  'gwenview' 'okular' 'haruna' 'kate' 'kcalc' 'ark' 'partitionmanager'
+  '7zip' 'unzip' 'unrar'
+  # Fontes reserva: sem quadradinhos em emoji, chinês, japonês, coreano
+  'noto-fonts' 'noto-fonts-emoji' 'noto-fonts-cjk'
+  # Codecs de áudio e vídeo
+  'gst-plugins-good' 'gst-plugins-bad' 'gst-plugins-ugly' 'gst-libav' 'ffmpeg'
+  # Loja de apps (Flathub) e seletores de arquivo dos apps GTK/Flatpak
+  'flatpak' 'xdg-desktop-portal-gtk'
+  # Bluetooth, impressora, firewall, memória comprimida
+  'bluez' 'bluez-utils' 'cups' 'system-config-printer' 'ufw' 'zram-generator'
+)
+backup=('etc/xdg/mimeapps.list' 'etc/systemd/zram-generator.conf')
+source=()
+
+_here() { cd "$startdir" && pwd; }
+
+package() {
+  install -Dm644 "$(_here)/mimeapps.list" "$pkgdir/etc/xdg/mimeapps.list"
+  install -Dm644 "$(_here)/zram-generator.conf" "$pkgdir/etc/systemd/zram-generator.conf"
+  install -Dm755 "$(_here)/nullyzos-flathub" "$pkgdir/usr/lib/nullyzos/flathub"
+  install -Dm644 "$(_here)/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

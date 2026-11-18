@@ -1,0 +1,18 @@
+#!/bin/sh
+# Liga o Flathub (loja de apps) e, opcionalmente, instala o Brave (navegador padrão).
+# Roda como root: pelo instalador (no sistema novo) ou por Configurações → Apps (pkexec).
+#   flathub          só adiciona o repositório Flathub
+#   flathub brave    adiciona e instala o Brave (com.brave.Browser, publicado pelo Brave)
+# Sem internet não falha a instalação: avisa e sai com 0 (dá para fazer depois).
+set -u
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || {
+    echo "Flathub: sem internet agora; dá para ligar depois em Configurações → Apps." >&2
+    exit 0
+}
+if [ "${1:-}" = "brave" ]; then
+    flatpak install -y --noninteractive --system flathub com.brave.Browser || {
+        echo "Brave: não deu para instalar agora; dá para instalar depois em Configurações → Apps." >&2
+        exit 0
+    }
+fi
+exit 0
