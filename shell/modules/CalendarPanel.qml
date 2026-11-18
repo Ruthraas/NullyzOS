@@ -57,8 +57,9 @@ PanelWindow {
 
     Glass {
         id: card
-        width: 340
-        height: col.implicitHeight + 32
+        width: Math.min(340, parent.width - 20)
+        height: Math.min(col.implicitHeight + 32, parent.height - y - 10)
+        clip: true
         x: parent.width - width - 10
         y: Prefs.barHeight + 8
         radius: Tok.rPanel - 4

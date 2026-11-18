@@ -49,8 +49,10 @@ PanelWindow {
 
     Rectangle {
         id: card
-        width: Math.min(900, root.width - 48)
-        height: Math.min(660, root.height - 72)
+        // Responsivo: até 900×660; em tela pequena encolhe e a lateral vira só ícones.
+        width: Math.min(900, root.width - (root.width < Tok.narrow ? 16 : 48))
+        height: Math.min(660, root.height - (root.height < 700 ? 24 : 72))
+        readonly property bool rail: width < 760
         anchors.centerIn: parent
         radius: Tok.rPanel
         color: Tok.bg
@@ -70,7 +72,8 @@ PanelWindow {
         // ---- lateral ----------------------------------------------------------------
         Rectangle {
             id: side
-            width: 232
+            width: card.rail ? 64 : 232
+            Behavior on width { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutCubic } }
             height: parent.height
             color: Tok.surface
             radius: Tok.rPanel
@@ -80,16 +83,17 @@ PanelWindow {
 
             Row {
                 id: brand
-                x: 20; y: 22
+                y: 22
                 spacing: 12
+                x: card.rail ? (side.width - 24) / 2 : 20
                 PixelN { anchors.verticalCenter: parent.verticalCenter; cell: 3.4 }
-                Txt { anchors.verticalCenter: parent.verticalCenter; text: "Configurações"; size: 16; font { weight: Font.DemiBold } }
+                Txt { visible: !card.rail; anchors.verticalCenter: parent.verticalCenter; text: "Configurações"; size: 16; font { weight: Font.DemiBold } }
             }
 
             // Rola quando os tópicos não cabem (tela baixa, texto Enorme).
             Flickable {
                 id: navFlick
-                anchors { top: brand.bottom; topMargin: 20; bottom: parent.bottom; bottomMargin: 12; left: parent.left; right: parent.right; leftMargin: 12; rightMargin: 12 }
+                anchors { top: brand.bottom; topMargin: 20; bottom: parent.bottom; bottomMargin: 12; left: parent.left; right: parent.right; leftMargin: card.rail ? 8 : 12; rightMargin: card.rail ? 8 : 12 }
                 contentHeight: navCol.implicitHeight
                 clip: true
                 boundsBehavior: Flickable.StopAtBounds
@@ -108,8 +112,15 @@ PanelWindow {
                         width: parent.width
                         spacing: 2
                         // Título do tópico
+                        // Na lateral estreita, uma linha no lugar do título do tópico
+                        Rectangle {
+                            visible: nav.firstOfGroup && card.rail && nav.index > 0
+                            width: parent.width; height: 13
+                            color: "transparent"
+                            Rectangle { anchors.centerIn: parent; width: parent.width - 16; height: 1; color: Tok.border }
+                        }
                         Txt {
-                            visible: nav.firstOfGroup
+                            visible: nav.firstOfGroup && !card.rail
                             x: 12
                             topPadding: nav.index === 0 ? 0 : 10
                             bottomPadding: 4
@@ -118,16 +129,18 @@ PanelWindow {
                             size: 11; font { weight: Font.DemiBold; letterSpacing: 1.1 }
                         }
                         Rectangle {
-                            width: parent.width; height: 32
+                            id: navBtn
+                            width: parent.width; height: card.rail ? 40 : 32
                             radius: Tok.rButton + 2
                             color: nav.current ? Tok.selection : (navArea.containsMouse ? Tok.hover : "transparent")
                             Behavior on color { ColorAnimation { duration: Tok.fast } }
                             Row {
-                                x: 12
+                                x: card.rail ? (navBtn.width - 18) / 2 : 12
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: 12
                                 Ico { anchors.verticalCenter: parent.verticalCenter; size: 18; d: nav.modelData.icon; color: nav.current ? Tok.accent : Tok.muted }
                                 Txt {
+                                    visible: !card.rail
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: nav.modelData.label
                                     color: nav.current ? Tok.text : Tok.muted
@@ -152,7 +165,7 @@ PanelWindow {
         // ---- conteúdo ---------------------------------------------------------------
         Loader {
             id: content
-            anchors { left: side.right; right: parent.right; top: parent.top; bottom: parent.bottom; margins: 32 }
+            anchors { left: side.right; right: parent.right; top: parent.top; bottom: parent.bottom; margins: card.rail ? 18 : 32 }
             source: root.pages[root.pageIndex].file
             // Troca de página: o conteúdo novo entra subindo um pouco (follow-through).
             onLoaded: { item.opacity = 0; slideIn.restart(); }

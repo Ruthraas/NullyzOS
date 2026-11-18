@@ -64,14 +64,23 @@ Singleton {
     property real fontScale: 1
     readonly property string mono: "Geist Mono"
 
-    // Cantos (botão, campo, cartão, painel)
-    readonly property int rButton: 8
-    readonly property int rField: 14
-    readonly property int rCard: 20
-    readonly property int rPanel: 28
+    // Cantos (botão, campo, cartão, painel), vezes `roundness` (Configurações → Aparência:
+    // 0 retos, 0.55 suaves, 1 normais, 1.4 redondos).
+    property real roundness: 1
+    readonly property int rButton: Math.round(8 * roundness)
+    readonly property int rField: Math.round(14 * roundness)
+    readonly property int rCard: Math.round(20 * roundness)
+    readonly property int rPanel: Math.round(28 * roundness)
 
-    // Durações (ms): hover, painéis, janelas. Modo VM encurta.
-    readonly property int fast: vm ? 100 : 160
-    readonly property int panel: vm ? 170 : 260
-    readonly property int slow: vm ? 260 : 420
+    // Durações (ms): hover, painéis, janelas, vezes `motion` (0 desligadas, 0.6 rápidas,
+    // 1 normais, 1.4 suaves). Modo VM encurta. Desligadas = 1 ms (as Behaviors continuam
+    // válidas, só que instantâneas).
+    property real motion: 1
+    readonly property real motionK: Math.max(0.006, motion) * (vm ? 0.65 : 1)
+    readonly property int fast: Math.round(160 * motionK)
+    readonly property int panel: Math.round(260 * motionK)
+    readonly property int slow: Math.round(420 * motionK)
+
+    // Telas estreitas (painéis e Configurações se rearrumam abaixo disto)
+    readonly property int narrow: 1000
 }

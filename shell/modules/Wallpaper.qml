@@ -16,6 +16,10 @@ PanelWindow {
     WlrLayershell.layer: WlrLayer.Background
     WlrLayershell.namespace: "nullyzos-wallpaper"
 
+    // Ajuste (Configurações → Aparência): preencher corta as sobras, ajustar mostra a imagem
+    // inteira, centralizar usa o tamanho original.
+    readonly property int fit: Prefs.wallpaperFit === "ajustar" ? Image.PreserveAspectFit
+        : Prefs.wallpaperFit === "centralizar" ? Image.Pad : Image.PreserveAspectCrop
     readonly property string want: Prefs.wallpaperUrl
     onWantChanged: {
         back.source = front.source;
@@ -28,8 +32,8 @@ PanelWindow {
     Image {
         id: back
         anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop
-        sourceSize: Qt.size(root.width, root.height)
+        fillMode: root.fit
+        sourceSize: root.fit === Image.Pad ? Qt.size(0, 0) : Qt.size(root.width, root.height)
         smooth: true
         asynchronous: true
     }
@@ -37,12 +41,20 @@ PanelWindow {
         id: front
         anchors.fill: parent
         source: root.want
-        fillMode: Image.PreserveAspectCrop
-        sourceSize: Qt.size(root.width, root.height)
+        fillMode: root.fit
+        sourceSize: root.fit === Image.Pad ? Qt.size(0, 0) : Qt.size(root.width, root.height)
         smooth: true
         asynchronous: true
         opacity: 0
         onStatusChanged: if (status === Image.Ready) opacity = 1
         Behavior on opacity { id: fade; NumberAnimation { duration: Tok.slow; easing.type: Easing.InOutCubic } }
+    }
+
+    // Escurecer o fundo (legibilidade em imagens claras)
+    Rectangle {
+        anchors.fill: parent
+        color: Qt.rgba(0, 0, 0, 1)
+        opacity: Prefs.wallpaperDim
+        Behavior on opacity { NumberAnimation { duration: Tok.panel } }
     }
 }

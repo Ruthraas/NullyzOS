@@ -22,6 +22,8 @@ PanelWindow {
     WlrLayershell.namespace: "nullyzos-menubar"
 
     readonly property var activeEntry: Hypr.activeToplevel ? Apps.byId(Hypr.activeToplevel.appId || "") : null
+    // Tela estreita: some o nome do app e a data fica curta (17/11).
+    readonly property bool narrow: width < Tok.narrow
     readonly property string activeName: activeEntry ? activeEntry.name
         : (Hypr.activeToplevel ? (Hypr.activeToplevel.appId || "") : "NullyzOS")
 
@@ -86,7 +88,7 @@ PanelWindow {
         }
 
         Txt {
-            visible: Prefs.showAppName
+            visible: Prefs.showAppName && !bar.narrow
             anchors.verticalCenter: parent.verticalCenter
             text: bar.activeName
             font.weight: Font.DemiBold
@@ -134,7 +136,7 @@ PanelWindow {
                 id: clockRow
                 anchors.centerIn: parent
                 spacing: 10
-                Txt { visible: Prefs.showDate; anchors.verticalCenter: parent.verticalCenter; text: Clock.dayShort; font.weight: Font.Medium }
+                Txt { visible: Prefs.showDate; anchors.verticalCenter: parent.verticalCenter; text: bar.narrow ? Qt.formatDate(Clock.now, "dd/MM") : Clock.dayShort; font.weight: Font.Medium }
                 Txt { anchors.verticalCenter: parent.verticalCenter; text: Prefs.clockSeconds ? Clock.timeSec : Clock.time; font.weight: Font.Medium; font.features: { "tnum": 1 } }
             }
             MouseArea {

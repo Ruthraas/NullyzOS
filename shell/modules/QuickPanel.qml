@@ -37,7 +37,7 @@ PanelWindow {
 
     Glass {
         id: card
-        width: 340
+        width: Math.min(340, parent.width - 20)
         height: col.implicitHeight + 32
         x: parent.width - width - 10
         y: Prefs.barHeight + 8

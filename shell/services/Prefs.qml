@@ -21,6 +21,9 @@ import qs.theme
 //   clock24, dateStyle ("curta" | "longa" | "numerica"), weekStart ("domingo" | "segunda")
 //   showLogo, showWorkspaces, workspaceCount, showStatus, barSize ("compacta" | "normal" | "alta")
 //   uiFont (família da interface), textScale (0.9 | 1 | 1.1 | 1.25)
+//   theme também aceita "auto" (claro das 7h às 19h); roundness, motion (multiplicadores);
+//   wallpaperFit (preencher | ajustar | centralizar), wallpaperDim (0..0.6),
+//   wallpaperCycle (minutos para trocar sozinho; 0 = não troca)
 //   dock*: posição (baixo | esquerda | direita), ícone (px), ampliar (0..0.8), ocultar sozinho,
 //          estilo (vidro | solido | transparente), indicador (ponto | traco | nenhum),
 //          mostrar abertos, fixados (JSON com ids de .desktop)
@@ -43,7 +46,13 @@ Singleton {
     readonly property int idleLock: prefs.idleLock
     readonly property int idleSuspend: prefs.idleSuspend
 
-    readonly property bool light: prefs.theme === "claro"
+    readonly property bool light: prefs.theme === "claro" || (prefs.theme === "auto" && Clock.now.getHours() >= 7 && Clock.now.getHours() < 19)
+    readonly property string theme: prefs.theme
+    readonly property real roundness: prefs.roundness
+    readonly property real motion: prefs.motion
+    readonly property string wallpaperFit: prefs.wallpaperFit
+    readonly property real wallpaperDim: prefs.wallpaperDim
+    readonly property int wallpaperCycle: prefs.wallpaperCycle
     readonly property real glassOpacity: prefs.glassOpacity
     readonly property int cursorSize: prefs.cursorSize
     readonly property bool clock24: prefs.clock24
@@ -55,7 +64,11 @@ Singleton {
     readonly property bool showStatus: prefs.showStatus
     readonly property int barHeight: ({ compacta: 30, normal: 36, alta: 42 })[prefs.barSize] || 36
     Binding { target: Tok; property: "accentName"; value: prefs.accent }
-    Binding { target: Tok; property: "light"; value: prefs.theme === "claro" }
+    Binding { target: Tok; property: "light"; value: root.light }
+    Binding { target: Tok; property: "roundness"; value: prefs.roundness }
+    Binding { target: Tok; property: "motion"; value: prefs.motion }
+    // Tema automático: ao virar claro/escuro, borda das janelas e terminal acompanham.
+    onLightChanged: if (prefs.theme === "auto") { HyprConf.save(); Terminal.save(); }
     Binding { target: Tok; property: "glassOpacity"; value: prefs.glassOpacity }
     Binding { target: Tok; property: "font"; value: prefs.uiFont || "Geist" }
     Binding { target: Tok; property: "fontScale"; value: prefs.textScale || 1 }
@@ -82,6 +95,7 @@ Singleton {
         prefs[key] = value;
         file.writeAdapter();
         if (key === "accent" || key === "theme") { HyprConf.save(); Terminal.save(); }   // borda e terminal na cor nova
+        if (key === "roundness") HyprConf.set("rounding", Math.round(14 * value));   // janelas acompanham
         if (key === "cursorSize") {
             Quickshell.execDetached(["hyprctl", "setcursor", "Adwaita", String(value)]);
             HyprConf.save();                                           // XCURSOR_SIZE para os apps
@@ -103,7 +117,8 @@ Singleton {
                           "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
                           "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "uiFont", "textScale",
                           "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
-                          "dockShowOpen", "dockPinned"];
+                          "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
+                          "wallpaperCycle"];
             if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
         }
         adapter: JsonAdapter {
@@ -140,6 +155,32 @@ Singleton {
             property string dockIndicator: "ponto"
             property bool dockShowOpen: true
             property string dockPinned: '["kitty", "org.kde.dolphin"]'
+            property real roundness: 1
+            property real motion: 1
+            property string wallpaperFit: "preencher"
+            property real wallpaperDim: 0
+            property int wallpaperCycle: 0
+        }
+    }
+
+    // Troca sozinha de fundo: a cada `wallpaperCycle` minutos, a próxima imagem da lista.
+    Timer {
+        interval: Math.max(1, prefs.wallpaperCycle) * 60000
+        running: prefs.wallpaperCycle > 0
+        repeat: true
+        onTriggered: if (!cycleList.running) cycleList.running = true
+    }
+    Process {
+        id: cycleList
+        command: ["sh", Qt.resolvedUrl("../scripts/wallpapers.sh").toString().replace("file://", "")]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const l = text.split("\n").filter(x => x);
+                if (l.length < 2) return;
+                const i = l.indexOf(root.currentWallpaper);
+                const next = l[(i + 1) % l.length];
+                root.set("wallpaper", next === root.defaultWallpaper ? "" : next);
+            }
         }
     }
 
