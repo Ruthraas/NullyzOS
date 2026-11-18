@@ -1,8 +1,8 @@
-# Janelas no NullyzOS: botões à esquerda (fechar, minimizar, maximizar), sem borda grossa,
-# desfoque e cantos do Breeze; trocar de janela com a mesma cara do Breeze.
+# Janelas no NullyzOS: decoração Nullyz (Aurorae: botões redondos à esquerda, título discreto),
+# sem borda grossa, desfoque atrás de painéis e menus (o tema Nullyz Vidro é translúcido).
 [org.kde.kdecoration2]
-library=org.kde.breeze
-theme=Breeze
+library=org.kde.kwin.aurorae
+theme=__aurorae__svg__Nullyz
 BorderSize=None
 BorderSizeAuto=false
 ButtonsOnLeft=XIA

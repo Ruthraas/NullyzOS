@@ -9,7 +9,7 @@ ColorScheme=NullyzEscuro
 Theme=breeze-dark
 
 [plasmarc][Theme]
-name=default
+name=NullyzVidro
 
 [kcminputrc][Mouse]
 cursorTheme=Adwaita
@@ -21,8 +21,8 @@ LayoutName=org.kde.breeze.desktop
 LayoutName=org.kde.breeze.desktop
 
 [kwinrc][org.kde.kdecoration2]
-library=org.kde.breeze
-theme=Breeze
+library=org.kde.kwin.aurorae
+theme=__aurorae__svg__Nullyz
 
 [KSplash]
 Theme=org.nullyzos.desktop

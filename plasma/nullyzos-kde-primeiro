@@ -6,4 +6,5 @@ marca="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos/kde-aplicado"
 mkdir -p "$(dirname "$marca")"
 plasma-apply-lookandfeel -a org.nullyzos.desktop --resetLayout >/dev/null 2>&1 || exit 0
 plasma-apply-colorscheme NullyzEscuro >/dev/null 2>&1
+plasma-apply-desktoptheme NullyzVidro >/dev/null 2>&1
 date > "$marca"

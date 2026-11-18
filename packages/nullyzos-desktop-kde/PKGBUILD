@@ -5,13 +5,13 @@
 
 pkgname=nullyzos-desktop-kde
 pkgver=0.2.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Visual do NullyzOS para KDE Plasma"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
 options=('!debug')
-backup=('etc/xdg/kdeglobals' 'etc/xdg/kwinrc' 'etc/xdg/breezerc' 'etc/xdg/ksplashrc' 'etc/xdg/konsolerc')
+backup=('etc/xdg/kdeglobals' 'etc/xdg/kwinrc' 'etc/xdg/breezerc' 'etc/xdg/ksplashrc' 'etc/xdg/konsolerc' 'etc/xdg/plasmarc')
 depends=('plasma-desktop' 'plasma-workspace' 'kwin' 'breeze' 'breeze-icons' 'konsole' 'dolphin'
          'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais')
 makedepends=('python')
@@ -21,6 +21,7 @@ _root() { cd "$startdir/../.." && pwd; }
 
 build() {
   python "$(_root)/plasma/gerar.py" "$srcdir/cores"
+  python "$(_root)/plasma/gerar-tema.py" "$srcdir/tema"
   python "$(_root)/branding/gerar-fundo.py" "$srcdir/960x540.png" padrao
 }
 
@@ -32,6 +33,11 @@ package() {
   install -dm755 "$pkgdir/usr/share/plasma/look-and-feel"
   cp -r "$p/look-and-feel/org.nullyzos.desktop" "$pkgdir/usr/share/plasma/look-and-feel/"
   chmod -R u=rwX,go=rX "$pkgdir/usr/share/plasma/look-and-feel/org.nullyzos.desktop"
+  # Tema do Plasma (vidro) e decoração de janela (Aurorae)
+  install -dm755 "$pkgdir/usr/share/plasma/desktoptheme" "$pkgdir/usr/share/aurorae/themes"
+  cp -r "$srcdir/tema/desktoptheme/NullyzVidro" "$pkgdir/usr/share/plasma/desktoptheme/"
+  cp -r "$srcdir/tema/aurorae/Nullyz" "$pkgdir/usr/share/aurorae/themes/"
+  chmod -R u=rwX,go=rX "$pkgdir/usr/share/plasma/desktoptheme" "$pkgdir/usr/share/aurorae"
   # Cores (Plasma e Konsole) e perfil do Konsole
   install -Dm644 -t "$pkgdir/usr/share/color-schemes" "$srcdir/cores/NullyzEscuro.colors" "$srcdir/cores/NullyzClaro.colors"
   install -Dm644 "$srcdir/cores/Nullyz.colorscheme" "$pkgdir/usr/share/konsole/Nullyz.colorscheme"
