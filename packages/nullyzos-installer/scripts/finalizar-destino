@@ -4,8 +4,6 @@
 #  1) Flathub + Brave (navegador padrão; /etc/xdg/mimeapps.list do nullyzos-essenciais);
 #  2) firewall ligado (ufw: bloqueia conexões de fora, deixa as de dentro);
 #  3) snapper no / (btrfs): snapshots antes/depois de cada pacman (snap-pac) e no boot.
-#  4) rice do passo Visual ($1): anota em /etc/nullyzos/rice-inicial para o primeiro login
-#     (nullyzos-rice inicial), se for do desktop instalado. "nullyz" é o padrão: nada a fazer.
 # Nada aqui pode quebrar a instalação: sem internet, o Brave fica para depois.
 set -uo pipefail
 
@@ -34,19 +32,6 @@ if command -v snapper >/dev/null 2>&1 && [ "$(stat -f -c %T /)" = "btrfs" ] && [
     else
         mkdir -p /.snapshots
         mount /.snapshots 2>/dev/null || true
-    fi
-fi
-rice=${1:-nullyz}
-cat=/usr/share/nullyzos/rices/catalogo.json
-if [[ "$rice" =~ ^[a-z0-9][a-z0-9-]{1,40}$ ]] && [ "$rice" != nullyz ] && [ -r "$cat" ]; then
-    desk=$(jq -r --arg id "$rice" '.[] | select(.id == $id) | .desktop' "$cat")
-    if { [ "$desk" = hyprland ] && pacman -Q nullyzos-desktop-hyprland >/dev/null 2>&1; } ||
-       { [ "$desk" = kde ] && pacman -Q plasma-desktop >/dev/null 2>&1; }; then
-        echo ":: rice escolhido: $rice (aplica no primeiro login)"
-        mkdir -p /etc/nullyzos
-        echo "$rice" > /etc/nullyzos/rice-inicial
-    else
-        echo ":: rice $rice não é para o desktop escolhido: fica o Nullyz"
     fi
 fi
 exit 0

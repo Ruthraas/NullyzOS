@@ -27,6 +27,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 RICES = RAIZ / "rices"
 CATALOGO = RICES / "catalogo.json"
 VISUAL = RAIZ / "packages/nullyzos-installer/modules/packagechooser-visual.conf"
+CONTEXTO = RAIZ / "packages/nullyzos-installer/modules/contextualprocess-rice.conf"
 
 LICENCAS = re.compile(r"^(MIT|ISC|Unlicense|CC0-1\.0|0BSD|BSD-[23]-Clause|Apache-2\.0|MPL-2\.0|"
                       r"(L|A)?GPL-[23]\.0(-only|-or-later)?|CC-BY(-SA)?-4\.0)$")
@@ -181,6 +182,22 @@ def visual_conf(cat):
     return "\n".join(linhas) + "\n"
 
 
+def contexto_conf(cat):
+    linhas = [
+        "# GERADO por scripts/check-rices.py a partir de rices/*/rice.toml. Não edite à mão.",
+        "# Um comando por rice do passo Visual (chave packagechooser_visual do Calamares):",
+        "# anota o escolhido para o primeiro login. O Nullyz padrão não precisa de nada.",
+        "---",
+        "dontChroot: false",
+        "timeout: 60",
+        "packagechooser_visual:",
+    ]
+    for r in cat:
+        if r["id"] != "nullyz":
+            linhas.append(f"    {r['id']}: \"-/usr/lib/nullyzos-installer/rice-inicial {r['id']}\"")
+    return "\n".join(linhas) + "\n"
+
+
 def main():
     offline = "--offline" in sys.argv
     verificar = "--verificar" in sys.argv
@@ -199,6 +216,7 @@ def main():
     gerados = {
         CATALOGO: json.dumps(cat, ensure_ascii=False, indent=2) + "\n",
         VISUAL: visual_conf(cat),
+        CONTEXTO: contexto_conf(cat),
     }
     velhos = [p for p, t in gerados.items() if not p.exists() or p.read_text(encoding="utf-8") != t]
     if verificar and velhos:

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Roda DENTRO do sistema novo (contextualprocess@rice, gerado de rices/*/rice.toml): anota o
+# rice escolhido no passo Visual em /etc/nullyzos/rice-inicial, para o primeiro login
+# (nullyzos-rice inicial). Só se for do desktop instalado; senão fica o Nullyz.
+set -uo pipefail
+rice=${1:-}
+cat=/usr/share/nullyzos/rices/catalogo.json
+[[ "$rice" =~ ^[a-z0-9][a-z0-9-]{1,40}$ ]] && [ "$rice" != nullyz ] && [ -r "$cat" ] || exit 0
+desk=$(jq -r --arg id "$rice" '.[] | select(.id == $id) | .desktop' "$cat")
+if { [ "$desk" = hyprland ] && pacman -Q nullyzos-desktop-hyprland >/dev/null 2>&1; } ||
+   { [ "$desk" = kde ] && pacman -Q plasma-desktop >/dev/null 2>&1; }; then
+    echo ":: rice escolhido: $rice (aplica no primeiro login)"
+    mkdir -p /etc/nullyzos
+    echo "$rice" > /etc/nullyzos/rice-inicial
+else
+    echo ":: rice $rice não é para o desktop escolhido: fica o Nullyz"
+fi
+exit 0
