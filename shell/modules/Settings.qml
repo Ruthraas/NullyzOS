@@ -110,14 +110,14 @@ PanelWindow {
                         Txt {
                             visible: nav.firstOfGroup
                             x: 12
-                            topPadding: nav.index === 0 ? 0 : 12
+                            topPadding: nav.index === 0 ? 0 : 10
                             bottomPadding: 4
                             text: nav.modelData.group.toUpperCase()
                             muted: true
                             size: 11; font { weight: Font.DemiBold; letterSpacing: 1.1 }
                         }
                         Rectangle {
-                            width: parent.width; height: 36
+                            width: parent.width; height: 32
                             radius: Tok.rButton + 2
                             color: nav.current ? Tok.selection : (navArea.containsMouse ? Tok.hover : "transparent")
                             Behavior on color { ColorAnimation { duration: Tok.fast } }

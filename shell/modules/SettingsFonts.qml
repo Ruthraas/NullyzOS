@@ -64,16 +64,19 @@ SettingsPage {
         Behavior on color { ColorAnimation { duration: Tok.fast } }
         Txt {
             anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: 12 }
-            text: fc.sample
-            size: fc.sample.length > 3 ? 15 : 28
+            // Fonte que falta: o nome no lugar do exemplo (não dá para desenhar nela)
+            text: fc.available ? fc.sample : fc.family
+            size: fc.available ? (fc.sample.length > 3 ? 15 : 28) : 14
             font.family: fc.available ? fc.family : Tok.font
-            opacity: fc.available ? 1 : 0.35
+            muted: !fc.available
+            width: parent.width - 16
+            horizontalAlignment: Text.AlignHCenter
         }
         Txt {
             anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 10 }
             width: parent.width - 16
             horizontalAlignment: Text.AlignHCenter
-            visible: fc.available || !fc.pkg
+            visible: fc.available
             text: fc.family
             size: 12
             muted: !fc.chosen
@@ -83,7 +86,7 @@ SettingsPage {
             visible: !fc.available && fc.pkg !== ""
             anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 8 }
             height: 26
-            text: page.busy === fc.pkg ? "Instalando…" : "Instalar " + fc.family
+            text: page.busy === fc.pkg ? "Instalando…" : "Instalar"
             onClicked: page.install(fc.pkg)
         }
         MouseArea {
