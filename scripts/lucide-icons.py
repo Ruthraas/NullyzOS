@@ -48,7 +48,15 @@ def elemento(e):
     tag = e.tag.split("}")[-1]
     a = e.attrib
     if tag == "path":
-        return a["d"]
+        # Cada <path> começa do zero: um "m" minúsculo inicial é absoluto. Juntando vários
+        # num caminho só ele viraria relativo ao fim do anterior (o "x" saía torto).
+        # Depois do "m" inicial, pares soltos são "l" relativos: vira "M x y l ...".
+        d = a["d"].strip()
+        if d.startswith("m"):
+            m = re.match(r"m\s*(-?[\d.]+)[\s,]*(-?[\d.]+)\s*(.*)", d, re.S)
+            x, y, resto = m.group(1), m.group(2), m.group(3).strip()
+            return f"M{x} {y}" + ((" l" + resto) if resto and (resto[0].isdigit() or resto[0] in "-.") else (" " + resto if resto else ""))
+        return d
     if tag == "circle":
         cx, cy, r = num(a.get("cx")), num(a.get("cy")), num(a.get("r"))
         if r < 1:   # ponto

@@ -1,8 +1,8 @@
 import QtQuick
 import qs.theme
 
-// Controle segmentado: as opções lado a lado num bloco só, a escolhida com um fundo que
-// desliza até ela (follow-through com leve overshoot).
+// Controle segmentado: as opções lado a lado num bloco só; a escolhida ganha o fundo na
+// cor de destaque, que entra crescendo com leve overshoot.
 //   Segmented { options: [["a", "Uma"], ["b", "Outra"]]; current: x; onPicked: v => … }
 Item {
     id: root
@@ -26,19 +26,6 @@ Item {
         color: Tok.surfaceHi
         border { width: 1; color: Tok.border }
     }
-    // Fundo da opção escolhida
-    Rectangle {
-        visible: root.index >= 0
-        readonly property Item target: root.index >= 0 ? rep.itemAt(root.index) : null
-        x: target ? row.x + target.x : 3
-        y: 3
-        width: target ? target.width : 0
-        height: parent.height - 6
-        radius: Math.min(height / 2, Tok.rField - 3)
-        color: Tok.accent
-        Behavior on x { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutBack; easing.overshoot: 1.2 } }
-        Behavior on width { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutCubic } }
-    }
     Row {
         id: row
         x: 3; y: 3
@@ -52,10 +39,14 @@ Item {
                 readonly property bool sel: index === root.index
                 width: label.implicitWidth + 24
                 height: row.height
+                // Fundo da escolhida: entra crescendo com leve overshoot
                 Rectangle {
                     anchors.fill: parent
                     radius: Math.min(height / 2, Tok.rField - 3)
-                    color: area.containsMouse && !parent.sel ? Tok.hover : "transparent"
+                    color: parent.sel ? Tok.accent : (area.containsMouse ? Tok.hover : "transparent")
+                    scale: parent.sel ? 1 : 0.92
+                    Behavior on color { ColorAnimation { duration: Tok.fast } }
+                    Behavior on scale { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutBack } }
                 }
                 Txt {
                     id: label
