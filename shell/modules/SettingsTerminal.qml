@@ -14,6 +14,8 @@ SettingsPage {
     readonly property var pal: Tok.light ? Tok.palettes.claro : Tok.palettes.escuro
     readonly property color acc: Tok.light ? Tok.accentEntry.light : Tok.accentEntry.color
     // Pontos → pixels (aprox.); dividido pela escala da interface: a prévia mostra o terminal, que não escala junto.
+    // Buraco negro 19×15 (terminal/logo-buraco.txt): # luz, . espaço, espaço = vazio
+    readonly property string holePattern: ".............................................#####.............##   ##...........#       #.........##       ##.......##         ##...###################...#############.......##       ##.........#       #...........##   ##.............#####............................................."
     readonly property real px: Terminal.fontSize * 1.33 / Tok.fontScale
 
     component Choice: Row {
@@ -57,15 +59,17 @@ SettingsPage {
                 // N em pixel (aceso no destaque, apagado fraco) ou em blocos
                 Grid {
                     anchors.verticalCenter: parent.verticalCenter
-                    columns: 7
-                    readonly property real cell: Math.max(4, page.px * 0.55)
+                    readonly property bool hole: Terminal.logo === "buraco"
+                    columns: hole ? 19 : 7
+                    readonly property real cell: hole ? Math.max(3, page.px * 0.42) : Math.max(4, page.px * 0.55)
                     spacing: Terminal.logo === "blocos" ? 0 : cell * 0.45
                     Repeater {
-                        model: "##...#####..######.####.######..#####...####...##".split("")
+                        // # luz, . espaço apagado, espaço = vazio (centro do buraco negro)
+                        model: (parent.hole ? page.holePattern : "##...#####..######.####.######..#####...####...##").split("")
                         Rectangle {
                             required property string modelData
                             readonly property bool lit: modelData === "#"
-                            readonly property bool bin: Terminal.logo === "binario"
+                            readonly property bool bin: Terminal.logo === "binario" || Terminal.logo === "buraco"
                             width: parent.cell; height: parent.cell
                             radius: Terminal.logo === "pixel" ? (lit ? 1 : parent.cell / 2) : 0
                             color: bin ? "transparent" : lit ? page.acc : (Terminal.logo === "pixel" ? Tok.ansiDark[8] : "transparent")
@@ -73,7 +77,7 @@ SettingsPage {
                             Txt {
                                 visible: parent.bin
                                 anchors.centerIn: parent
-                                text: parent.lit ? "1" : "0"
+                                text: parent.modelData === " " ? "" : parent.lit ? "1" : "0"
                                 color: parent.lit ? page.acc : Tok.ansiDark[8]
                                 size: page.px
                                 font { family: Tok.mono; weight: parent.lit ? Font.Bold : Font.Normal }
@@ -184,9 +188,9 @@ SettingsPage {
     }
     SettingsRow {
         title: "Logo"
-        description: "Binário: o N feito de 1 no meio dos 0. Pixel: painel de LED. Blocos: o N sólido."
+        description: "Buraco negro: o símbolo do terminal, luz em 1, espaço em 0 e o centro vazio (o null). Ou o N: binário, pixel ou blocos."
         Choice {
-            options: [["binario", "Binário"], ["pixel", "Pixel"], ["blocos", "Blocos"]]
+            options: [["buraco", "Buraco negro"], ["binario", "N binário"], ["pixel", "N pixel"], ["blocos", "N blocos"]]
             current: Terminal.logo
             onPicked: v => Terminal.set("logo", v)
         }

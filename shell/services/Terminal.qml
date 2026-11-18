@@ -10,7 +10,7 @@ import qs.theme
 //                                   tema e do destaque, fonte, transparência, cursor, margem
 //   ~/.config/nullyzos/terminal.sh  (lido pelo bash do terminal): prompt, saudação, destaque
 //   ~/.config/nullyzos/fastfetch.jsonc  (saudação completa e o comando `fastfetch`): logo do N
-//                                   em binário, pixel ou blocos, na cor de destaque
+//                                   (buraco negro ou o N em binário, pixel, blocos), na cor de destaque
 // Aplicar = gerar os dois e mandar USR1 ao kitty (recarrega a config sem fechar nada).
 Singleton {
     id: root
@@ -23,7 +23,7 @@ Singleton {
     readonly property bool prompt: conf.prompt
     readonly property string greeting: conf.greeting      // sempre | sessao | nunca
     readonly property string greetStyle: conf.greetStyle  // fastfetch | simples
-    readonly property string logo: conf.logo              // binario | pixel | blocos
+    readonly property string logo: conf.logo              // buraco | binario | pixel | blocos
     readonly property var infoKeys: conf.info.split(",").filter(x => x)
     function toggleInfo(key) {
         const l = root.infoKeys.includes(key) ? root.infoKeys.filter(k => k !== key) : root.infoKeys.concat([key]);
@@ -142,7 +142,7 @@ Singleton {
             property bool prompt: true
             property string greeting: "sempre"
             property string greetStyle: "fastfetch"
-            property string logo: "binario"
+            property string logo: "buraco"
             property string info: "sistema,kernel,ligado,pacotes,janelas,terminal,processador,video,memoria,disco,cores"
         }
     }
