@@ -84,7 +84,7 @@ SettingsPage {
               ? "A tela de login usa um fundo anterior. Escolha de novo para atualizar."
               : "Pede a sua senha: a tela de login é do sistema, não só sua."
         color: page.loginError !== "" ? Tok.error : Tok.muted
-        font.pixelSize: 13
+        size: 13
         wrapMode: Text.Wrap
         elide: Text.ElideNone
     }

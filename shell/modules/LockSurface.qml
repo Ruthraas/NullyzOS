@@ -35,13 +35,13 @@ Item {
             Txt {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: Clock.time
-                font { pixelSize: Math.min(112, root.height * 0.13); weight: Font.Light; letterSpacing: -3 }
+                size: Math.min(112, root.height * 0.13); font { weight: Font.Light; letterSpacing: -3 }
             }
             Txt {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: Clock.dateLong
                 color: Qt.rgba(0.93, 0.93, 0.95, 0.86)
-                font { pixelSize: 24; weight: Font.Medium }
+                size: 24; font { weight: Font.Medium }
             }
         }
 
@@ -61,7 +61,7 @@ Item {
                 Txt {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: Quickshell.env("USER") || ""
-                    font { pixelSize: 20; weight: Font.DemiBold }
+                    size: 20; font { weight: Font.DemiBold }
                 }
 
                 Rectangle {
@@ -77,7 +77,7 @@ Item {
                         echoMode: TextInput.Password
                         passwordCharacter: "●"
                         color: Tok.text
-                        font { family: Tok.font; pixelSize: 16 }
+                        font { family: Tok.font; pixelSize: Math.round(16 * Tok.fontScale) }
                         enabled: !root.lock.busy
                         focus: true
                         Component.onCompleted: forceActiveFocus()
@@ -91,7 +91,7 @@ Item {
                         visible: field.text.length === 0
                         text: root.lock.busy ? "Conferindo…" : "Senha"
                         muted: true
-                        font.pixelSize: 16
+                        size: 16
                     }
                 }
 
@@ -100,7 +100,7 @@ Item {
                     height: 18
                     text: root.lock.status
                     color: Tok.error
-                    font.pixelSize: 14
+                    size: 14
                 }
             }
         }

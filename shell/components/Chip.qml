@@ -22,7 +22,7 @@ Rectangle {
         anchors.centerIn: parent
         text: chip.text
         color: chip.active ? Tok.textOnAccent : Tok.text
-        font { pixelSize: 13; weight: chip.active ? Font.DemiBold : Font.Normal }
+        size: 13; font { weight: chip.active ? Font.DemiBold : Font.Normal }
     }
     MouseArea {
         id: chipArea

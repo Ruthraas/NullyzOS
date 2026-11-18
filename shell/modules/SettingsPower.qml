@@ -52,7 +52,7 @@ SettingsPage {
         width: parent.width
         text: "Vídeos em tela cheia e chamadas podem pedir para a tela não bloquear; esse pedido é respeitado."
         muted: true
-        font.pixelSize: 13
+        size: 13
         wrapMode: Text.Wrap
         elide: Text.ElideNone
     }

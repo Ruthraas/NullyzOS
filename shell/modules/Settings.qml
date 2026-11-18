@@ -25,6 +25,7 @@ PanelWindow {
         { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml", group: "Personalização" },
         { id: "barra", label: "Barra e dock", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização" },
         { id: "janelas", label: "Janelas", icon: Icons.windows, file: "SettingsWindows.qml", group: "Personalização" },
+        { id: "fontes", label: "Fontes", icon: Icons.type, file: "SettingsFonts.qml", group: "Personalização" },
         { id: "terminal", label: "Terminal", icon: Icons.terminal, file: "SettingsTerminal.qml", group: "Personalização" },
         { id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml", group: "Sistema" },
         { id: "som", label: "Som", icon: Icons.volumeHigh, file: "SettingsSound.qml", group: "Sistema" },
@@ -81,11 +82,19 @@ PanelWindow {
                 x: 20; y: 22
                 spacing: 12
                 PixelN { anchors.verticalCenter: parent.verticalCenter; cell: 3.4 }
-                Txt { anchors.verticalCenter: parent.verticalCenter; text: "Configurações"; font { pixelSize: 16; weight: Font.DemiBold } }
+                Txt { anchors.verticalCenter: parent.verticalCenter; text: "Configurações"; size: 16; font { weight: Font.DemiBold } }
             }
 
+            // Rola quando os tópicos não cabem (tela baixa, texto Enorme).
+            Flickable {
+                id: navFlick
+                anchors { top: brand.bottom; topMargin: 20; bottom: parent.bottom; bottomMargin: 12; left: parent.left; right: parent.right; leftMargin: 12; rightMargin: 12 }
+                contentHeight: navCol.implicitHeight
+                clip: true
+                boundsBehavior: Flickable.StopAtBounds
             Column {
-                anchors { top: brand.bottom; topMargin: 20; left: parent.left; right: parent.right; leftMargin: 12; rightMargin: 12 }
+                id: navCol
+                width: navFlick.width
                 spacing: 2
                 Repeater {
                     model: root.pages
@@ -105,7 +114,7 @@ PanelWindow {
                             bottomPadding: 4
                             text: nav.modelData.group.toUpperCase()
                             muted: true
-                            font { pixelSize: 11; weight: Font.DemiBold; letterSpacing: 1.1 }
+                            size: 11; font { weight: Font.DemiBold; letterSpacing: 1.1 }
                         }
                         Rectangle {
                             width: parent.width; height: 36
@@ -135,6 +144,7 @@ PanelWindow {
                         }
                     }
                 }
+            }
             }
         }
 

@@ -20,6 +20,7 @@ import qs.theme
 //   theme ("escuro" | "claro"), glassOpacity (0.35..0.9), cursorSize (24, 32, 48)
 //   clock24, dateStyle ("curta" | "longa" | "numerica"), weekStart ("domingo" | "segunda")
 //   showLogo, showWorkspaces, workspaceCount, showStatus, barSize ("compacta" | "normal" | "alta")
+//   uiFont (família da interface), textScale (0.9 | 1 | 1.1 | 1.25)
 Singleton {
     id: root
 
@@ -53,6 +54,10 @@ Singleton {
     Binding { target: Tok; property: "accentName"; value: prefs.accent }
     Binding { target: Tok; property: "light"; value: prefs.theme === "claro" }
     Binding { target: Tok; property: "glassOpacity"; value: prefs.glassOpacity }
+    Binding { target: Tok; property: "font"; value: prefs.uiFont || "Geist" }
+    Binding { target: Tok; property: "fontScale"; value: prefs.textScale || 1 }
+    readonly property string uiFont: prefs.uiFont
+    readonly property real textScale: prefs.textScale
 
     readonly property string wallpaperUrl: url(prefs.wallpaper || defaultWallpaper)
     readonly property string lockUrl: prefs.lockWallpaper === "desktop" ? wallpaperUrl : url(defaultWallpaper)
@@ -84,7 +89,7 @@ Singleton {
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
                           "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
                           "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
-                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize"];
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "uiFont", "textScale"];
             if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
         }
         adapter: JsonAdapter {
@@ -111,6 +116,8 @@ Singleton {
             property int workspaceCount: 5
             property bool showStatus: true
             property string barSize: "normal"
+            property string uiFont: "Geist"
+            property real textScale: 1
         }
     }
 

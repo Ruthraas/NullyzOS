@@ -82,7 +82,7 @@ SettingsPage {
             anchors { fill: parent; leftMargin: 14; rightMargin: 14 }
             verticalAlignment: TextInput.AlignVCenter
             color: Tok.text
-            font { family: Tok.font; pixelSize: 15 }
+            font { family: Tok.font; pixelSize: Math.round(15 * Tok.fontScale) }
             Keys.onEscapePressed: text = ""
         }
         Txt { x: 14; anchors.verticalCenter: parent.verticalCenter; visible: test.text === ""; text: "Digite aqui para testar: ação, pão, você…"; muted: true }
@@ -95,7 +95,7 @@ SettingsPage {
         description: "Quantas vezes por segundo a letra repete ao segurar a tecla."
         Row {
             spacing: 12
-            Txt { anchors.verticalCenter: parent.verticalCenter; text: (HyprConf.repeatRate || 35) + "/s"; muted: true; width: 40; font.pixelSize: 13 }
+            Txt { anchors.verticalCenter: parent.verticalCenter; text: (HyprConf.repeatRate || 35) + "/s"; muted: true; width: 40; size: 13}
             Slider {
                 anchors.verticalCenter: parent.verticalCenter; width: 200
                 value: ((HyprConf.repeatRate || 35) - 15) / 45

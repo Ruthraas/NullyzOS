@@ -53,8 +53,8 @@ PanelWindow {
                     Column {
                         width: parent.width - 48
                         spacing: 2
-                        Txt { width: parent.width; text: card.n.appName || "Notificação"; muted: true; font.pixelSize: 12 }
-                        Txt { width: parent.width; text: card.n.summary; font.weight: Font.DemiBold; font.pixelSize: 15 }
+                        Txt { width: parent.width; text: card.n.appName || "Notificação"; muted: true; size: 12}
+                        Txt { width: parent.width; text: card.n.summary; font.weight: Font.DemiBold; size: 15}
                         Txt {
                             width: parent.width
                             visible: text !== ""
@@ -62,7 +62,7 @@ PanelWindow {
                             muted: true
                             wrapMode: Text.Wrap
                             maximumLineCount: 3
-                            font.pixelSize: 13
+                            size: 13
                         }
                     }
                 }

@@ -5,6 +5,7 @@
 #                     e apaga as de pacotes que já foram removidos
 #   limpeza orfaos    remove pacotes instalados como dependência que nada mais usa
 #   limpeza energia   liga o power-profiles-daemon (perfis de energia)
+#   limpeza fonte P   instala o pacote de fonte P (só os da lista abaixo, repositórios oficiais)
 set -eu
 
 case "${1:-}" in
@@ -21,8 +22,18 @@ case "${1:-}" in
     energia)
         systemctl enable --now power-profiles-daemon.service
         ;;
+    fonte)
+        case "${2:-}" in
+            inter-font | ttf-jetbrains-mono | ttf-fira-code | ttf-cascadia-code | ttf-ibm-plex | noto-fonts | \
+            ttf-roboto | ttf-ubuntu-font-family | ttf-fira-sans | adobe-source-code-pro-fonts | ttf-hack | \
+            cantarell-fonts | ttf-opensans | ttf-dejavu)
+                pacman -S --needed --noconfirm "$2"
+                ;;
+            *) echo "fonte fora da lista: ${2:-}" >&2; exit 3 ;;
+        esac
+        ;;
     *)
-        echo "uso: limpeza pacotes|orfaos|energia" >&2
+        echo "uso: limpeza pacotes|orfaos|energia|fonte <pacote>" >&2
         exit 2
         ;;
 esac

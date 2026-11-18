@@ -63,7 +63,7 @@ SettingsPage {
                 Txt {
                     anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
                     text: th.modelData[1]
-                    font.pixelSize: 13
+                    size: 13
                     color: th.chosen ? Tok.text : Tok.muted
                 }
                 MouseArea {
@@ -84,7 +84,7 @@ SettingsPage {
     Item {
         width: parent.width; height: 20
         Txt { text: "Cor de destaque"; font.weight: Font.DemiBold }
-        Txt { anchors.right: parent.right; text: (Tok.accents[Tok.accentName] || Tok.accents.violeta).name; muted: true; font.pixelSize: 13 }
+        Txt { anchors.right: parent.right; text: (Tok.accents[Tok.accentName] || Tok.accents.violeta).name; muted: true; size: 13}
     }
     Row {
         spacing: 14
@@ -175,6 +175,6 @@ SettingsPage {
         width: parent.width
         text: "Para aparecer aqui, coloque a imagem na pasta Imagens."
         muted: true
-        font.pixelSize: 13
+        size: 13
     }
 }

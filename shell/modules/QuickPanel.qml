@@ -83,7 +83,7 @@ PanelWindow {
                     width: parent.width - 72
                     spacing: 2
                     Txt { width: parent.width; text: Network.hasWifi ? "Wi-Fi" : "Rede"; font.weight: Font.DemiBold }
-                    Txt { width: parent.width; text: Network.hasWifi && !Network.wifiEnabled ? "Desligado" : Network.label; muted: true; font.pixelSize: 13 }
+                    Txt { width: parent.width; text: Network.hasWifi && !Network.wifiEnabled ? "Desligado" : Network.label; muted: true; size: 13}
                 }
                 MouseArea {
                     id: netArea
@@ -103,7 +103,7 @@ PanelWindow {
                 Item {
                     width: parent.width; height: 18
                     Txt { text: "Som"; font.weight: Font.DemiBold }
-                    Txt { anchors.right: parent.right; text: Audio.label; muted: true; font.pixelSize: 13; font.features: { "tnum": 1 } }
+                    Txt { anchors.right: parent.right; text: Audio.label; muted: true; size: 13; font.features: { "tnum": 1 } }
                 }
                 Row {
                     width: parent.width
@@ -127,7 +127,7 @@ PanelWindow {
                 Item {
                     width: parent.width; height: 18
                     Txt { text: "Brilho"; font.weight: Font.DemiBold }
-                    Txt { anchors.right: parent.right; text: Math.round(Brightness.value * 100) + "%"; muted: true; font.pixelSize: 13 }
+                    Txt { anchors.right: parent.right; text: Math.round(Brightness.value * 100) + "%"; muted: true; size: 13}
                 }
                 Row {
                     width: parent.width
@@ -171,7 +171,7 @@ PanelWindow {
                 horizontalAlignment: Text.AlignHCenter
                 text: root.confirm === "reboot" ? "Clique de novo para reiniciar" : "Clique de novo para desligar"
                 color: Tok.error
-                font.pixelSize: 13
+                size: 13
             }
         }
     }

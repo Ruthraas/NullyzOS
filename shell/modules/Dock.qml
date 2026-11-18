@@ -86,7 +86,7 @@ PanelWindow {
                         border { width: 1; color: Tok.edge }
                         opacity: area.containsMouse ? 1 : 0
                         Behavior on opacity { NumberAnimation { duration: Tok.fast } }
-                        Txt { id: label; anchors.centerIn: parent; font.pixelSize: 13
+                        Txt { id: label; anchors.centerIn: parent; size: 13
                               text: slot.modelData.entry ? slot.modelData.entry.name : slot.modelData.id }
                     }
                     MouseArea {

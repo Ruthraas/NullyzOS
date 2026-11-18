@@ -61,7 +61,7 @@ SettingsPage {
         width: parent.width
         text: "Nenhum dispositivo de som encontrado. Em máquina virtual, ligue o áudio nas configurações da VM."
         muted: true
-        font.pixelSize: 13
+        size: 13
         wrapMode: Text.Wrap
         elide: Text.ElideNone
     }

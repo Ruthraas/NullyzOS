@@ -59,7 +59,9 @@ Singleton {
     readonly property color faint: light ? Qt.rgba(0, 0, 0, 0.22) : Qt.rgba(1, 1, 1, 0.28)   // pontos, trilhos
     readonly property color scrim: Qt.rgba(0, 0, 0, light ? 0.18 : 0.3)                         // fundo atrás de painéis
 
-    readonly property string font: "Geist"
+    // Fonte da interface e escala do texto (Configurações → Fontes; Prefs escreve).
+    property string font: "Geist"
+    property real fontScale: 1
     readonly property string mono: "Geist Mono"
 
     // Cantos (botão, campo, cartão, painel)

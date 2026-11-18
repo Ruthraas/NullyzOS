@@ -74,7 +74,7 @@ SettingsPage {
     Item {
         width: parent.width; height: 20
         Txt { text: "Relógio e data"; font.weight: Font.DemiBold }
-        Txt { anchors.right: parent.right; text: "Agora: " + Clock.dayShort + "  " + (Prefs.clockSeconds ? Clock.timeSec : Clock.time); muted: true; font.pixelSize: 13 }
+        Txt { anchors.right: parent.right; text: "Agora: " + Clock.dayShort + "  " + (Prefs.clockSeconds ? Clock.timeSec : Clock.time); muted: true; size: 13}
     }
     SettingsRow {
         title: "Formato da hora"

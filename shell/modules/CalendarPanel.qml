@@ -92,7 +92,7 @@ PanelWindow {
                         const s = Clock.ptBR.toString(new Date(root.year, root.month, 1), "MMMM 'de' yyyy");
                         return s.charAt(0).toUpperCase() + s.slice(1);
                     }
-                    font { pixelSize: 16; weight: Font.DemiBold }
+                    size: 16; font { weight: Font.DemiBold }
                 }
                 Row {
                     anchors { right: parent.right; verticalCenter: parent.verticalCenter }
@@ -128,7 +128,7 @@ PanelWindow {
                             horizontalAlignment: Text.AlignHCenter
                             text: modelData
                             muted: true
-                            font { pixelSize: 12; weight: Font.DemiBold }
+                            size: 12; font { weight: Font.DemiBold }
                         }
                     }
                 }
@@ -156,7 +156,7 @@ PanelWindow {
                                     text: cell.modelData.date.getDate()
                                     color: cell.isToday ? Tok.textOnAccent : (cell.modelData.inMonth ? Tok.text : Tok.muted)
                                     opacity: cell.modelData.inMonth || cell.isToday ? 1 : 0.5
-                                    font { pixelSize: 13; weight: cell.isToday || cell.isSel ? Font.DemiBold : Font.Normal; features: { "tnum": 1 } }
+                                    size: 13; font { weight: cell.isToday || cell.isSel ? Font.DemiBold : Font.Normal; features: { "tnum": 1 } }
                                 }
                             }
                             Rectangle {
@@ -208,7 +208,7 @@ PanelWindow {
                             width: 48
                             text: ev.modelData.time || "Dia todo"
                             muted: true
-                            font { pixelSize: 12; features: { "tnum": 1 } }
+                            size: 12; font { features: { "tnum": 1 } }
                         }
                         Txt { x: 74; anchors.verticalCenter: parent.verticalCenter; width: parent.width - 74 - 36; text: ev.modelData.title }
                         MouseArea { id: evArea; anchors.fill: parent; hoverEnabled: true }
@@ -226,7 +226,7 @@ PanelWindow {
                     visible: Agenda.on(root.selected).length === 0
                     text: "Nada marcado."
                     muted: true
-                    font.pixelSize: 13
+                    size: 13
                 }
             }
 
@@ -269,11 +269,11 @@ PanelWindow {
             verticalAlignment: TextInput.AlignVCenter
             clip: true
             color: Tok.text
-            font { family: Tok.font; pixelSize: 13 }
+            font { family: Tok.font; pixelSize: Math.round(13 * Tok.fontScale) }
             Keys.onReturnPressed: f.accepted()
             Keys.onEnterPressed: f.accepted()
             Keys.onEscapePressed: Panels.closeAll()
         }
-        Txt { x: 10; anchors.verticalCenter: parent.verticalCenter; visible: input.text === ""; text: f.placeholder; muted: true; font.pixelSize: 13 }
+        Txt { x: 10; anchors.verticalCenter: parent.verticalCenter; visible: input.text === ""; text: f.placeholder; muted: true; size: 13}
     }
 }

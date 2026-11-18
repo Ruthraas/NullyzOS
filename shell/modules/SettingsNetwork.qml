@@ -32,7 +32,7 @@ SettingsPage {
             spacing: 2
             Txt { width: parent.width; text: Network.label; font.weight: Font.DemiBold }
             Txt {
-                width: parent.width; muted: true; font.pixelSize: 13
+                width: parent.width; muted: true; size: 13
                 text: Network.type === "wifi" ? "Conectado pelo Wi-Fi · sinal " + Network.signal + "%"
                     : Network.type === "ethernet" ? "Conectado pelo cabo" : "Sem internet"
             }
@@ -51,7 +51,7 @@ SettingsPage {
         width: parent.width
         text: "Este computador não tem Wi-Fi (ou o adaptador não foi reconhecido)."
         muted: true
-        font.pixelSize: 13
+        size: 13
         wrapMode: Text.Wrap
         elide: Text.ElideNone
     }
@@ -69,7 +69,7 @@ SettingsPage {
                 x: 8; anchors.verticalCenter: parent.verticalCenter; size: 15; d: Icons.restart; color: Tok.muted
                 RotationAnimation on rotation { running: Network.scanning; from: 0; to: 360; duration: 900; loops: Animation.Infinite }
             }
-            Txt { id: rescan; x: 28; anchors.verticalCenter: parent.verticalCenter; text: Network.scanning ? "Procurando…" : "Procurar"; muted: true; font.pixelSize: 13 }
+            Txt { id: rescan; x: 28; anchors.verticalCenter: parent.verticalCenter; text: Network.scanning ? "Procurando…" : "Procurar"; muted: true; size: 13}
             MouseArea { id: rescanArea; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: Network.scan() }
         }
     }
@@ -120,7 +120,7 @@ SettingsPage {
                                 text: net.busy ? "Conectando…" : net.modelData.active ? "Conectada" : net.modelData.known ? "Salva" : ""
                                 muted: !net.modelData.active
                                 color: net.modelData.active ? Tok.accent : Tok.muted
-                                font.pixelSize: 13
+                                size: 13
                             }
                             Ico { visible: net.modelData.secure; anchors.verticalCenter: parent.verticalCenter; size: 14; d: Icons.lock; color: Tok.muted }
                         }
@@ -161,7 +161,7 @@ SettingsPage {
                                 echoMode: TextInput.Password
                                 passwordCharacter: "●"
                                 color: Tok.text
-                                font { family: Tok.font; pixelSize: 14 }
+                                font { family: Tok.font; pixelSize: Math.round(14 * Tok.fontScale) }
                                 onVisibleChanged: if (visible && net.asking) forceActiveFocus()
                                 Keys.onReturnPressed: joinBtn.join()
                                 Keys.onEnterPressed: joinBtn.join()
@@ -194,7 +194,7 @@ SettingsPage {
         width: parent.width
         text: Network.lastError
         color: Tok.error
-        font.pixelSize: 13
+        size: 13
         wrapMode: Text.Wrap
         elide: Text.ElideNone
     }
@@ -210,7 +210,7 @@ SettingsPage {
                 width: bl.implicitWidth + 28; height: 34; radius: Tok.rButton + 2
                 color: ba.containsMouse ? Tok.hover : Tok.surfaceHi
                 border { width: 1; color: Tok.border }
-                Txt { id: bl; anchors.centerIn: parent; text: parent.modelData.t; font.pixelSize: 13 }
+                Txt { id: bl; anchors.centerIn: parent; text: parent.modelData.t; size: 13}
                 MouseArea {
                     id: ba
                     anchors.fill: parent

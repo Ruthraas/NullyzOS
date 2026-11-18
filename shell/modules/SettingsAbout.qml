@@ -24,7 +24,7 @@ SettingsPage {
         Txt {
             anchors.horizontalCenter: parent.horizontalCenter
             text: "NullyzOS"
-            font { pixelSize: 28; weight: Font.DemiBold; letterSpacing: -0.5 }
+            size: 28; font { weight: Font.DemiBold; letterSpacing: -0.5 }
         }
         Txt {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -69,6 +69,6 @@ SettingsPage {
         anchors.horizontalCenter: parent.horizontalCenter
         text: "github.com/Ruthraas/NullyzOS"
         muted: true
-        font.pixelSize: 13
+        size: 13
     }
 }

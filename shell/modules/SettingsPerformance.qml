@@ -165,7 +165,7 @@ SettingsPage {
         visible: page.message !== ""
         text: page.message
         color: page.message === "Pronto." ? Tok.accent : Tok.error
-        font.pixelSize: 13
+        size: 13
     }
 
     // Medidor: título, valor e barra que enche com a cor de destaque (vermelho se alto).
@@ -180,8 +180,8 @@ SettingsPage {
         radius: Tok.rField
         color: Tok.surface
         border { width: 1; color: Tok.border }
-        Txt { x: 16; y: 14; text: m.label; muted: true; font.pixelSize: 13 }
-        Txt { anchors.right: parent.right; anchors.rightMargin: 16; y: 14; text: m.detail; font.pixelSize: 13; font.weight: Font.DemiBold; font.features: { "tnum": 1 } }
+        Txt { x: 16; y: 14; text: m.label; muted: true; size: 13}
+        Txt { anchors.right: parent.right; anchors.rightMargin: 16; y: 14; text: m.detail; size: 13; font.weight: Font.DemiBold; font.features: { "tnum": 1 } }
         Rectangle {
             x: 16; y: 46
             width: parent.width - 32; height: 8; radius: 4

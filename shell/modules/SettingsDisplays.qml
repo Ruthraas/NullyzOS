@@ -119,14 +119,14 @@ SettingsPage {
                     spacing: 2
                     Txt { text: mon.modelData.description || mon.modelData.name; font.weight: Font.DemiBold }
                     Txt {
-                        muted: true; font.pixelSize: 13
+                        muted: true; size: 13
                         text: mon.modelData.width + " × " + mon.modelData.height + " · " + mon.hz + " Hz · tamanho "
                               + Math.round((mon.modelData.scale || 1) * 100) + "%"
                               + (mon.modelData.description ? " · " + mon.modelData.name : "")
                     }
                 }
 
-                Txt { text: "Resolução"; muted: true; font.pixelSize: 13 }
+                Txt { text: "Resolução"; muted: true; size: 13}
                 Flow {
                     width: parent.width
                     spacing: 8
@@ -145,7 +145,7 @@ SettingsPage {
                     }
                 }
 
-                Txt { visible: mon.rates.length > 1; text: "Taxa de atualização"; muted: true; font.pixelSize: 13 }
+                Txt { visible: mon.rates.length > 1; text: "Taxa de atualização"; muted: true; size: 13}
                 Flow {
                     visible: mon.rates.length > 1
                     width: parent.width
@@ -161,7 +161,7 @@ SettingsPage {
                     }
                 }
 
-                Txt { text: "Tamanho dos itens"; muted: true; font.pixelSize: 13 }
+                Txt { text: "Tamanho dos itens"; muted: true; size: 13}
                 Flow {
                     width: parent.width
                     spacing: 8

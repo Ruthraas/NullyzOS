@@ -67,7 +67,7 @@ Item {
         width: parent.width
         horizontalAlignment: Text.AlignHCenter
         text: root.label
-        font.pixelSize: 13
+        size: 13
         color: root.selected ? Tok.text : Tok.muted
     }
 }

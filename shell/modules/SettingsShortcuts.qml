@@ -72,7 +72,7 @@ SettingsPage {
                                 radius: 6
                                 color: Tok.surfaceHi
                                 border { width: 1; color: Tok.border }
-                                Txt { id: kl; anchors.centerIn: parent; text: parent.modelData; font { family: Tok.mono; pixelSize: 12 } }
+                                Txt { id: kl; anchors.centerIn: parent; text: parent.modelData; size: 12; font { family: Tok.mono } }
                             }
                         }
                     }

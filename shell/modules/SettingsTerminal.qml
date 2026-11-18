@@ -13,7 +13,8 @@ SettingsPage {
 
     readonly property var pal: Tok.light ? Tok.palettes.claro : Tok.palettes.escuro
     readonly property color acc: Tok.light ? Tok.accentEntry.light : Tok.accentEntry.color
-    readonly property real px: Terminal.fontSize * 1.33          // pontos → pixels (aprox.)
+    // Pontos → pixels (aprox.); dividido pela escala da interface: a prévia mostra o terminal, que não escala junto.
+    readonly property real px: Terminal.fontSize * 1.33 / Tok.fontScale
 
     component Choice: Row {
         id: ch
@@ -57,22 +58,22 @@ SettingsPage {
                 Column {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 2
-                    Txt { text: "NullyzOS · Hyprland"; color: page.acc; font { family: Tok.mono; pixelSize: page.px } }
-                    Txt { text: (Quickshell.env("USER") || "voce") + "@nullyzos"; color: page.pal.text; font { family: Tok.mono; pixelSize: page.px } }
-                    Txt { text: "ligado  2 h 14 min"; color: page.pal.muted; font { family: Tok.mono; pixelSize: page.px } }
+                    Txt { text: "NullyzOS · Hyprland"; color: page.acc; size: page.px; font { family: Tok.mono } }
+                    Txt { text: (Quickshell.env("USER") || "voce") + "@nullyzos"; color: page.pal.text; size: page.px; font { family: Tok.mono } }
+                    Txt { text: "ligado  2 h 14 min"; color: page.pal.muted; size: page.px; font { family: Tok.mono } }
                 }
             }
             Row {
                 spacing: 0
-                Txt { text: "~/projetos/nullyz "; color: page.pal.text; font { family: Tok.mono; pixelSize: page.px; weight: Terminal.prompt ? Font.Bold : Font.Normal } }
-                Txt { visible: Terminal.prompt; text: "main "; color: page.pal.muted; font { family: Tok.mono; pixelSize: page.px } }
-                Txt { text: Terminal.prompt ? "› " : "$ "; color: Terminal.prompt ? page.acc : page.pal.text; font { family: Tok.mono; pixelSize: page.px } }
-                Txt { text: "git status"; color: page.pal.text; font { family: Tok.mono; pixelSize: page.px } }
+                Txt { text: "~/projetos/nullyz "; color: page.pal.text; size: page.px; font { family: Tok.mono;  weight: Terminal.prompt ? Font.Bold : Font.Normal } }
+                Txt { visible: Terminal.prompt; text: "main "; color: page.pal.muted; size: page.px; font { family: Tok.mono } }
+                Txt { text: Terminal.prompt ? "› " : "$ "; color: Terminal.prompt ? page.acc : page.pal.text; size: page.px; font { family: Tok.mono } }
+                Txt { text: "git status"; color: page.pal.text; size: page.px; font { family: Tok.mono } }
             }
-            Txt { text: "Tudo em dia, nada para enviar."; color: page.pal.muted; font { family: Tok.mono; pixelSize: page.px } }
+            Txt { text: "Tudo em dia, nada para enviar."; color: page.pal.muted; size: page.px; font { family: Tok.mono } }
             Row {
-                Txt { text: "~/projetos/nullyz "; color: page.pal.text; font { family: Tok.mono; pixelSize: page.px; weight: Terminal.prompt ? Font.Bold : Font.Normal } }
-                Txt { text: Terminal.prompt ? "› " : "$ "; color: Terminal.prompt ? page.acc : page.pal.text; font { family: Tok.mono; pixelSize: page.px } }
+                Txt { text: "~/projetos/nullyz "; color: page.pal.text; size: page.px; font { family: Tok.mono;  weight: Terminal.prompt ? Font.Bold : Font.Normal } }
+                Txt { text: Terminal.prompt ? "› " : "$ "; color: Terminal.prompt ? page.acc : page.pal.text; size: page.px; font { family: Tok.mono } }
                 // Cursor no formato escolhido, piscando
                 Rectangle {
                     anchors.bottom: parent.bottom
@@ -151,7 +152,7 @@ SettingsPage {
         width: parent.width
         text: "Muda na hora nos terminais abertos; o prompt e a saudação valem para os próximos."
         muted: true
-        font.pixelSize: 13
+        size: 13
         wrapMode: Text.Wrap
         elide: Text.ElideNone
     }

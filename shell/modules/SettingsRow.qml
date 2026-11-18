@@ -32,7 +32,7 @@ Item {
             visible: text !== ""
             text: row.description
             muted: true
-            font.pixelSize: 13
+            size: 13
             wrapMode: Text.Wrap
             elide: Text.ElideNone
         }

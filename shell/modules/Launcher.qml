@@ -67,7 +67,7 @@ PanelWindow {
                 id: field
                 anchors { left: parent.left; leftMargin: 56; right: parent.right; rightMargin: 22; verticalCenter: parent.verticalCenter }
                 color: Tok.text
-                font { family: Tok.font; pixelSize: 21; weight: Font.Medium }
+                font { family: Tok.font; pixelSize: Math.round(21 * Tok.fontScale); weight: Font.Medium }
                 selectionColor: Tok.accent
                 clip: true
                 Keys.onEscapePressed: Panels.closeAll()
@@ -82,7 +82,7 @@ PanelWindow {
                 visible: field.text.length === 0
                 text: "Buscar apps"
                 muted: true
-                font.pixelSize: 21
+                size: 21
             }
             Rectangle {
                 visible: root.results.length > 0
@@ -118,13 +118,13 @@ PanelWindow {
                 Column {
                     anchors { left: appIcon.right; leftMargin: 14; right: parent.right; rightMargin: 14; verticalCenter: parent.verticalCenter }
                     spacing: 1
-                    Txt { width: parent.width; text: row.modelData.name; font.weight: Font.Medium; font.pixelSize: 15 }
+                    Txt { width: parent.width; text: row.modelData.name; font.weight: Font.Medium; size: 15}
                     Txt {
                         width: parent.width
                         visible: text !== ""
                         text: row.modelData.genericName || row.modelData.comment || ""
                         muted: true
-                        font.pixelSize: 12
+                        size: 12
                     }
                 }
                 MouseArea {

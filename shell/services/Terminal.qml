@@ -14,6 +14,7 @@ Singleton {
     id: root
 
     readonly property real fontSize: conf.fontSize
+    readonly property string fontFamily: conf.fontFamily
     readonly property real opacity: conf.opacity
     readonly property string cursor: conf.cursor          // beam | block | underline
     readonly property int padding: conf.padding
@@ -35,6 +36,7 @@ Singleton {
         const ansi = L ? Tok.ansiLight : Tok.ansiDark;
         const out = [
             "# Gerado pelas Configurações do NullyzOS (Terminal): não edite, mude por lá.",
+            `font_family ${conf.fontFamily}`,
             `font_size ${conf.fontSize}`,
             `background_opacity ${conf.opacity}`,
             `cursor_shape ${conf.cursor}`,
@@ -74,6 +76,7 @@ Singleton {
         adapter: JsonAdapter {
             id: conf
             property real fontSize: 11.5
+            property string fontFamily: "Geist Mono"
             property real opacity: 0.94
             property string cursor: "beam"
             property int padding: 12

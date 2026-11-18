@@ -29,7 +29,7 @@ Item {
         Txt {
             anchors.centerIn: parent
             text: ((root.entry ? root.entry.name : root.fallbackName) || "?").charAt(0).toUpperCase()
-            font { pixelSize: root.size * 0.45; weight: Font.DemiBold }
+            size: root.size * 0.45; font { weight: Font.DemiBold }
             color: Tok.accent
         }
     }
