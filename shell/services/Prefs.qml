@@ -51,6 +51,8 @@ Singleton {
     // Paleta de rice (Tok.schemes): define claro/escuro sozinha
     readonly property string palette: prefs.palette
     readonly property bool kdeGlass: prefs.kdeGlass
+    readonly property bool wallpaperTint: prefs.wallpaperTint
+    Binding { target: Tok; property: "tintGlass"; value: prefs.wallpaperTint }
     readonly property real kdeAnim: prefs.kdeAnim
     readonly property bool kdeButtonsLeft: prefs.kdeButtonsLeft
     readonly property bool light: Tok.schemes[prefs.palette] ? Tok.schemes[prefs.palette].light : prefs.theme === "claro" || (prefs.theme === "auto" && Clock.now.getHours() >= 7 && Clock.now.getHours() < 19)
@@ -153,7 +155,7 @@ Singleton {
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
                           "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
                           "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
-                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "palette", "kdeGlass", "kdeAnim", "kdeButtonsLeft", "uiFont", "textScale",
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "palette", "kdeGlass", "kdeAnim", "kdeButtonsLeft", "wallpaperTint", "uiFont", "textScale",
                           "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
                           "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
                           "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp", "startupApps", "notifSeconds",
@@ -187,6 +189,7 @@ Singleton {
             property string barStyle: "classica"
             property string palette: ""
             property bool kdeGlass: true
+            property bool wallpaperTint: false
             property real kdeAnim: 1
             property bool kdeButtonsLeft: true
             property string uiFont: "Geist"

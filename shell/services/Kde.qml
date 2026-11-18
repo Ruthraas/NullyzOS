@@ -69,6 +69,10 @@ Singleton {
         run(["sh", "-c", "mkdir -p \"$1\" && printf '%s %s\\n' \"$2\" \"$3\" > \"$1/kde-cores\"", "sh",
              Prefs.dir, scheme, accentHex || ""]);
     }
+    // Destaque do wallpaper (recurso do próprio Plasma: segue o fundo quando ele troca)
+    function setAccentFromWallpaper(on) {
+        run(["kwriteconfig6", "--file", "kdeglobals", "--group", "General", "--key", "accentColorFromWallpaper", on ? "true" : "false"]);
+    }
     function setGlass(on, light) { run(["plasma-apply-desktoptheme", on ? "NullyzVidro" : (light ? "breeze-light" : "breeze-dark")]); }
     function setAnimations(factor) {
         run(["kwriteconfig6", "--file", "kdeglobals", "--group", "KDE", "--key", "AnimationDurationFactor", String(factor)]);

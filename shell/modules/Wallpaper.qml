@@ -58,7 +58,7 @@ PanelWindow {
         id: sampler
         visible: false
         width: 48; height: 27
-        enabled: Prefs.accent === "auto" && root.screen === Quickshell.screens[0]
+        enabled: (Prefs.accent === "auto" || Prefs.wallpaperTint) && root.screen === Quickshell.screens[0]
         readonly property string src: enabled ? root.want : ""
         onSrcChanged: if (src) { if (isImageLoaded(src)) requestPaint(); else loadImage(src); }
         onImageLoaded: requestPaint()
@@ -68,6 +68,12 @@ PanelWindow {
             ctx.drawImage(src, 0, 0, width, height);
             const d = ctx.getImageData(0, 0, width, height).data;
             const bins = [];
+            // Tom médio (para tingir o vidro): média de todos os pixels, com a saturação contida
+            let ar = 0, ag = 0, ab = 0;
+            for (let i = 0; i < d.length; i += 4) { ar += d[i]; ag += d[i + 1]; ab += d[i + 2]; }
+            const n = d.length / 4;
+            const avg = Qt.rgba(ar / n / 255, ag / n / 255, ab / n / 255, 1);
+            Tok.autoTint = Qt.hsla(Math.max(0, avg.hslHue), Math.min(0.6, avg.hslSaturation * 1.4), Tok.light ? 0.86 : 0.2, 1);
             for (let b = 0; b < 12; b++) bins.push({ w: 0, r: 0, g: 0, b: 0 });
             for (let i = 0; i < d.length; i += 4) {
                 const c = Qt.rgba(d[i] / 255, d[i + 1] / 255, d[i + 2] / 255, 1);

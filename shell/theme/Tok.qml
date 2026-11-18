@@ -70,6 +70,15 @@ Singleton {
     // "auto" = cor tirada do wallpaper (modules/AccentSampler): no escuro a amostra, no claro
     // uma versão mais fechada para ter contraste.
     property color autoAccent: "#9d8cff"
+    // "Barra e dock com as cores do wallpaper": o tom médio do fundo (modules/Wallpaper.qml)
+    // tinge o vidro da barra, do dock e dos painéis.
+    property bool tintGlass: false
+    property color autoTint: "#17171f"
+    readonly property color glassBase: tintGlass
+        ? Qt.rgba(surface.r + (autoTint.r - surface.r) * (light ? 0.22 : 0.38),
+                  surface.g + (autoTint.g - surface.g) * (light ? 0.22 : 0.38),
+                  surface.b + (autoTint.b - surface.b) * (light ? 0.22 : 0.38), 1)
+        : surface
     // "tema" = a cor da paleta do rice (Ouro dourado, Brasa vermelho…)
     readonly property var accentEntry: accentName === "auto"
         ? { name: "Do wallpaper", color: autoAccent, light: Qt.darker(autoAccent, 1.55) }
@@ -80,8 +89,8 @@ Singleton {
 
     // Vidro: tinta (mais opaca no modo VM, que não tem desfoque), borda de luz e brilho no topo.
     readonly property real glassAlpha: vm ? 0.94 : glassOpacity
-    readonly property color glass: light ? Qt.rgba(surface.r, surface.g, surface.b, Math.min(0.96, glassAlpha + 0.08))
-                                         : Qt.rgba(surface.r, surface.g, surface.b, glassAlpha)
+    readonly property color glass: light ? Qt.rgba(glassBase.r, glassBase.g, glassBase.b, Math.min(0.96, glassAlpha + 0.08))
+                                         : Qt.rgba(glassBase.r, glassBase.g, glassBase.b, glassAlpha)
     readonly property color edge: light ? Qt.rgba(0, 0, 0, 0.10) : Qt.rgba(1, 1, 1, 0.16)
     readonly property color highlight: light ? Qt.rgba(1, 1, 1, 0.9) : Qt.rgba(1, 1, 1, 0.28)
     readonly property color hover: light ? Qt.rgba(0, 0, 0, 0.06) : Qt.rgba(1, 1, 1, 0.08)

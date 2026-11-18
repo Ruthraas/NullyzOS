@@ -77,6 +77,14 @@ SettingsPage {
     Item { width: 1; height: 6 }
 
     SettingsRow {
+        title: "Cores do wallpaper"
+        description: "A cor de destaque (seleção, dock, botões) sai do fundo e acompanha quando ele troca."
+        Toggle {
+            checked: Prefs.wallpaperTint
+            onToggled: v => { Prefs.set("wallpaperTint", v); Kde.setAccentFromWallpaper(v); }
+        }
+    }
+    SettingsRow {
         title: "Vidro"
         description: "Barra, dock e menus translúcidos, com o fundo desfocado por trás."
         Toggle {

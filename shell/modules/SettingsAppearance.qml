@@ -187,6 +187,11 @@ SettingsPage {
         }
     }
     SettingsRow {
+        title: "Barra e dock com as cores do wallpaper"
+        description: "O vidro da barra, do dock e dos painéis pega o tom do fundo e acompanha quando ele troca."
+        Toggle { checked: Prefs.wallpaperTint; onToggled: v => Prefs.set("wallpaperTint", v) }
+    }
+    SettingsRow {
         title: "Transparência do vidro"
         description: Tok.vm ? "Em máquina virtual o vidro fica quase opaco (sem desfoque)." : "Barra de menus, busca e painéis: quanto do fundo aparece através deles."
         Slider {
