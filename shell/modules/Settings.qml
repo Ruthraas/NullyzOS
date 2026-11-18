@@ -23,7 +23,8 @@ PanelWindow {
     readonly property var pages: [
         { id: "aparencia", label: "Aparência", icon: Icons.palette, file: "SettingsAppearance.qml", group: "Personalização" },
         { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml", group: "Personalização" },
-        { id: "barra", label: "Barra e dock", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização" },
+        { id: "barra", label: "Barra", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização" },
+        { id: "dock", label: "Dock", icon: Icons.dock, file: "SettingsDock.qml", group: "Personalização" },
         { id: "janelas", label: "Janelas", icon: Icons.windows, file: "SettingsWindows.qml", group: "Personalização" },
         { id: "fontes", label: "Fontes", icon: Icons.type, file: "SettingsFonts.qml", group: "Personalização" },
         { id: "terminal", label: "Terminal", icon: Icons.terminal, file: "SettingsTerminal.qml", group: "Personalização" },

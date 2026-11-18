@@ -11,8 +11,19 @@ Singleton {
         .filter(e => !e.noDisplay)
         .sort((a, b) => a.name.localeCompare(b.name))
 
-    // Fixados no dock (ids de .desktop). v0.1: padrão do sistema; a escolha do usuário vem com as Configurações.
-    readonly property var pinned: ["kitty", "org.kde.dolphin"]
+    // Fixados no dock (ids de .desktop), na ordem; muda pelo menu do dock (botão direito).
+    readonly property var pinned: Prefs.dockPinned
+    function isPinned(id) { return root.pinned.some(p => p.toLowerCase() === String(id).toLowerCase()); }
+    function pin(id) { if (!isPinned(id)) Prefs.setPinned(root.pinned.concat([id])); }
+    function unpin(id) { Prefs.setPinned(root.pinned.filter(p => p.toLowerCase() !== String(id).toLowerCase())); }
+    function movePinned(id, step) {
+        const l = root.pinned.slice();
+        const i = l.findIndex(p => p.toLowerCase() === String(id).toLowerCase());
+        const j = i + step;
+        if (i < 0 || j < 0 || j >= l.length) return;
+        [l[i], l[j]] = [l[j], l[i]];
+        Prefs.setPinned(l);
+    }
 
     function byId(id) { return DesktopEntries.byId(id) || DesktopEntries.heuristicLookup(id); }
     // Caminho do ícone, ou "" se o tema não tem nenhum (aí o shell desenha a inicial do app).

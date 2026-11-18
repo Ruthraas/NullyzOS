@@ -3,11 +3,11 @@ import qs.theme
 import qs.services
 import qs.components
 
-// Configurações → Barra e dock: o que a barra de menus mostra, o relógio e o dock.
+// Configurações → Barra: o que a barra de menus mostra e o relógio. (O dock tem página própria.)
 SettingsPage {
     id: page
-    title: "Barra e dock"
-    subtitle: "O que aparece na barra de menus, o relógio e o dock."
+    title: "Barra"
+    subtitle: "O que aparece na barra de menus e o relógio."
 
     // Linha com pílulas de escolha: [valor, rótulo]
     component Choice: Row {
@@ -114,13 +114,4 @@ SettingsPage {
         }
     }
 
-    Item { width: 1; height: 6 }
-
-    // ---- dock --------------------------------------------------------------------------
-    Txt { text: "Dock"; font.weight: Font.DemiBold }
-    SettingsRow {
-        title: "Mostrar dock"
-        description: "Apps fixados e abertos numa barra na parte de baixo da tela. Desligado, as janelas usam a tela até embaixo."
-        Toggle { checked: Prefs.dock; onToggled: v => Prefs.set("dock", v) }
-    }
 }

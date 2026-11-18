@@ -36,5 +36,6 @@ Singleton {
     readonly property string gauge: "M4.5 17a8.5 8.5 0 1 1 15 0 M12 13.5l3.5-4.5 M12 13.5h.01"
     readonly property string terminal: "M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z M7 10l3 2-3 2 M12 15h5"
     readonly property string type: "M5 7V5h14v2 M12 5v14 M9 19h6"
+    readonly property string dock: "M3.5 4.5h17a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-13a1 1 0 0 1 1-1z M7 16.5h10"
     readonly property string logout: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 8l-4 4 4 4 M6 12h10"
 }

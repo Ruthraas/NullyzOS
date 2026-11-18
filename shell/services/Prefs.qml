@@ -21,6 +21,9 @@ import qs.theme
 //   clock24, dateStyle ("curta" | "longa" | "numerica"), weekStart ("domingo" | "segunda")
 //   showLogo, showWorkspaces, workspaceCount, showStatus, barSize ("compacta" | "normal" | "alta")
 //   uiFont (família da interface), textScale (0.9 | 1 | 1.1 | 1.25)
+//   dock*: posição (baixo | esquerda | direita), ícone (px), ampliar (0..0.8), ocultar sozinho,
+//          estilo (vidro | solido | transparente), indicador (ponto | traco | nenhum),
+//          mostrar abertos, fixados (JSON com ids de .desktop)
 Singleton {
     id: root
 
@@ -58,6 +61,15 @@ Singleton {
     Binding { target: Tok; property: "fontScale"; value: prefs.textScale || 1 }
     readonly property string uiFont: prefs.uiFont
     readonly property real textScale: prefs.textScale
+    readonly property string dockPosition: prefs.dockPosition
+    readonly property int dockIcon: prefs.dockIcon
+    readonly property real dockMagnify: prefs.dockMagnify
+    readonly property bool dockAutohide: prefs.dockAutohide
+    readonly property string dockStyle: prefs.dockStyle
+    readonly property string dockIndicator: prefs.dockIndicator
+    readonly property bool dockShowOpen: prefs.dockShowOpen
+    readonly property var dockPinned: { try { return JSON.parse(prefs.dockPinned); } catch (e) { return []; } }
+    function setPinned(list) { set("dockPinned", JSON.stringify(list)); }
 
     readonly property string wallpaperUrl: url(prefs.wallpaper || defaultWallpaper)
     readonly property string lockUrl: prefs.lockWallpaper === "desktop" ? wallpaperUrl : url(defaultWallpaper)
@@ -89,7 +101,9 @@ Singleton {
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
                           "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
                           "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
-                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "uiFont", "textScale"];
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "uiFont", "textScale",
+                          "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
+                          "dockShowOpen", "dockPinned"];
             if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
         }
         adapter: JsonAdapter {
@@ -118,6 +132,14 @@ Singleton {
             property string barSize: "normal"
             property string uiFont: "Geist"
             property real textScale: 1
+            property string dockPosition: "baixo"
+            property int dockIcon: 46
+            property real dockMagnify: 0.35
+            property bool dockAutohide: false
+            property string dockStyle: "vidro"
+            property string dockIndicator: "ponto"
+            property bool dockShowOpen: true
+            property string dockPinned: '["kitty", "org.kde.dolphin"]'
         }
     }
 

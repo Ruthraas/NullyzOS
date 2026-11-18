@@ -28,6 +28,11 @@ Singleton {
         if (tl) tl.activate();
         else if (entry) entry.execute();
     }
+    // Fecha todas as janelas do app (menu do dock).
+    function closeApp(appId) {
+        for (const t of root.toplevels)
+            if ((t.appId || "").toLowerCase() === appId.toLowerCase()) t.close();
+    }
     function windowsOf(appId) {
         return root.toplevels.filter(t => (t.appId || "").toLowerCase() === appId.toLowerCase()).length;
     }

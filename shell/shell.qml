@@ -29,9 +29,16 @@ ShellRoot {
                 target: Prefs
                 function onBarHeightChanged() { barLoader.active = false; Qt.callLater(() => barLoader.active = true); }
             }
+            // Dock: recriado quando muda de lado (a janela de camada muda de borda).
             LazyLoader {
-                active: Prefs.dock
+                id: dockLoader
+                property bool reloading: false
+                active: Prefs.dock && !reloading
                 Dock { modelData: perScreen.modelData }
+            }
+            Connections {
+                target: Prefs
+                function onDockPositionChanged() { dockLoader.reloading = true; Qt.callLater(() => dockLoader.reloading = false); }
             }
         }
     }
