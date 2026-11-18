@@ -5,7 +5,7 @@ descricao = "Preto no branco, sem enfeite: claro, reto e direto."
 autor = "NullyzOS"
 licenca = "GPL-3.0-or-later"
 origem = "https://github.com/Ruthraas/NullyzOS"
-desktop = "hyprland"
+desktop = "ambos"
 tipo = "preset"
 
 [preferencias]
@@ -24,3 +24,6 @@ uiFont = "Geist"
 [hyprland]
 gaps = "compacto"
 rounding = 10
+
+[kde]
+colorscheme = "NullyzCru"

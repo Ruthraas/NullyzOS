@@ -5,7 +5,7 @@ descricao = "O padrão: escuro, vidro, violeta e cantos arredondados."
 autor = "NullyzOS"
 licenca = "GPL-3.0-or-later"
 origem = "https://github.com/Ruthraas/NullyzOS"
-desktop = "hyprland"
+desktop = "ambos"
 tipo = "preset"
 
 [preferencias]
@@ -26,3 +26,6 @@ wallpaper = ""
 [hyprland]
 gaps = ""
 rounding = -1
+
+[kde]
+colorscheme = "NullyzEscuro"

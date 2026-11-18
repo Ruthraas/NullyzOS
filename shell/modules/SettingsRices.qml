@@ -263,7 +263,7 @@ SettingsPage {
         Chip {
             id: useBtn
             anchors { right: parent.right; verticalCenter: parent.verticalCenter }
-            readonly property bool here: page.sel && (page.sel.desktop === page.desktop || page.sel.id === "nullyz")
+            readonly property bool here: page.sel && (page.sel.desktop === page.desktop || page.sel.desktop === "ambos")
             text: !page.sel ? "" : page.sel.id === page.current ? "Em uso" : !here ? (page.sel.desktop === "kde" ? "Só no KDE" : "Só no Hyprland")
                 : page.busy === page.sel.id ? "Aplicando…" : "Usar este"
             active: page.sel && page.sel.id !== page.current && here

@@ -34,8 +34,7 @@ tarefas.writeConfig("launchers", [
     "applications:org.kde.dolphin.desktop",
     "applications:org.kde.konsole.desktop",
     "applications:com.brave.Browser.desktop",
-    "applications:nullyzos-configuracoes-kde.desktop",
-    "applications:systemsettings.desktop"
+    "applications:nullyzos-configuracoes-kde.desktop"   // as do KDE: pela página "Sistema do KDE"
 ]);
 tarefas.writeConfig("iconSpacing", 2);
 tarefas.writeConfig("maxStripes", 1);

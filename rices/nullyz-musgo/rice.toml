@@ -5,7 +5,7 @@ descricao = "Verde musgo no escuro, com a barra em ilhas."
 autor = "NullyzOS"
 licenca = "GPL-3.0-or-later"
 origem = "https://github.com/Ruthraas/NullyzOS"
-desktop = "hyprland"
+desktop = "ambos"
 tipo = "preset"
 
 [preferencias]
@@ -24,3 +24,6 @@ uiFont = "Geist"
 [hyprland]
 gaps = "normal"
 rounding = 12
+
+[kde]
+colorscheme = "NullyzMusgo"

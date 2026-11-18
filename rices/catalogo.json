@@ -6,7 +6,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "",
@@ -26,6 +26,9 @@
     "hyprland": {
       "gaps": "",
       "rounding": -1
+    },
+    "kde": {
+      "colorscheme": "NullyzEscuro"
     }
   },
   {
@@ -35,7 +38,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "areia",
@@ -53,6 +56,9 @@
     "hyprland": {
       "gaps": "amplo",
       "rounding": 16
+    },
+    "kde": {
+      "colorscheme": "NullyzAreia"
     }
   },
   {
@@ -62,7 +68,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "brasa",
@@ -80,6 +86,9 @@
     "hyprland": {
       "gaps": "normal",
       "rounding": 14
+    },
+    "kde": {
+      "colorscheme": "NullyzBrasa"
     }
   },
   {
@@ -89,7 +98,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "cru",
@@ -107,6 +116,9 @@
     "hyprland": {
       "gaps": "compacto",
       "rounding": 10
+    },
+    "kde": {
+      "colorscheme": "NullyzCru"
     }
   },
   {
@@ -144,7 +156,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "musgo",
@@ -162,6 +174,9 @@
     "hyprland": {
       "gaps": "normal",
       "rounding": 12
+    },
+    "kde": {
+      "colorscheme": "NullyzMusgo"
     }
   },
   {
@@ -171,7 +186,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "ouro",
@@ -189,6 +204,9 @@
     "hyprland": {
       "gaps": "normal",
       "rounding": 12
+    },
+    "kde": {
+      "colorscheme": "NullyzOuro"
     }
   },
   {
@@ -198,7 +216,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "papel",
@@ -216,6 +234,9 @@
     "hyprland": {
       "gaps": "amplo",
       "rounding": 14
+    },
+    "kde": {
+      "colorscheme": "NullyzPapel"
     }
   },
   {
@@ -225,7 +246,7 @@
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
-    "desktop": "hyprland",
+    "desktop": "ambos",
     "tipo": "preset",
     "preferencias": {
       "palette": "sol",
@@ -243,6 +264,9 @@
     "hyprland": {
       "gaps": "normal",
       "rounding": 14
+    },
+    "kde": {
+      "colorscheme": "NullyzSol"
     }
   }
 ]

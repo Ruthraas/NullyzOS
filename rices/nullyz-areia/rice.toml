@@ -5,7 +5,7 @@ descricao = "Tons de areia e terracota, claro e quente, bem arredondado."
 autor = "NullyzOS"
 licenca = "GPL-3.0-or-later"
 origem = "https://github.com/Ruthraas/NullyzOS"
-desktop = "hyprland"
+desktop = "ambos"
 tipo = "preset"
 
 [preferencias]
@@ -24,3 +24,6 @@ uiFont = "Geist"
 [hyprland]
 gaps = "amplo"
 rounding = 16
+
+[kde]
+colorscheme = "NullyzAreia"

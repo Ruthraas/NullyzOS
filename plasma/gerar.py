@@ -3,6 +3,7 @@
 (a mesma fonte do shell do Hyprland; mesma receita de shell/services/AppTheme.qml):
 
   NullyzEscuro.colors / NullyzClaro.colors   esquemas de cores do Plasma
+  Nullyz<Paleta>.colors                       um por paleta de rice (Ouro, Brasa, Papel…)
   Nullyz.colorscheme                         cores do Konsole (escuro)
 
     python gerar.py <pasta-de-saída>
@@ -33,8 +34,17 @@ def mix(a, b, t):
     return tuple(round(x + (y - x) * t) for x, y in zip(a, b))
 
 
-def esquema(nome, modo):
-    p = {k: rgb(v) for k, v in TOK["roles"][modo].items() if v.startswith("#")}
+def papeis_da_paleta(pal):
+    """Paleta de rice (tokens.json → paletas) nos nomes de papel de roles."""
+    return {"fundo": pal["bg"], "superficie": pal["surface"], "superficie_alta": pal["surfaceHi"],
+            "borda": pal["border"], "texto": pal["text"], "texto_suave": pal["muted"],
+            "destaque": pal["accent"], "sobre_destaque": pal["onAccent"], "sucesso": pal["success"],
+            "atencao": pal["warning"], "erro": pal["error"]}
+
+
+def esquema(nome, modo, papeis=None):
+    fonte = papeis or TOK["roles"][modo]
+    p = {k: rgb(v) for k, v in fonte.items() if v.startswith("#")}
     esc = {k: rgb(v) for k, v in TOK["roles"]["escuro"].items() if v.startswith("#")}
     acc, on = p["destaque"], p["sobre_destaque"]
 
@@ -83,6 +93,11 @@ def main(dest: Path):
     dest.mkdir(parents=True, exist_ok=True)
     (dest / "NullyzEscuro.colors").write_text(esquema("NullyzEscuro", "escuro"), encoding="utf-8")
     (dest / "NullyzClaro.colors").write_text(esquema("NullyzClaro", "claro"), encoding="utf-8")
+    # Um esquema por paleta de rice (Nullyz Ouro, Nullyz Brasa…), para os rices no KDE
+    for pal in TOK.get("paletas", {}).values():
+        nome = "Nullyz" + pal["nome"]
+        modo = "claro" if pal["claro"] else "escuro"
+        (dest / f"{nome}.colors").write_text(esquema(nome, modo, papeis_da_paleta(pal)), encoding="utf-8")
     (dest / "Nullyz.colorscheme").write_text(konsole(), encoding="utf-8")
 
 

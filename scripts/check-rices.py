@@ -53,6 +53,11 @@ PREFS = {
     "wallpaper": [""],
     "showLogo": (bool,), "showWorkspaces": (bool,), "showDate": (bool,), "clockSeconds": (bool,),
 }
+# KDE: esquema de cores do Plasma (plasma/gerar.py faz um por paleta)
+KDE = {
+    "colorscheme": ["NullyzEscuro", "NullyzClaro", "NullyzNulo", "NullyzPapel", "NullyzOuro", "NullyzBrasa",
+                    "NullyzCru", "NullyzAreia", "NullyzMusgo", "NullyzSol"],
+}
 HYPR = {
     "gaps": ["", "compacto", "normal", "amplo"],
     "rounding": (int, -1, 30),
@@ -115,8 +120,10 @@ def le(pasta, offline):
         return None
     if r["id"] != rid or not ID.match(rid):
         erro(rid, "id precisa ser igual ao nome da pasta (minúsculas, números e -)")
-    if r["desktop"] not in ("hyprland", "kde"):
-        erro(rid, "desktop precisa ser hyprland ou kde")
+    if r["desktop"] not in ("hyprland", "kde", "ambos"):
+        erro(rid, "desktop precisa ser hyprland, kde ou ambos")
+    if r["desktop"] in ("kde", "ambos") and r.get("tipo") == "preset" and "colorscheme" not in r.get("kde", {}):
+        erro(rid, "rice de KDE precisa de [kde] colorscheme")
     if not LICENCAS.match(r["licenca"]):
         erro(rid, f"licença não aceita: {r['licenca']} (precisa permitir redistribuir)")
     if not r["origem"].startswith("https://"):
@@ -128,6 +135,7 @@ def le(pasta, offline):
     if r["tipo"] == "preset":
         confere_valor(rid, "preferencias", PREFS, r.get("preferencias", {}))
         confere_valor(rid, "hyprland", HYPR, r.get("hyprland", {}))
+        confere_valor(rid, "kde", KDE, r.get("kde", {}))
         for proibido in ("pacotes", "arquivos", "commit"):
             if proibido in r:
                 erro(rid, f"preset não usa {proibido}")
@@ -173,7 +181,7 @@ def visual_conf(cat):
     ]
     for r in cat:
         quem = "" if r["autor"] == "NullyzOS" else f" Por {r['autor']} ({r['licenca']})."
-        so = "" if r["id"] == "nullyz" else (" Só Hyprland." if r["desktop"] == "hyprland" else " Só KDE.")
+        so = {"hyprland": " Só Hyprland.", "kde": " Só KDE."}.get(r["desktop"], "") if r["id"] != "nullyz" else ""
         desc = (r["descricao"] + so + quem).replace('"', "'")
         linhas += [
             f"    - id: {r['id']}",

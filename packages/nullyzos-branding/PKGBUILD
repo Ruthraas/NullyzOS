@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-branding
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Identidade visual do NullyzOS: símbolo N pixelado, tokens de cor e logo do terminal"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -22,6 +22,7 @@ package() {
   # Símbolo: LOGO=nullyzos no os-release procura este nome no tema de ícones.
   install -Dm644 "$src/branding/logo/nullyz-escuro.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/nullyzos.svg"
   install -Dm644 "$src/branding/logo/nullyz-mono.svg" "$pkgdir/usr/share/icons/hicolor/symbolic/apps/nullyzos-symbolic.svg"
+  install -Dm644 "$src/branding/logo/nullyz-configuracoes.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/nullyzos-configuracoes.svg"
   install -Dm644 "$src/branding/logo/nullyz-escuro.svg" "$pkgdir/usr/share/pixmaps/nullyzos.svg"
 
   install -dm755 "$share/logo"

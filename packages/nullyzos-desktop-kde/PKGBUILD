@@ -5,7 +5,7 @@
 
 pkgname=nullyzos-desktop-kde
 pkgver=0.2.0
-pkgrel=7
+pkgrel=8
 pkgdesc="Visual do NullyzOS para KDE Plasma"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -39,7 +39,7 @@ package() {
   cp -r "$srcdir/tema/aurorae/Nullyz" "$pkgdir/usr/share/aurorae/themes/"
   chmod -R u=rwX,go=rX "$pkgdir/usr/share/plasma/desktoptheme" "$pkgdir/usr/share/aurorae"
   # Cores (Plasma e Konsole) e perfil do Konsole
-  install -Dm644 -t "$pkgdir/usr/share/color-schemes" "$srcdir/cores/NullyzEscuro.colors" "$srcdir/cores/NullyzClaro.colors"
+  install -Dm644 -t "$pkgdir/usr/share/color-schemes" "$srcdir"/cores/Nullyz*.colors
   install -Dm644 "$srcdir/cores/Nullyz.colorscheme" "$pkgdir/usr/share/konsole/Nullyz.colorscheme"
   install -Dm644 "$p/konsole/Nullyz.profile" "$pkgdir/usr/share/konsole/Nullyz.profile"
   # Fundo como pacote de wallpaper do Plasma

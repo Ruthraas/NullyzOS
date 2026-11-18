@@ -21,7 +21,7 @@ Item {
     // Páginas por tópico (a ordem é a da lateral); `k` = palavras para a busca.
     readonly property var allPages: [
         { id: "aparencia", label: "Aparência", icon: Icons.palette, file: "SettingsAppearance.qml", group: "Personalização", k: "tema claro escuro cor destaque wallpaper fundo vidro cursor cantos animações" },
-        { id: "rices", label: "Rices", icon: Icons.sparkles, file: "SettingsRices.qml", group: "Personalização", k: "tema visual pronto estilo rice preset" },
+        { kde: true, id: "rices", label: "Rices", icon: Icons.sparkles, file: "SettingsRices.qml", group: "Personalização", k: "tema visual pronto estilo rice preset" },
         { kde: true, id: "wallpapers", label: "Wallpapers", icon: Icons.image, file: "SettingsWallpapers.qml", group: "Personalização", k: "fundo imagem galeria baixar papel de parede" },
         { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml", group: "Personalização", k: "login senha fundo" },
         { id: "barra", label: "Barra", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização", k: "relógio hora data workspaces menu" },

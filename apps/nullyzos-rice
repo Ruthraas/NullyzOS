@@ -62,13 +62,16 @@ guardar_volta() {
         printf '%s\n' "$para" >> "$VOLTA/destinos"
     done
     cat "$CONF/rice" 2>/dev/null > "$VOLTA/anterior" || true
+    if [ "$(desktop_atual)" = kde ]; then
+        kreadconfig6 --file kdeglobals --group General --key ColorScheme > "$VOLTA/kde-esquema" 2>/dev/null || true
+    fi
 }
 
 aplicar() {
     local id=$1 inicial=${2:-} r tipo
     r=$(receita "$id") || die "rice desconhecido: $id"
     local desk; desk=$(jq -r .desktop <<<"$r")
-    if [ "$id" != nullyz ] && [ "$(desktop_atual)" != "?" ] && [ "$desk" != "$(desktop_atual)" ]; then
+    if [ "$id" != nullyz ] && [ "$desk" != ambos ] && [ "$(desktop_atual)" != "?" ] && [ "$desk" != "$(desktop_atual)" ]; then
         die "o rice $(jq -r .nome <<<"$r") é para $desk; este desktop é $(desktop_atual)"
     fi
     tipo=$(jq -r .tipo <<<"$r")
@@ -104,6 +107,14 @@ aplicar() {
     fi
 
     preferencias "$(jq -c '.preferencias // {}' <<<"$r")" "$(jq -c '.hyprland // {}' <<<"$r")"
+    # No KDE: o esquema de cores do Plasma da paleta (e a anotação do anterior, para desfazer)
+    if [ "$(desktop_atual)" = kde ]; then
+        local esq; esq=$(jq -r '.kde.colorscheme // empty' <<<"$r")
+        if [ -n "$esq" ]; then
+            say "cores do Plasma: $esq"
+            plasma-apply-colorscheme "$esq" >/dev/null 2>&1 || true
+        fi
+    fi
     mkdir -p "$CONF"; echo "$id" > "$CONF/rice"
     say "pronto"
 }
@@ -118,6 +129,9 @@ desfazer() {
         done < "$VOLTA/destinos"
     fi
     preferencias "$(cat "$VOLTA/prefs.json")" "$(cat "$VOLTA/hypr.json")"
+    if [ "$(desktop_atual)" = kde ] && [ -s "$VOLTA/kde-esquema" ]; then
+        plasma-apply-colorscheme "$(cat "$VOLTA/kde-esquema")" >/dev/null 2>&1 || true
+    fi
     if [ -s "$VOLTA/anterior" ]; then cp -f "$VOLTA/anterior" "$CONF/rice"; else rm -f "$CONF/rice"; fi
     rm -rf "$VOLTA"
     say "voltou como estava. (Pacotes instalados ficam; o snapshot do sistema está em Atualizações.)"
