@@ -76,3 +76,22 @@
   saudação do N pixelado; lê ~/.bashrc antes).
 - Testar shell novo na VM sem pacote: baixar o tar do commit para ~/.config/quickshell/nullyzos
   (sobrepõe /etc/xdg); tirar (mv) antes do pacman -Syu. Painel aberto pega o teclado: Esc antes.
+
+## 18/11/2026: essenciais, atualizações, apps nas cores, páginas e shell (desktop até 0.1.0-34)
+- nullyzos-essenciais (Hyprland e KDE): apps KDE básicos, udisks2/gvfs, Noto (emoji/CJK),
+  codecs, xdg-user-dirs, flatpak + portal GTK, bluez, cups, ufw, zram, snapper/snap-pac/
+  grub-btrfs. /etc/xdg/mimeapps.list com Brave (Flathub) como navegador padrão.
+- Instalador: shellprocess@finalizar (depois do packages): Flathub + Brave, ufw ligado,
+  snapper no @snapshots; serviços bluetooth, cups, ufw, grub-btrfsd, power-profiles-daemon.
+- Brave não existe nos repositórios oficiais (só AUR): vem do Flathub (publicado pelo Brave).
+- Root via pkexec: /usr/lib/nullyzos/{fundo-login, limpeza, atualizar}.
+- Apps nas cores (#16): serviço AppTheme → scripts/tema-apps.sh (kdeglobals via kwriteconfig6,
+  QT_QPA_PLATFORMTHEME=kde com plasma-integration; GTK adw-gtk3 + gtk.css + gsettings).
+- Terminal: logo padrão = N binário (só 0/1 formando a letra, sem fundo); buraco negro, pixel e
+  blocos como opção. fastfetch como saudação.
+- Shell: OSD de volume/brilho, painel rápido (luz noturna/hyprsunset, não perturbe, música
+  MPRIS, histórico de notificações), Alt+Tab, Super+Tab (visão geral), Super+Shift+V
+  (cliphist), Super+ponto (emoji, shell/data/emoji.txt), boas-vindas no 1º login.
+- Configurações: 25 páginas (Personalização, Sistema, Geral). IPC: settingsPage <id>, quick,
+  calendar, agendaAdd, osdBrightness, welcome, switcher, overview, clipboard, emoji.
+- Digitador da VM: primeira letra às vezes some; começar as linhas com espaço.
