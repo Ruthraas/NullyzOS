@@ -45,5 +45,9 @@ Singleton {
     readonly property string bellOff: "M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z M10 20.5a2 2 0 0 0 4 0 M3.5 3.5l17 17"
     readonly property string download: "M12 4v11 M7 10.5l5 5 5-5 M5 19.5h14"
     readonly property string check: "M5 12.5l4.5 4.5L19 7.5"
+    readonly property string apps: "M5 5h5v5H5z M14 5h5v5h-5z M5 14h5v5H5z M14 14h5v5h-5z"
+    readonly property string bluetooth: "M7 7.5l10 9-5 4.5V3l5 4.5-10 9"
+    readonly property string clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 7v5l3.5 2"
+    readonly property string disk: "M3.5 6.5h17v11h-17z M3.5 13h17 M7 15.3h.01"
     readonly property string logout: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 8l-4 4 4 4 M6 12h10"
 }
