@@ -95,6 +95,7 @@ aplicar() {
         jq -c '.arquivos[]' <<<"$r" | while read -r a; do
             local de para alvo
             de=$(jq -r .de <<<"$a"); para=$(jq -r .para <<<"$a"); alvo="${para/#\~/$HOME}"
+            # shellcheck disable=SC2088  # compara o texto da receita, não expande
             case "$para" in "~/.config/"*|"~/.local/share/"*) ;; *) die "destino fora do permitido: $para" ;; esac
             [ -e "$tmp/x/$de" ] || die "a receita aponta para $de, que não existe no commit"
             say "$de → $para"
