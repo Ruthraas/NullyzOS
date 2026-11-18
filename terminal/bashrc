@@ -7,31 +7,49 @@
 [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 
 NULLYZ_PROMPT=${NULLYZ_PROMPT:-1}
-NULLYZ_GREETING=${NULLYZ_GREETING:-sempre}     # sempre | sessao | nunca
+NULLYZ_GREETING=${NULLYZ_GREETING:-sempre}       # sempre | sessao | nunca
+NULLYZ_GREET_STYLE=${NULLYZ_GREET_STYLE:-fastfetch}  # fastfetch | simples
+NULLYZ_LOGO=${NULLYZ_LOGO:-pixel}                # pixel | blocos
 NULLYZ_ACCENT=${NULLYZ_ACCENT:-9d8cff}
-conf="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos/terminal.sh"
-[ -f "$conf" ] && . "$conf"
+NULLYZ_DIM=${NULLYZ_DIM:-4a4a5a}
+__nz_dir="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos"
+[ -f "$__nz_dir/terminal.sh" ] && . "$__nz_dir/terminal.sh"
+
+# Config do fastfetch do Nullyz: a gerada pelas Configurações, senão a do sistema.
+__nz_ff="$__nz_dir/fastfetch.jsonc"
+[ -f "$__nz_ff" ] || __nz_ff=/usr/share/nullyzos/terminal/fastfetch.jsonc
+# `fastfetch` sem config própria do usuário mostra o do Nullyz.
+if command -v fastfetch >/dev/null 2>&1 && [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/config.jsonc" ]; then
+    fastfetch() { command fastfetch -c "$__nz_ff" "$@"; }
+fi
 
 # Cor 24 bits a partir de "rrggbb"
 __nz_rgb() { printf '\033[38;2;%d;%d;%dm' "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"; }
 
-# ---- saudação: N pixelado + sistema ------------------------------------------------------
-__nz_greet() {
-    local a r m n i
-    a=$(__nz_rgb "$NULLYZ_ACCENT"); r=$'\033[0m'; m=$'\033[2m'
-    local -a N=("##...##" "###..##" "####.##" "##.####" "##..###" "##...##" "##...##")
-    local -a info
-    info[0]="${a}NullyzOS${r} ${m}· Hyprland${r}"
-    info[1]="${USER}@${HOSTNAME}"
-    info[2]="${m}kernel${r}  $(uname -r)"
-    info[3]="${m}ligado${r}  $(uptime -p 2>/dev/null | sed 's/^up //; s/hours\?/h/; s/minutes\?/min/; s/days\?/d/; s/,//g')"
-    info[4]="${m}memória${r} $(free -h --si 2>/dev/null | awk '/^Mem/ { print $3 " de " $2 }')"
+# ---- saudação simples: logo do N + algumas linhas ----------------------------------------
+__nz_greet_simple() {
+    local a d r m i line
+    a=$(__nz_rgb "$NULLYZ_ACCENT"); d=$(__nz_rgb "$NULLYZ_DIM"); r=$'\033[0m'; m=$'\033[2m'
+    local -a info logo
+    info[1]="${a}NullyzOS${r} ${m}· Hyprland${r}"
+    info[2]="${USER}@${HOSTNAME}"
+    info[3]="${m}kernel${r}  $(uname -r)"
+    info[4]="${m}ligado${r}  $(uptime -p 2>/dev/null | sed 's/^up //; s/hours\?/h/; s/minutes\?/min/; s/days\?/d/; s/,//g')"
+    info[5]="${m}memória${r} $(free -h --si 2>/dev/null | awk '/^Mem/ { print $3 " de " $2 }')"
+    mapfile -t logo < "/usr/share/nullyzos/terminal/logo-${NULLYZ_LOGO}.txt" 2>/dev/null || return
     printf '\n'
-    for i in 0 1 2 3 4 5 6; do
-        n=${N[$i]//#/██}; n=${n//./  }
-        printf '  %s%s%s   %s\n' "$a" "$n" "$r" "${info[$i]}"
+    for i in "${!logo[@]}"; do
+        line=${logo[$i]//\$1/$a}; line=${line//\$2/$d}
+        printf '  %s%s   %s\n' "$line" "$r" "${info[$i]}"
     done
     printf '\n'
+}
+__nz_greet() {
+    if [ "$NULLYZ_GREET_STYLE" = fastfetch ] && command -v fastfetch >/dev/null 2>&1; then
+        command fastfetch -c "$__nz_ff"
+    else
+        __nz_greet_simple
+    fi
 }
 case "$NULLYZ_GREETING" in
     sempre) __nz_greet ;;
@@ -40,7 +58,7 @@ case "$NULLYZ_GREETING" in
         [ -e "$flag" ] || { __nz_greet; : > "$flag"; }
         ;;
 esac
-unset flag conf
+unset flag
 
 # ---- prompt: pasta, branch do git, › na cor de destaque (vermelho se o último falhou) -----
 if [ "$NULLYZ_PROMPT" = 1 ]; then

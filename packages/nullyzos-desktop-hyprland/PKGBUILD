@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=22
+pkgrel=23
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -13,7 +13,7 @@ options=('!debug')
 backup=('etc/xdg/kitty/kitty.conf')
 depends=(
   'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'polkit-kde-agent'
-  'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'libnotify' 'grim' 'slurp' 'wl-clipboard'
+  'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'python-gobject' 'pacman-contrib' 'libnotify' 'fastfetch' 'grim' 'slurp' 'wl-clipboard'
   'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm'
 )
 makedepends=('python')
@@ -48,6 +48,7 @@ package() {
   install -Dm644 "$src/terminal/kitty.conf" "$pkgdir/etc/xdg/kitty/kitty.conf"
   install -Dm755 "$src/terminal/terminal-shell" "$pkgdir/usr/lib/nullyzos/terminal-shell"
   install -Dm644 "$src/terminal/bashrc" "$pkgdir/usr/share/nullyzos/terminal/bashrc"
+  install -Dm644 -t "$pkgdir/usr/share/nullyzos/terminal" "$src"/terminal/logo-*.txt "$src/terminal/fastfetch.jsonc"
   # Configurações na busca de apps
   install -Dm644 -t "$pkgdir/usr/share/applications" "$src"/apps/*.desktop
   # Fundos: o padrão (o mesmo da tela de login) e as variações de cor

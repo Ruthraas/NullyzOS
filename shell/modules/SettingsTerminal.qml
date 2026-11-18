@@ -54,13 +54,38 @@ SettingsPage {
                 visible: Terminal.greeting !== "nunca"
                 spacing: 14
                 bottomPadding: 6
-                PixelN { cell: Math.max(3, page.px * 0.42); color: page.acc }
+                // N em pixel (aceso no destaque, apagado fraco) ou em blocos
+                Grid {
+                    anchors.verticalCenter: parent.verticalCenter
+                    columns: 7
+                    readonly property real cell: Math.max(4, page.px * 0.55)
+                    spacing: Terminal.logo === "pixel" ? cell * 0.45 : 0
+                    Repeater {
+                        model: "##...#####..######.####.######..#####...####...##".split("")
+                        Rectangle {
+                            required property string modelData
+                            readonly property bool lit: modelData === "#"
+                            width: parent.cell; height: parent.cell
+                            radius: Terminal.logo === "pixel" ? (lit ? 1 : parent.cell / 2) : 0
+                            color: lit ? page.acc : (Terminal.logo === "pixel" ? Tok.ansiDark[8] : "transparent")
+                            scale: lit || Terminal.logo !== "pixel" ? 1 : 0.35
+                        }
+                    }
+                }
                 Column {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 2
-                    Txt { text: "NullyzOS · Hyprland"; color: page.acc; size: page.px; font { family: Tok.mono } }
-                    Txt { text: (Quickshell.env("USER") || "voce") + "@nullyzos"; color: page.pal.text; size: page.px; font { family: Tok.mono } }
-                    Txt { text: "ligado  2 h 14 min"; color: page.pal.muted; size: page.px; font { family: Tok.mono } }
+                    Txt { text: (Quickshell.env("USER") || "voce") + "@nullyzos"; color: page.acc; size: page.px; font { family: Tok.mono } }
+                    Repeater {
+                        model: Terminal.greetStyle === "fastfetch"
+                            ? [["sistema", "NullyzOS"], ["kernel", "7.3.4-arch1"], ["ligado", "2 horas, 14 min"], ["memória", "1,1 GiB / 4 GiB"]]
+                            : [["kernel", "7.3.4-arch1"], ["ligado", "2 h 14 min"]]
+                        Row {
+                            required property var modelData
+                            Txt { width: page.px * 6.2; text: parent.modelData[0]; color: Terminal.greetStyle === "fastfetch" ? page.acc : page.pal.muted; size: page.px; font { family: Tok.mono } }
+                            Txt { text: parent.modelData[1]; color: page.pal.text; size: page.px; font { family: Tok.mono } }
+                        }
+                    }
                 }
             }
             Row {
@@ -138,6 +163,43 @@ SettingsPage {
         title: "Prompt do Nullyz"
         description: "Pasta, branch do git e › na cor de destaque (vermelho quando o comando falha). Desligado, fica o prompt do seu ~/.bashrc."
         Toggle { checked: Terminal.prompt; onToggled: v => Terminal.set("prompt", v) }
+    }
+    SettingsRow {
+        title: "Estilo da saudação"
+        description: "Completa usa o fastfetch (o comando `fastfetch` também fica com o N); simples é mais curta."
+        Choice {
+            options: [["fastfetch", "Completa"], ["simples", "Simples"]]
+            current: Terminal.greetStyle
+            onPicked: v => Terminal.set("greetStyle", v)
+        }
+    }
+    SettingsRow {
+        title: "Logo"
+        description: "Pixel: o N como um painel de LED. Blocos: o N sólido."
+        Choice {
+            options: [["pixel", "Pixel"], ["blocos", "Blocos"]]
+            current: Terminal.logo
+            onPicked: v => Terminal.set("logo", v)
+        }
+    }
+    Column {
+        visible: Terminal.greetStyle === "fastfetch"
+        width: parent.width
+        spacing: 8
+        Txt { text: "O que mostrar"; muted: true; size: 13 }
+        Flow {
+            width: parent.width
+            spacing: 8
+            Repeater {
+                model: Terminal.infoOptions
+                Chip {
+                    required property var modelData
+                    text: modelData[1]
+                    active: Terminal.infoKeys.includes(modelData[0])
+                    onClicked: Terminal.toggleInfo(modelData[0])
+                }
+            }
+        }
     }
     SettingsRow {
         title: "Saudação"
