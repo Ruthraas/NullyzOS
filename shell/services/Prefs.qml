@@ -53,6 +53,10 @@ Singleton {
     readonly property string wallpaperFit: prefs.wallpaperFit
     readonly property real wallpaperDim: prefs.wallpaperDim
     readonly property int wallpaperCycle: prefs.wallpaperCycle
+    readonly property bool dnd: prefs.dnd
+    readonly property bool nightLight: prefs.nightLight
+    readonly property bool nightAuto: prefs.nightAuto
+    readonly property int nightTemp: prefs.nightTemp
     readonly property real glassOpacity: prefs.glassOpacity
     readonly property int cursorSize: prefs.cursorSize
     readonly property bool clock24: prefs.clock24
@@ -118,7 +122,7 @@ Singleton {
                           "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "uiFont", "textScale",
                           "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
                           "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
-                          "wallpaperCycle"];
+                          "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp"];
             if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
         }
         adapter: JsonAdapter {
@@ -160,6 +164,10 @@ Singleton {
             property string wallpaperFit: "preencher"
             property real wallpaperDim: 0
             property int wallpaperCycle: 0
+            property bool dnd: false
+            property bool nightLight: false
+            property bool nightAuto: false
+            property int nightTemp: 4000
         }
     }
 

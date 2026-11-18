@@ -55,6 +55,9 @@ ShellRoot {
     readonly property real terminalFont: Terminal.fontSize
     Connections { target: Panels; function onLockRequested() { screenLock.lock(); } }
     Idle { onLockNow: { Panels.closeAll(); screenLock.lock(); } }
+    Osd {}
+    // Luz noturna roda enquanto ativa (hyprsunset); referência para o serviço existir já no login.
+    readonly property bool nightLight: NightLight.active
 
     // Atalhos do Hyprland chamam: qs -c nullyzos ipc call nullyzos <função>
     IpcHandler {
@@ -63,6 +66,8 @@ ShellRoot {
         function settings(): void { Panels.toggleSettings(); }
         function quick(): void { Panels.toggleQuick(); }
         function calendar(): void { Panels.toggleCalendar(); }
+        // Teclas de brilho: relê o valor e mostra o aviso na tela
+        function osdBrightness(): void { Brightness.refresh(); }
         // Para scripts: qs -c nullyzos ipc call nullyzos agendaAdd 2026-11-20 14:00 "Dentista"
         function agendaAdd(day: string, time: string, title: string): bool { return Agenda.add(day, time, title); }
         function settingsPage(page: string): void { Panels.openSettings(page); }

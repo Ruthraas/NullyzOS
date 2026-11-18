@@ -11,6 +11,7 @@ Singleton {
 
     property bool available: false
     property real value: 0          // 0..1
+    signal changed()                // valor relido (teclas de brilho → aviso na tela)
 
     function set(v) {
         const pct = Math.round(Math.max(0.01, Math.min(1, v)) * 100);
@@ -29,6 +30,7 @@ Singleton {
                 const pct = parseInt((f[3] || "").replace("%", ""));
                 root.available = f.length >= 4 && !isNaN(pct);
                 root.value = root.available ? pct / 100 : 0;
+                if (root.available) root.changed();
             }
         }
     }

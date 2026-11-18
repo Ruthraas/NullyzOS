@@ -37,5 +37,11 @@ Singleton {
     readonly property string terminal: "M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z M7 10l3 2-3 2 M12 15h5"
     readonly property string type: "M5 7V5h14v2 M12 5v14 M9 19h6"
     readonly property string dock: "M3.5 4.5h17a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-17a1 1 0 0 1-1-1v-13a1 1 0 0 1 1-1z M7 16.5h10"
+    readonly property string play: "M8 5.5l11 6.5-11 6.5z"
+    readonly property string pause: "M8.5 5.5v13 M15.5 5.5v13"
+    readonly property string next: "M6 5.5l9 6.5-9 6.5z M18 5.5v13"
+    readonly property string prev: "M18 5.5L9 12l9 6.5z M6 5.5v13"
+    readonly property string bell: "M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z M10 20.5a2 2 0 0 0 4 0"
+    readonly property string bellOff: "M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z M10 20.5a2 2 0 0 0 4 0 M3.5 3.5l17 17"
     readonly property string logout: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 8l-4 4 4 4 M6 12h10"
 }
