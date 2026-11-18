@@ -95,3 +95,24 @@
 - Configurações: 25 páginas (Personalização, Sistema, Geral). IPC: settingsPage <id>, quick,
   calendar, agendaAdd, osdBrightness, welcome, switcher, overview, clipboard, emoji.
 - Digitador da VM: primeira letra às vezes some; começar as linhas com espaço.
+
+## 18/11/2026 — wallpapers, rices e teste limpo
+- Configurações → Wallpapers: os seus + galeria online (Wallhaven por categoria/busca, só SFW
+  1920x1080+; KDE Plasma com licença livre). shell/scripts/galeria.sh. KDE: vários tamanhos são
+  symlinks (modo 120000, texto de 13 bytes): usar só blob 100644.
+- Cor de destaque "Do wallpaper" (accent "auto"): Canvas em modules/Wallpaper.qml → Tok.autoAccent.
+- Foto de perfil: shell/scripts/avatar.sh (~/.face + AccountsService SetIconFile); SDDM e bloqueio mostram.
+- Rices (#9/#10/#11): rices/<id>/rice.toml (preset | arquivos), scripts/check-rices.py gera
+  rices/catalogo.json + packagechooser-visual.conf + contextualprocess-rice.conf (CI: --verificar).
+  apps/nullyzos-rice (aplicar/desfazer/inicial) + apps/rice-root (pkexec: snapshot, pacotes da receita).
+  IPC `rice(prefs, hypr)` usa Prefs.setMany/HyprConf.setMany: set() em sequência perdia chaves
+  (releitura do watchChanges voltava gravação anterior).
+- LIÇÃO instalador: o packages tirava o nullyzos-installer ANTES do shellprocess@finalizar, e o
+  "-" escondia a falha (sem firewall, snapper, Brave). Agora sai no fim (shellprocess@limpar).
+  Rice do Visual via contextualprocess (chave packagechooser_visual).
+- LIÇÃO polkit: hyprpolkitagent dá core dump na VM ao desenhar (wl_surface.attach inválido) →
+  "Not authorized" sem janela. Modo VM usa polkit-gnome. Esc cancela sem contar falha; OK com
+  senha vazia conta e o faillock trava a conta 10 min — nunca apertar OK no pedido de senha.
+- VM "NullyzOS-limpa" (UEFI, 3D, disco 30 GB): instalação da ISO 18/11 + correções à mão.
+  snap-pac funcionando (root 1/2 no pacman). Pendente: ISO nova com o instalador corrigido
+  (pkgrel 14) e o botão Concluído; testar o passo Visual do zero.
