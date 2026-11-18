@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1] / "shell"
 BUILTIN = set("""
 Item Rectangle Text TextInput Image Row Column Grid Flow Repeater ListView GridView Flickable MouseArea
 Behavior NumberAnimation ColorAnimation RotationAnimation SequentialAnimation ParallelAnimation PauseAnimation
-Transition Translate Scale Rotation Timer Connections QtObject Component Loader Keys FontLoader
+Gradient GradientStop Transition Translate Scale Rotation Timer Connections QtObject Component Loader Keys FontLoader
 RowLayout ColumnLayout GridLayout StackLayout HoverHandler DragHandler WheelHandler TapHandler MultiEffect
 ShellRoot Scope Variants PanelWindow PopupWindow FloatingWindow LazyLoader Singleton SystemClock
 FileView Process StdioCollector SplitParser IpcHandler JsonAdapter Region

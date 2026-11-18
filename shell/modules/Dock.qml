@@ -21,8 +21,11 @@ PanelWindow {
 
     readonly property int iconSize: 46
 
-    // Fixados primeiro, depois abertos que não estão fixados.
+    // Fixados primeiro, depois abertos que não estão fixados. Lê Apps.all para refazer a
+    // lista quando os .desktop terminam de carregar (antes, no login, o dock ficava sem o
+    // Dolphin e com o kitty como "K" para sempre).
     readonly property var items: {
+        void Apps.all.length;
         const list = [];
         for (const id of Apps.pinned) {
             const e = Apps.byId(id);
