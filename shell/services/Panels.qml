@@ -10,6 +10,10 @@ Singleton {
     property bool quick: false
     property bool calendar: false
     property bool welcome: false
+    property bool switcher: false
+    property bool overview: false
+    property string picker: ""          // "" | clip | emoji
+    signal switcherNext()
     property bool settings: false
     property string settingsPage: "aparencia"
     // Escondidas enquanto uma janela do sistema (ex.: pedido de senha) precisa aparecer.
@@ -27,5 +31,14 @@ Singleton {
         settings = true;
     }
     function toggleSettings() { if (settings) closeAll(); else openSettings(""); }
-    function closeAll() { launcher = false; quick = false; calendar = false; settings = false; settingsAside = false; }
+    function toggleSwitcher() {
+        if (switcher) { switcherNext(); return; }
+        closeAll(); switcher = true;
+    }
+    function toggleOverview() { const v = !overview; closeAll(); overview = v; }
+    function togglePicker(mode) { const v = picker === mode ? "" : mode; closeAll(); picker = v; }
+    function closeAll() {
+        launcher = false; quick = false; calendar = false; settings = false; settingsAside = false;
+        switcher = false; overview = false; picker = "";
+    }
 }

@@ -59,6 +59,9 @@ ShellRoot {
     Startup {}
     // Boas-vindas: no primeiro login (depois que as preferências carregaram) e pelo IPC welcome
     LazyLoader { active: Panels.welcome; Welcome {} }
+    LazyLoader { active: Panels.switcher; Switcher {} }
+    LazyLoader { active: Panels.overview; Overview {} }
+    LazyLoader { active: Panels.picker !== ""; Picker {} }
     Timer { interval: 2500; running: true; onTriggered: if (!Prefs.welcomed) Panels.welcome = true }
     // Luz noturna roda enquanto ativa (hyprsunset); referência para o serviço existir já no login.
     readonly property bool nightLight: NightLight.active
@@ -72,6 +75,10 @@ ShellRoot {
         function settings(): void { Panels.toggleSettings(); }
         function quick(): void { Panels.toggleQuick(); }
         function welcome(): void { Panels.closeAll(); Panels.welcome = true; }
+        function switcher(): void { Panels.toggleSwitcher(); }
+        function overview(): void { Panels.toggleOverview(); }
+        function clipboard(): void { Panels.togglePicker("clip"); }
+        function emoji(): void { Panels.togglePicker("emoji"); }
         function calendar(): void { Panels.toggleCalendar(); }
         // Teclas de brilho: relê o valor e mostra o aviso na tela
         function osdBrightness(): void { Brightness.refresh(); }
