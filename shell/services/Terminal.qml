@@ -111,11 +111,14 @@ Singleton {
             + `NULLYZ_ACCENT=${hex(Tok.light ? e.light : e.color)}\n`;
     }
 
-    function save() {
-        file.writeAdapter();
+    function write() {
         kittyFile.setText(kitty());
         shFile.setText(shell());
         ffFile.setText(fastfetch());
+    }
+    function save() {
+        file.writeAdapter();
+        write();
         reloadTimer.restart();
     }
     Timer { id: reloadTimer; interval: 150; onTriggered: Quickshell.execDetached(["pkill", "-USR1", "-x", "kitty"]) }
@@ -126,6 +129,9 @@ Singleton {
         watchChanges: true
         onFileChanged: reload()
         onLoadFailed: err => { if (err === FileViewError.FileNotFound) root.save(); }
+        // Ao subir: regera os arquivos (versão nova do shell pode ter coisa nova, como o
+        // fastfetch; o tema pode ter mudado com o shell desligado). Sem recarregar o kitty.
+        onLoaded: Qt.callLater(root.write)
         adapter: JsonAdapter {
             id: conf
             property real fontSize: 11.5
