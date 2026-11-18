@@ -28,6 +28,12 @@ Singleton {
     readonly property bool light: !conf.animations && !conf.blur && !conf.shadow   // "efeitos leves"
     readonly property var monitors: { try { return JSON.parse(conf.monitors || "{}"); } catch (e) { return {}; } }
 
+    // Várias de uma vez (rices): uma gravação e um reload só
+    function setMany(obj) {
+        let any = false;
+        for (const k in obj) if (conf[k] !== obj[k]) { conf[k] = obj[k]; any = true; }
+        if (any) save();
+    }
     function set(key, value) {
         if (conf[key] === value) return;
         conf[key] = value;

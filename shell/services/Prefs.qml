@@ -115,6 +115,17 @@ Singleton {
         }
     }
 
+    // Várias de uma vez (rices): muda tudo e grava uma vez só. Com set() em sequência, a
+    // releitura do arquivo (watchChanges) chegava com uma gravação anterior e desfazia parte.
+    function setMany(obj) {
+        const changed = Object.keys(obj).filter(k => prefs[k] !== obj[k]);
+        if (!changed.length) return;
+        for (const k of changed) prefs[k] = obj[k];
+        file.writeAdapter();
+        if (changed.includes("roundness") && !("rounding" in obj)) HyprConf.set("rounding", Math.round(14 * obj.roundness));
+        if (changed.includes("accent") || changed.includes("theme")) { HyprConf.save(); Terminal.save(); }
+    }
+
     FileView {
         id: file
         path: root.dir + "/shell.json"

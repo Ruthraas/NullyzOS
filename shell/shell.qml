@@ -87,8 +87,8 @@ ShellRoot {
         function rice(prefs: string, hypr: string): string {
             try {
                 const p = JSON.parse(prefs || "{}"), h = JSON.parse(hypr || "{}");
-                for (const k in p) Prefs.set(k, p[k]);
-                for (const k in h) HyprConf.set(k, h[k]);
+                Prefs.setMany(p);
+                HyprConf.setMany(h);
                 return "ok";
             } catch (e) { return "erro: " + e; }
         }
