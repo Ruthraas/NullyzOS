@@ -5,7 +5,8 @@ hl.on("hyprland.start", function()
   -- até 5 s: o Quickshell não reconecta se subir antes (lição do Nullyzrice, #38).
   hl.exec_cmd('for i in $(seq 50); do [ -S "$XDG_RUNTIME_DIR/pipewire-0" ] && break; sleep 0.1; done; qs -n -c nullyzos -d')
   -- Agente polkit: pede a senha quando algum app precisa de permissão de administrador.
-  hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
+  -- hyprpolkitagent (pacote de 300 KB) no lugar do agente do KDE, que ocupava ~80 MB.
+  hl.exec_cmd("systemctl --user start hyprpolkitagent")
   hl.exec_cmd("hyprctl setcursor Adwaita ${XCURSOR_SIZE:-24}")
   -- Pastas do usuário (Imagens, Downloads, Documentos...) na língua do sistema
   hl.exec_cmd("xdg-user-dirs-update")

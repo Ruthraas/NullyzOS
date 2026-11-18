@@ -3,7 +3,7 @@ local lib = require("nullyzos.lib")
 
 -- Diálogos e utilitários flutuam, centralizados.
 local dialogs = {
-  { class = "^(pavucontrol|org.pulseaudio.pavucontrol|nm-connection-editor|org.kde.polkit-kde-authentication-agent-1)$" },
+  { class = "^(pavucontrol|org.pulseaudio.pavucontrol|nm-connection-editor|org.kde.polkit-kde-authentication-agent-1|hyprpolkitagent)$" },
   { title = "^(Open File|Save File|Abrir arquivo|Salvar arquivo|Select a File|Choose Files).*$" },
 }
 for _, m in ipairs(dialogs) do

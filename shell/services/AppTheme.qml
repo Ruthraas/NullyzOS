@@ -14,10 +14,18 @@ import qs.theme
 Singleton {
     id: root
 
-    readonly property string signature: [Tok.light, Tok.accentName, Tok.font].join("|")
+    // Só reaplica quando muda (a assinatura aplicada fica gravada): antes rodava ~60
+    // kwriteconfig6 a cada login à toa.
+    readonly property string signature: ["v1", Tok.light, Tok.accentName, Tok.font].join("|")
     onSignatureChanged: debounce.restart()
-    Component.onCompleted: debounce.restart()
-    Timer { id: debounce; interval: 800; onTriggered: root.apply() }
+    Timer { id: debounce; interval: 800; onTriggered: if (applied.loaded && applied.text().trim() !== root.signature) root.apply() }
+    FileView {
+        id: applied
+        property bool loaded: false
+        path: Prefs.dir + "/apps-tema.sig"
+        onLoaded: { loaded = true; debounce.restart(); }
+        onLoadFailed: { loaded = true; debounce.restart(); }
+    }
 
     function rgb(c) {
         const q = Qt.color(c);
@@ -68,6 +76,7 @@ Singleton {
         colorsFile.setText(scheme());
         job.command = ["sh", Qt.resolvedUrl("../scripts/tema-apps.sh").toString().replace("file://", ""),
                        colorsFile.path, Tok.light ? "claro" : "escuro", acc, Tok.font];
+        applied.setText(root.signature);
         later.restart();
     }
     Timer { id: later; interval: 200; onTriggered: if (!job.running) job.running = true }
