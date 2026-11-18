@@ -35,6 +35,7 @@ Item {
             Txt {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: Clock.time
+                color: Tok.palettes.escuro.text      // fundo do bloqueio é sempre escuro (wallpaper + véu)
                 size: Math.min(112, root.height * 0.13); font { weight: Font.Light; letterSpacing: -3 }
             }
             Txt {
@@ -81,6 +82,7 @@ Item {
                 Txt {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: Quickshell.env("USER") || ""
+                    color: Tok.palettes.escuro.text
                     size: 20; font { weight: Font.DemiBold }
                 }
 
@@ -96,7 +98,7 @@ Item {
                         verticalAlignment: TextInput.AlignVCenter
                         echoMode: TextInput.Password
                         passwordCharacter: "●"
-                        color: Tok.text
+                        color: Tok.palettes.escuro.text
                         font { family: Tok.font; pixelSize: Math.round(16 * Tok.fontScale) }
                         enabled: !root.lock.busy
                         focus: true
@@ -110,7 +112,7 @@ Item {
                         anchors { left: parent.left; leftMargin: 16; verticalCenter: parent.verticalCenter }
                         visible: field.text.length === 0
                         text: root.lock.busy ? "Conferindo…" : "Senha"
-                        muted: true
+                        color: Tok.palettes.escuro.muted
                         size: 16
                     }
                 }
