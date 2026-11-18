@@ -21,11 +21,13 @@ PanelWindow {
 
     readonly property var pages: [
         { id: "aparencia", label: "Aparência",
-          icon: "M12 3a9 9 0 1 0 0 18c1.2 0 1.6-1 1.2-1.8-.5-1.1.3-2.2 1.5-2.2H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10z M7.5 12h.01 M9.5 7.5h.01 M14.5 7.5h.01" },
-        { id: "bloqueio", label: "Tela de bloqueio",
-          icon: "M7 11h10a1.5 1.5 0 0 1 1.5 1.5v6A1.5 1.5 0 0 1 17 20H7a1.5 1.5 0 0 1-1.5-1.5v-6A1.5 1.5 0 0 1 7 11z M8.5 11V8a3.5 3.5 0 0 1 7 0v3" },
+          icon: "M12 3a9 9 0 1 0 0 18c1.2 0 1.6-1 1.2-1.8-.5-1.1.3-2.2 1.5-2.2H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10z M7.5 12h.01 M9.5 7.5h.01 M14.5 7.5h.01",
+          file: "SettingsAppearance.qml" },
+        { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml" },
+        { id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml" },
+        { id: "som", label: "Som", icon: Icons.volumeHigh, file: "SettingsSound.qml" },
         { id: "sobre", label: "Sobre",
-          icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 7.8h.01" }
+          icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 7.8h.01", file: "SettingsAbout.qml" }
     ]
     readonly property int pageIndex: Math.max(0, pages.findIndex(p => p.id === Panels.settingsPage))
 
@@ -119,7 +121,7 @@ PanelWindow {
         Loader {
             id: content
             anchors { left: side.right; right: parent.right; top: parent.top; bottom: parent.bottom; margins: 32 }
-            source: ["SettingsAppearance.qml", "SettingsLock.qml", "SettingsAbout.qml"][root.pageIndex]
+            source: root.pages[root.pageIndex].file
             // Troca de página: o conteúdo novo entra subindo um pouco (follow-through).
             onLoaded: { item.opacity = 0; slideIn.restart(); }
             ParallelAnimation {
