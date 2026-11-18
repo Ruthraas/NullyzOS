@@ -3,37 +3,55 @@ pragma Singleton
 import QtQuick
 import Quickshell
 
-// Tokens visuais do NullyzOS (branding/tokens.json, tema escuro). Toda cor do shell vem daqui.
+// Tokens visuais do NullyzOS (branding/tokens.json, papéis escuro e claro). Toda cor do shell
+// vem daqui. Prefs escreve `light`, `accentName` e `glassOpacity` (Configurações → Aparência).
+// Sem Behavior aqui (singleton derruba o Qt 6.12): quem anima a troca é cada componente.
 Singleton {
     readonly property bool vm: Quickshell.env("NULLYZ_VM") === "1"   // modo leve (sem desfoque)
 
-    readonly property color bg: "#0e0e13"
-    readonly property color surface: "#17171f"
-    readonly property color surfaceHi: "#1f1f29"
-    readonly property color border: "#2b2b37"
-    readonly property color text: "#ededf2"
-    readonly property color muted: "#a3a3b3"
-    // Cor de destaque (branding/tokens.json → destaques), escolhida em Configurações → Aparência.
-    // Prefs escreve accentName. Sem Behavior aqui (singleton): quem anima é cada componente.
+    property bool light: false
+    property string accentName: "violeta"
+    property real glassOpacity: 0.55          // 0.35 (mais transparente) .. 0.9
+
+    // As duas paletas lado a lado (miniaturas de tema nas Configurações).
+    readonly property var palettes: ({
+        escuro: { bg: "#0e0e13", surface: "#17171f", border: "#2b2b37", text: "#ededf2", muted: "#a3a3b3" },
+        claro: { bg: "#f4f4f7", surface: "#ffffff", border: "#d9d9e2", text: "#15151c", muted: "#5a5a6a" }
+    })
+
+    readonly property color bg: light ? "#f4f4f7" : "#0e0e13"
+    readonly property color surface: light ? "#ffffff" : "#17171f"
+    readonly property color surfaceHi: light ? "#ececf1" : "#1f1f29"
+    readonly property color border: light ? "#d9d9e2" : "#2b2b37"
+    readonly property color text: light ? "#15151c" : "#ededf2"
+    readonly property color muted: light ? "#5a5a6a" : "#a3a3b3"
+    readonly property color error: light ? "#c93a3a" : "#f06a6a"
+
+    // Cor de destaque (branding/tokens.json → destaques). No claro, um tom mais fechado para
+    // ter contraste com o fundo branco.
     readonly property var accents: ({
-        violeta: { name: "Violeta", color: "#9d8cff" },
-        azul: { name: "Azul", color: "#6e8cff" },
-        ciano: { name: "Ciano", color: "#2bb6c9" },
-        verde: { name: "Verde", color: "#5fd18b" },
-        coral: { name: "Coral", color: "#f08a5d" },
-        rosa: { name: "Rosa", color: "#f07ab8" }
+        violeta: { name: "Violeta", color: "#9d8cff", light: "#5b46e0" },
+        azul: { name: "Azul", color: "#6e8cff", light: "#3a5ad9" },
+        ciano: { name: "Ciano", color: "#2bb6c9", light: "#0f8394" },
+        verde: { name: "Verde", color: "#5fd18b", light: "#1f8a4c" },
+        coral: { name: "Coral", color: "#f08a5d", light: "#c4562a" },
+        rosa: { name: "Rosa", color: "#f07ab8", light: "#c23a82" }
     })
     readonly property var accentOrder: ["violeta", "azul", "ciano", "verde", "coral", "rosa"]
-    property string accentName: "violeta"
-    readonly property color accent: (accents[accentName] || accents.violeta).color
-    readonly property color textOnAccent: "#0e0e13"
-    readonly property color error: "#f06a6a"
+    readonly property var accentEntry: accents[accentName] || accents.violeta
+    readonly property color accent: light ? accentEntry.light : accentEntry.color
+    readonly property color textOnAccent: light ? "#ffffff" : "#0e0e13"
+
     // Vidro: tinta (mais opaca no modo VM, que não tem desfoque), borda de luz e brilho no topo.
-    readonly property color glass: vm ? Qt.rgba(24 / 255, 24 / 255, 34 / 255, 0.94) : Qt.rgba(24 / 255, 24 / 255, 34 / 255, 0.55)
-    readonly property color edge: Qt.rgba(1, 1, 1, 0.16)
-    readonly property color highlight: Qt.rgba(1, 1, 1, 0.28)
-    readonly property color hover: Qt.rgba(1, 1, 1, 0.08)
-    readonly property color selection: Qt.rgba(accent.r, accent.g, accent.b, 0.20)
+    readonly property real glassAlpha: vm ? 0.94 : glassOpacity
+    readonly property color glass: light ? Qt.rgba(1, 1, 1, Math.min(0.96, glassAlpha + 0.08))
+                                         : Qt.rgba(24 / 255, 24 / 255, 34 / 255, glassAlpha)
+    readonly property color edge: light ? Qt.rgba(0, 0, 0, 0.10) : Qt.rgba(1, 1, 1, 0.16)
+    readonly property color highlight: light ? Qt.rgba(1, 1, 1, 0.9) : Qt.rgba(1, 1, 1, 0.28)
+    readonly property color hover: light ? Qt.rgba(0, 0, 0, 0.06) : Qt.rgba(1, 1, 1, 0.08)
+    readonly property color selection: Qt.rgba(accent.r, accent.g, accent.b, light ? 0.14 : 0.20)
+    readonly property color faint: light ? Qt.rgba(0, 0, 0, 0.22) : Qt.rgba(1, 1, 1, 0.28)   // pontos, trilhos
+    readonly property color scrim: Qt.rgba(0, 0, 0, light ? 0.18 : 0.3)                         // fundo atrás de painéis
 
     readonly property string font: "Geist"
     readonly property string mono: "Geist Mono"

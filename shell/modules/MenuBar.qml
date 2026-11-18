@@ -66,7 +66,7 @@ PanelWindow {
                     readonly property bool used: Hypr.workspaces.some(w => w.id === modelData)
                     anchors.verticalCenter: parent.verticalCenter
                     width: active ? 22 : 7; height: 7; radius: 3.5
-                    color: active ? Tok.accent : (used ? Tok.text : Qt.rgba(1, 1, 1, 0.28))
+                    color: active ? Tok.accent : (used ? Tok.text : Tok.faint)
                     Behavior on width { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutBack } }
                     Behavior on color { ColorAnimation { duration: Tok.fast } }
                     MouseArea {

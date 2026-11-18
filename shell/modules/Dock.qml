@@ -82,7 +82,7 @@ PanelWindow {
                     Rectangle {
                         anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.top; bottomMargin: 14 }
                         width: label.implicitWidth + 20; height: 28; radius: 10
-                        color: Qt.rgba(14 / 255, 14 / 255, 19 / 255, 0.9)
+                        color: Tok.surface
                         border { width: 1; color: Tok.edge }
                         opacity: area.containsMouse ? 1 : 0
                         Behavior on opacity { NumberAnimation { duration: Tok.fast } }

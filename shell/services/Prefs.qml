@@ -17,6 +17,7 @@ import qs.theme
 //   accent         cor de destaque (nome em Tok.accents)
 //   clockSeconds, showDate, showAppName   o que a barra de menus mostra
 //   idleLock, idleSuspend                 minutos parado até bloquear / suspender (0 = nunca)
+//   theme ("escuro" | "claro"), glassOpacity (0.35..0.9), cursorSize (24, 32, 48)
 Singleton {
     id: root
 
@@ -36,7 +37,12 @@ Singleton {
     readonly property int idleLock: prefs.idleLock
     readonly property int idleSuspend: prefs.idleSuspend
 
+    readonly property bool light: prefs.theme === "claro"
+    readonly property real glassOpacity: prefs.glassOpacity
+    readonly property int cursorSize: prefs.cursorSize
     Binding { target: Tok; property: "accentName"; value: prefs.accent }
+    Binding { target: Tok; property: "light"; value: prefs.theme === "claro" }
+    Binding { target: Tok; property: "glassOpacity"; value: prefs.glassOpacity }
 
     readonly property string wallpaperUrl: url(prefs.wallpaper || defaultWallpaper)
     readonly property string lockUrl: prefs.lockWallpaper === "desktop" ? wallpaperUrl : url(defaultWallpaper)
@@ -48,7 +54,11 @@ Singleton {
         if (prefs[key] === value) return;
         prefs[key] = value;
         file.writeAdapter();
-        if (key === "accent") HyprConf.save();    // borda das janelas na cor nova
+        if (key === "accent" || key === "theme") HyprConf.save();    // borda das janelas na cor nova
+        if (key === "cursorSize") {
+            Quickshell.execDetached(["hyprctl", "setcursor", "Adwaita", String(value)]);
+            HyprConf.save();                                           // XCURSOR_SIZE para os apps
+        }
     }
 
     FileView {
@@ -62,7 +72,8 @@ Singleton {
         onLoaded: {
             const t = text();
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
-                          "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend"];
+                          "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
+                          "theme", "glassOpacity", "cursorSize"];
             if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
         }
         adapter: JsonAdapter {
@@ -78,6 +89,9 @@ Singleton {
             property bool showAppName: true
             property int idleLock: 10
             property int idleSuspend: 0
+            property string theme: "escuro"
+            property real glassOpacity: 0.55
+            property int cursorSize: 24
         }
     }
 

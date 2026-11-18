@@ -58,9 +58,13 @@ Singleton {
         if (conf.rounding >= 0) out.push(`hl.config({ decoration = { rounding = ${conf.rounding} } })`);
         if (!conf.animations) out.push("hl.config({ animations = { enabled = false } })");
         if (!conf.blur) out.push("hl.config({ decoration = { blur = { enabled = false } } })");
-        if (Tok.accentName !== "violeta") {
-            const hex = String((Tok.accents[Tok.accentName] || Tok.accents.violeta).color).replace("#", "");
+        if (Tok.accentName !== "violeta" || Tok.light) {
+            const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
+            const hex = String(Tok.light ? e.light : e.color).replace("#", "");
             out.push(`hl.config({ general = { col = { active_border = { colors = { "rgba(${hex}ff)", "rgba(${hex}66)" }, angle = 45 } } } })`);
+        }
+        if (Prefs.cursorSize && Prefs.cursorSize !== 24) {
+            out.push(`hl.env("XCURSOR_SIZE", "${Prefs.cursorSize}")`, `hl.env("HYPRCURSOR_SIZE", "${Prefs.cursorSize}")`);
         }
         const mons = root.monitors;
         for (const name in mons) {

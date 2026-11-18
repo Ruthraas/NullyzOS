@@ -38,7 +38,7 @@ PanelWindow {
     // Fundo escurecido: clicar fora fecha.
     Rectangle {
         anchors.fill: parent
-        color: Qt.rgba(0, 0, 0, 0.3)
+        color: Tok.scrim
         opacity: card.opacity
         MouseArea { anchors.fill: parent; onClicked: Panels.closeAll() }
     }
