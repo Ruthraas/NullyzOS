@@ -14,6 +14,8 @@ SettingsPage {
     readonly property var pal: Tok.light ? Tok.palettes.claro : Tok.palettes.escuro
     readonly property color acc: Tok.light ? Tok.accentEntry.light : Tok.accentEntry.color
     // Pontos → pixels (aprox.); dividido pela escala da interface: a prévia mostra o terminal, que não escala junto.
+    // N binário 14×14 (terminal/logo-binario.txt): dígito ou espaço (vazio)
+    readonly property string bitsPattern: "1011      11101011      0111101010    0111000010    000010110110  010000110111  10000100  110011011001  110011000111    1001101011    0001111101      11101010      10101110      01010010      1011"
     // Buraco negro 19×15 (terminal/logo-buraco.txt): # luz, . espaço, espaço = vazio
     readonly property string holePattern: ".............................................#####.............##   ##...........#       #.........##       ##.......##         ##...###################...#############.......##       ##.........#       #...........##   ##.............#####............................................."
     readonly property real px: Terminal.fontSize * 1.33 / Tok.fontScale
@@ -60,15 +62,17 @@ SettingsPage {
                 Grid {
                     anchors.verticalCenter: parent.verticalCenter
                     readonly property bool hole: Terminal.logo === "buraco"
-                    columns: hole ? 19 : 7
-                    readonly property real cell: hole ? Math.max(3, page.px * 0.42) : Math.max(4, page.px * 0.55)
+                    readonly property bool bits: Terminal.logo === "binario"
+                    columns: hole ? 19 : bits ? 14 : 7
+                    readonly property real cell: hole || bits ? Math.max(3, page.px * 0.42) : Math.max(4, page.px * 0.55)
                     spacing: Terminal.logo === "blocos" ? 0 : cell * 0.45
                     Repeater {
                         // # luz, . espaço apagado, espaço = vazio (centro do buraco negro)
-                        model: (parent.hole ? page.holePattern : "##...#####..######.####.######..#####...####...##").split("")
+                        model: (parent.hole ? page.holePattern : parent.bits ? page.bitsPattern
+                                : "##...#####..######.####.######..#####...####...##").split("")
                         Rectangle {
                             required property string modelData
-                            readonly property bool lit: modelData === "#"
+                            readonly property bool lit: modelData === "#" || modelData === "0" || modelData === "1"
                             readonly property bool bin: Terminal.logo === "binario" || Terminal.logo === "buraco"
                             width: parent.cell; height: parent.cell
                             radius: Terminal.logo === "pixel" ? (lit ? 1 : parent.cell / 2) : 0
@@ -77,7 +81,7 @@ SettingsPage {
                             Txt {
                                 visible: parent.bin
                                 anchors.centerIn: parent
-                                text: parent.modelData === " " ? "" : parent.lit ? "1" : "0"
+                                text: parent.modelData === " " ? "" : parent.modelData === "0" || parent.modelData === "1" ? parent.modelData : parent.lit ? "1" : "0"
                                 color: parent.lit ? page.acc : Tok.ansiDark[8]
                                 size: page.px
                                 font { family: Tok.mono; weight: parent.lit ? Font.Bold : Font.Normal }
@@ -188,9 +192,9 @@ SettingsPage {
     }
     SettingsRow {
         title: "Logo"
-        description: "Buraco negro: o símbolo do terminal, luz em 1, espaço em 0 e o centro vazio (o null). Ou o N: binário, pixel ou blocos."
+        description: "N binário: a letra feita de 0 e 1, sem nada em volta. Também: pixel, blocos ou o buraco negro."
         Choice {
-            options: [["buraco", "Buraco negro"], ["binario", "N binário"], ["pixel", "N pixel"], ["blocos", "N blocos"]]
+            options: [["binario", "N binário"], ["pixel", "N pixel"], ["blocos", "N blocos"], ["buraco", "Buraco negro"]]
             current: Terminal.logo
             onPicked: v => Terminal.set("logo", v)
         }

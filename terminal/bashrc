@@ -9,7 +9,7 @@
 NULLYZ_PROMPT=${NULLYZ_PROMPT:-1}
 NULLYZ_GREETING=${NULLYZ_GREETING:-sempre}       # sempre | sessao | nunca
 NULLYZ_GREET_STYLE=${NULLYZ_GREET_STYLE:-fastfetch}  # fastfetch | simples
-NULLYZ_LOGO=${NULLYZ_LOGO:-buraco}               # buraco | binario | pixel | blocos
+NULLYZ_LOGO=${NULLYZ_LOGO:-binario}              # binario | buraco | pixel | blocos
 NULLYZ_ACCENT=${NULLYZ_ACCENT:-9d8cff}
 NULLYZ_DIM=${NULLYZ_DIM:-4a4a5a}
 __nz_dir="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos"

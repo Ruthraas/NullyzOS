@@ -142,7 +142,7 @@ Singleton {
             property bool prompt: true
             property string greeting: "sempre"
             property string greetStyle: "fastfetch"
-            property string logo: "buraco"
+            property string logo: "binario"
             property string info: "sistema,kernel,ligado,pacotes,janelas,terminal,processador,video,memoria,disco,cores"
         }
     }
