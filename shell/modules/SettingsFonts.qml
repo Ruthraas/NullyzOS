@@ -99,7 +99,7 @@ SettingsPage {
         radius: Tok.rButton + 2
         color: Tok.surfaceHi
         border { width: 1; color: input.activeFocus ? Tok.accent : Tok.border }
-        Ico { x: 12; anchors.verticalCenter: parent.verticalCenter; size: 15; color: Tok.muted; d: "M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13z M15.5 15.5L20 20" }
+        Ico { x: 12; anchors.verticalCenter: parent.verticalCenter; size: 15; color: Tok.muted; d: Icons.search }
         TextInput {
             id: input
             anchors { fill: parent; leftMargin: 36; rightMargin: 12 }
@@ -166,17 +166,10 @@ SettingsPage {
     SettingsRow {
         title: "Tamanho do texto"
         description: "Barra, painéis e Configurações. Os apps têm o próprio ajuste."
-        Row {
-            spacing: 8
-            Repeater {
-                model: [[0.9, "Pequeno"], [1, "Normal"], [1.1, "Grande"], [1.25, "Enorme"]]
-                Chip {
-                    required property var modelData
-                    text: modelData[1]
-                    active: Math.abs(Tok.fontScale - modelData[0]) < 0.01
-                    onClicked: Prefs.set("textScale", modelData[0])
-                }
-            }
+        Segmented {
+            options: [[0.9, "Pequeno"], [1, "Normal"], [1.1, "Grande"], [1.25, "Enorme"]]
+            current: Tok.fontScale
+            onPicked: v => Prefs.set("textScale", v)
         }
     }
 

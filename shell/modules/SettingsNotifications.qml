@@ -17,17 +17,10 @@ SettingsPage {
     SettingsRow {
         title: "Tempo na tela"
         description: "Quanto tempo cada aviso fica antes de sumir (quando o app não pede outro)."
-        Row {
-            spacing: 8
-            Repeater {
-                model: [[4, "Curto"], [6, "Normal"], [10, "Longo"]]
-                Chip {
-                    required property var modelData
-                    text: modelData[1]
-                    active: Prefs.notifSeconds === modelData[0]
-                    onClicked: Prefs.set("notifSeconds", modelData[0])
-                }
-            }
+        Segmented {
+            options: [[4, "Curto"], [6, "Normal"], [10, "Longo"]]
+            current: Prefs.notifSeconds
+            onPicked: v => Prefs.set("notifSeconds", v)
         }
     }
     SettingsRow {

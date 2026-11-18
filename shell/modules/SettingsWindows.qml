@@ -13,33 +13,19 @@ SettingsPage {
     SettingsRow {
         title: "Espaço entre janelas"
         description: "A folga entre as janelas lado a lado e as bordas da tela."
-        Row {
-            spacing: 8
-            Repeater {
-                model: [["compacto", "Pouco"], ["", "Normal"], ["amplo", "Muito"]]
-                Chip {
-                    required property var modelData
-                    text: modelData[1]
-                    active: (HyprConf.gaps === "normal" ? "" : HyprConf.gaps) === modelData[0]
-                    onClicked: HyprConf.set("gaps", modelData[0])
-                }
-            }
+        Segmented {
+            options: [["compacto", "Pouco"], ["", "Normal"], ["amplo", "Muito"]]
+            current: HyprConf.gaps === "normal" ? "" : HyprConf.gaps
+            onPicked: v => HyprConf.set("gaps", v)
         }
     }
     SettingsRow {
         title: "Cantos"
         description: "O arredondamento das janelas."
-        Row {
-            spacing: 8
-            Repeater {
-                model: [[0, "Retos"], [8, "Leves"], [-1, "Normais"], [20, "Redondos"]]
-                Chip {
-                    required property var modelData
-                    text: modelData[1]
-                    active: HyprConf.rounding === modelData[0] || (modelData[0] === -1 && HyprConf.rounding === 14)
-                    onClicked: HyprConf.set("rounding", modelData[0])
-                }
-            }
+        Segmented {
+            options: [[0, "Retos"], [8, "Leves"], [-1, "Normais"], [20, "Redondos"]]
+            current: HyprConf.rounding === 14 ? -1 : HyprConf.rounding
+            onPicked: v => HyprConf.set("rounding", v)
         }
     }
     SettingsRow {

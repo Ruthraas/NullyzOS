@@ -50,7 +50,7 @@ Item {
             color: Tok.accent
             scale: root.selected ? 1 : 0
             Behavior on scale { NumberAnimation { duration: Tok.panel; easing.type: Easing.OutBack } }
-            Ico { anchors.centerIn: parent; size: 14; stroke: 2.4; color: Tok.textOnAccent; d: "M5 12.5l4.5 4.5L19 7.5" }
+            Ico { anchors.centerIn: parent; size: 14; stroke: 2.4; color: Tok.textOnAccent; d: Icons.check }
         }
         MouseArea {
             id: area

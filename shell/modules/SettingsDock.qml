@@ -10,22 +10,6 @@ SettingsPage {
     title: "Dock"
     subtitle: "Os apps na borda da tela. Botão direito num ícone: fixar, tirar, mudar de lugar."
 
-    component Choice: Row {
-        id: ch
-        property var options: []
-        property var current
-        signal picked(var value)
-        spacing: 8
-        Repeater {
-            model: ch.options
-            Chip {
-                required property var modelData
-                text: modelData[1]
-                active: ch.current === modelData[0]
-                onClicked: ch.picked(modelData[0])
-            }
-        }
-    }
 
     // ---- prévia: uma "tela" com o dock na posição, estilo e tamanho escolhidos -----------
     Rectangle {
@@ -115,7 +99,7 @@ SettingsPage {
         SettingsRow {
             title: "Posição"
             description: "Em que borda da tela."
-            Choice {
+            Segmented {
                 options: [["esquerda", "Esquerda"], ["baixo", "Embaixo"], ["direita", "Direita"]]
                 current: Prefs.dockPosition
                 onPicked: v => Prefs.set("dockPosition", v)
@@ -124,7 +108,7 @@ SettingsPage {
         SettingsRow {
             title: "Tamanho dos ícones"
             description: Prefs.dockIcon + " px"
-            Choice {
+            Segmented {
                 options: [[38, "Pequeno"], [46, "Normal"], [56, "Grande"], [64, "Enorme"]]
                 current: Prefs.dockIcon
                 onPicked: v => Prefs.set("dockIcon", v)
@@ -133,7 +117,7 @@ SettingsPage {
         SettingsRow {
             title: "Ampliar ao passar o mouse"
             description: "O ícone embaixo do mouse cresce e os vizinhos acompanham, em onda."
-            Choice {
+            Segmented {
                 options: [[0, "Não"], [0.35, "Pouco"], [0.7, "Muito"]]
                 current: Prefs.dockMagnify
                 onPicked: v => Prefs.set("dockMagnify", v)
@@ -147,7 +131,7 @@ SettingsPage {
         SettingsRow {
             title: "Estilo"
             description: "O fundo da cápsula do dock."
-            Choice {
+            Segmented {
                 options: [["vidro", "Vidro"], ["solido", "Sólido"], ["transparente", "Sem fundo"]]
                 current: Prefs.dockStyle
                 onPicked: v => Prefs.set("dockStyle", v)
@@ -156,7 +140,7 @@ SettingsPage {
         SettingsRow {
             title: "Indicador de app aberto"
             description: "A marca perto do ícone dos apps com janela aberta."
-            Choice {
+            Segmented {
                 options: [["ponto", "Ponto"], ["traco", "Traço"], ["nenhum", "Nenhum"]]
                 current: Prefs.dockIndicator
                 onPicked: v => Prefs.set("dockIndicator", v)

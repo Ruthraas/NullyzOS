@@ -42,6 +42,19 @@ Item {
         Behavior on opacity { NumberAnimation { duration: Tok.fast } }
     }
 
+    // Esmaecido no pé quando ainda tem conteúdo embaixo (antes a borda de um cartão
+    // cortado parecia uma linha solta)
+    Rectangle {
+        anchors { left: parent.left; right: parent.right; bottom: flick.bottom }
+        height: 36
+        opacity: flick.contentY + flick.height < flick.contentHeight - 4 ? 1 : 0
+        Behavior on opacity { NumberAnimation { duration: Tok.fast } }
+        gradient: Gradient {
+            GradientStop { position: 0; color: "transparent" }
+            GradientStop { position: 1; color: Tok.bg }
+        }
+    }
+
     // Barrinha de rolagem (só aparece quando há o que rolar)
     Rectangle {
         readonly property real ratio: flick.height / Math.max(1, flick.contentHeight)

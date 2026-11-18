@@ -296,7 +296,7 @@ PanelWindow {
                         IconButton {
                             anchors { right: parent.right; rightMargin: 6; top: parent.top; topMargin: 6 }
                             width: 26; height: 26
-                            icon: "M6 6l12 12 M18 6L6 18"
+                            icon: Icons.close
                             label: "Dispensar"
                             onClicked: Notifs.dismiss(nItem.modelData.id)
                         }

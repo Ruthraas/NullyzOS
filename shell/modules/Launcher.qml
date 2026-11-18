@@ -61,7 +61,7 @@ PanelWindow {
                 anchors { left: parent.left; leftMargin: 22; verticalCenter: parent.verticalCenter }
                 size: 20
                 color: Tok.muted
-                d: "M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14 M20 20l-4-4"
+                d: Icons.search
             }
             TextInput {
                 id: field

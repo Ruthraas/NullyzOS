@@ -28,22 +28,6 @@ SettingsPage {
         }
     }
 
-    component Choice: Row {
-        id: ch
-        property var options: []
-        property var current
-        signal picked(var value)
-        spacing: 8
-        Repeater {
-            model: ch.options
-            Chip {
-                required property var modelData
-                text: modelData[1]
-                active: Math.abs(Number(ch.current) - Number(modelData[0])) < 0.001 || ch.current === modelData[0]
-                onClicked: ch.picked(modelData[0])
-            }
-        }
-    }
 
     // ---- tema ----------------------------------------------------------------------------
     Txt { text: "Tema"; font.weight: Font.DemiBold }
@@ -165,7 +149,7 @@ SettingsPage {
     SettingsRow {
         title: "Cantos"
         description: "Arredondamento de botões, painéis e janelas."
-        Choice {
+        Segmented {
             options: [[0, "Retos"], [0.55, "Suaves"], [1, "Normais"], [1.4, "Redondos"]]
             current: Prefs.roundness
             onPicked: v => Prefs.set("roundness", v)
@@ -174,7 +158,7 @@ SettingsPage {
     SettingsRow {
         title: "Animações"
         description: "Velocidade dos painéis, botões e trocas do shell."
-        Choice {
+        Segmented {
             options: [[0, "Desligadas"], [0.6, "Rápidas"], [1, "Normais"], [1.4, "Suaves"]]
             current: Prefs.motion
             onPicked: v => Prefs.set("motion", v)
@@ -194,17 +178,10 @@ SettingsPage {
     SettingsRow {
         title: "Tamanho do cursor"
         description: "O ponteiro do mouse."
-        Row {
-            spacing: 8
-            Repeater {
-                model: [[24, "Normal"], [32, "Grande"], [48, "Enorme"]]
-                Chip {
-                    required property var modelData
-                    text: modelData[1]
-                    active: Prefs.cursorSize === modelData[0]
-                    onClicked: Prefs.set("cursorSize", modelData[0])
-                }
-            }
+        Segmented {
+            options: [[24, "Normal"], [32, "Grande"], [48, "Enorme"]]
+            current: Prefs.cursorSize
+            onPicked: v => Prefs.set("cursorSize", v)
         }
     }
 
@@ -233,7 +210,7 @@ SettingsPage {
     SettingsRow {
         title: "Ajuste da imagem"
         description: "Preencher corta as sobras; Ajustar mostra a imagem inteira; Centralizar usa o tamanho original."
-        Choice {
+        Segmented {
             options: [["preencher", "Preencher"], ["ajustar", "Ajustar"], ["centralizar", "Centralizar"]]
             current: Prefs.wallpaperFit
             onPicked: v => Prefs.set("wallpaperFit", v)
@@ -251,7 +228,7 @@ SettingsPage {
     SettingsRow {
         title: "Trocar sozinho"
         description: "Passa para a próxima imagem da lista de tempos em tempos."
-        Choice {
+        Segmented {
             options: [[0, "Não"], [15, "15 min"], [60, "1 hora"], [1440, "1 dia"]]
             current: Prefs.wallpaperCycle
             onPicked: v => Prefs.set("wallpaperCycle", v)

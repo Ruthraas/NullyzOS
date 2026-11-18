@@ -77,7 +77,7 @@ SettingsPage {
         radius: Tok.rButton + 2
         color: Tok.surfaceHi
         border { width: 1; color: search.activeFocus ? Tok.accent : Tok.border }
-        Ico { x: 12; anchors.verticalCenter: parent.verticalCenter; size: 15; color: Tok.muted; d: "M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13z M15.5 15.5L20 20" }
+        Ico { x: 12; anchors.verticalCenter: parent.verticalCenter; size: 15; color: Tok.muted; d: Icons.search }
         TextInput {
             id: search
             anchors { fill: parent; leftMargin: 36; rightMargin: 12 }

@@ -20,22 +20,6 @@ SettingsPage {
     readonly property string holePattern: ".............................................#####.............##   ##...........#       #.........##       ##.......##         ##...###################...#############.......##       ##.........#       #...........##   ##.............#####............................................."
     readonly property real px: Terminal.fontSize * 1.33 / Tok.fontScale
 
-    component Choice: Row {
-        id: ch
-        property var options: []
-        property var current
-        signal picked(var value)
-        spacing: 8
-        Repeater {
-            model: ch.options
-            Chip {
-                required property var modelData
-                text: modelData[1]
-                active: ch.current === modelData[0]
-                onClicked: ch.picked(modelData[0])
-            }
-        }
-    }
 
     // ---- prévia ------------------------------------------------------------------------
     Rectangle {
@@ -148,7 +132,7 @@ SettingsPage {
     SettingsRow {
         title: "Transparência"
         description: "Quanto do fundo aparece através do terminal."
-        Choice {
+        Segmented {
             options: [[1, "Opaco"], [0.94, "Leve"], [0.85, "Vidro"], [0.75, "Bem transparente"]]
             current: Terminal.opacity
             onPicked: v => Terminal.set("opacity", v)
@@ -157,7 +141,7 @@ SettingsPage {
     SettingsRow {
         title: "Cursor"
         description: "O formato do cursor de texto."
-        Choice {
+        Segmented {
             options: [["beam", "Barra"], ["block", "Bloco"], ["underline", "Sublinhado"]]
             current: Terminal.cursor
             onPicked: v => Terminal.set("cursor", v)
@@ -166,7 +150,7 @@ SettingsPage {
     SettingsRow {
         title: "Margem"
         description: "O espaço entre o texto e a borda da janela."
-        Choice {
+        Segmented {
             options: [[4, "Pouca"], [12, "Normal"], [20, "Muita"]]
             current: Terminal.padding
             onPicked: v => Terminal.set("padding", v)
@@ -184,7 +168,7 @@ SettingsPage {
     SettingsRow {
         title: "Estilo da saudação"
         description: "Completa usa o fastfetch (o comando `fastfetch` também fica com o N); simples é mais curta."
-        Choice {
+        Segmented {
             options: [["fastfetch", "Completa"], ["simples", "Simples"]]
             current: Terminal.greetStyle
             onPicked: v => Terminal.set("greetStyle", v)
@@ -193,7 +177,7 @@ SettingsPage {
     SettingsRow {
         title: "Logo"
         description: "N binário: a letra feita de 0 e 1, sem nada em volta. Também: pixel, blocos ou o buraco negro."
-        Choice {
+        Segmented {
             options: [["binario", "N binário"], ["pixel", "N pixel"], ["blocos", "N blocos"], ["buraco", "Buraco negro"]]
             current: Terminal.logo
             onPicked: v => Terminal.set("logo", v)
@@ -221,7 +205,7 @@ SettingsPage {
     SettingsRow {
         title: "Saudação"
         description: "O N pixelado e os dados do sistema ao abrir o terminal."
-        Choice {
+        Segmented {
             options: [["sempre", "Sempre"], ["sessao", "1ª vez"], ["nunca", "Nunca"]]
             current: Terminal.greeting
             onPicked: v => Terminal.set("greeting", v)

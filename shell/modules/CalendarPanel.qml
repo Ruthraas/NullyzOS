@@ -104,8 +104,8 @@ PanelWindow {
                         height: 28
                         onClicked: root.goToday()
                     }
-                    IconButton { icon: "M14.5 6l-6 6 6 6"; label: "Mês anterior"; onClicked: root.shift(-1) }
-                    IconButton { icon: "M9.5 6l6 6-6 6"; label: "Próximo mês"; onClicked: root.shift(1) }
+                    IconButton { icon: Icons.chevronLeft; label: "Mês anterior"; onClicked: root.shift(-1) }
+                    IconButton { icon: Icons.chevronRight; label: "Próximo mês"; onClicked: root.shift(1) }
                 }
             }
 
@@ -217,7 +217,7 @@ PanelWindow {
                             anchors { right: parent.right; rightMargin: 4; verticalCenter: parent.verticalCenter }
                             width: 28; height: 28
                             opacity: 0.7
-                            icon: "M6 6l12 12 M18 6L6 18"
+                            icon: Icons.close
                             label: "Apagar " + ev.modelData.title
                             onClicked: Agenda.remove(ev.modelData.id)
                         }
@@ -246,7 +246,7 @@ PanelWindow {
                     color: addArea.containsMouse ? Qt.lighter(Tok.accent, 1.08) : Tok.accent
                     scale: addArea.pressed ? 0.92 : 1
                     Behavior on scale { NumberAnimation { duration: Tok.fast; easing.type: Easing.OutBack } }
-                    Ico { anchors.centerIn: parent; size: 18; stroke: 2.2; d: "M12 5v14 M5 12h14"; color: Tok.textOnAccent }
+                    Ico { anchors.centerIn: parent; size: 18; stroke: 2.2; d: Icons.plus; color: Tok.textOnAccent }
                     MouseArea { id: addArea; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: addBtn.add() }
                 }
             }

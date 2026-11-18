@@ -9,30 +9,13 @@ SettingsPage {
     title: "Barra"
     subtitle: "O que aparece na barra de menus e o relógio."
 
-    // Linha com pílulas de escolha: [valor, rótulo]
-    component Choice: Row {
-        id: ch
-        property var options: []
-        property var current
-        signal picked(var value)
-        spacing: 8
-        Repeater {
-            model: ch.options
-            Chip {
-                required property var modelData
-                text: modelData[1]
-                active: ch.current === modelData[0]
-                onClicked: ch.picked(modelData[0])
-            }
-        }
-    }
 
     // ---- barra -------------------------------------------------------------------------
     Txt { text: "Barra de menus"; font.weight: Font.DemiBold }
     SettingsRow {
         title: "Altura"
         description: "Compacta sobra mais espaço para as janelas."
-        Choice {
+        Segmented {
             options: [["compacta", "Compacta"], ["normal", "Normal"], ["alta", "Alta"]]
             current: Prefs.barHeight === 30 ? "compacta" : Prefs.barHeight === 42 ? "alta" : "normal"
             onPicked: v => Prefs.set("barSize", v)
@@ -48,7 +31,7 @@ SettingsPage {
         description: Prefs.showWorkspaces ? "Pontos das áreas de trabalho; a ativa vira uma pílula. Quantos sempre aparecem:" : "Pontos das áreas de trabalho."
         Row {
             spacing: 12
-            Choice {
+            Segmented {
                 visible: Prefs.showWorkspaces
                 options: [[3, "3"], [5, "5"], [8, "8"], [10, "10"]]
                 current: Prefs.workspaceCount
@@ -79,7 +62,7 @@ SettingsPage {
     SettingsRow {
         title: "Formato da hora"
         description: "24 horas (14:30) ou 12 horas (2:30 PM)."
-        Choice {
+        Segmented {
             options: [[true, "24 horas"], [false, "12 horas"]]
             current: Prefs.clock24
             onPicked: v => Prefs.set("clock24", v)
@@ -95,7 +78,7 @@ SettingsPage {
         description: "Antes da hora, na barra."
         Row {
             spacing: 12
-            Choice {
+            Segmented {
                 visible: Prefs.showDate
                 options: [["curta", "ter 17 nov"], ["longa", "terça, 17 de nov."], ["numerica", "17/11"]]
                 current: Prefs.dateStyle
@@ -107,7 +90,7 @@ SettingsPage {
     SettingsRow {
         title: "A semana começa no"
         description: "No calendário da barra."
-        Choice {
+        Segmented {
             options: [["domingo", "Domingo"], ["segunda", "Segunda"]]
             current: Prefs.weekStartsMonday ? "segunda" : "domingo"
             onPicked: v => Prefs.set("weekStart", v)

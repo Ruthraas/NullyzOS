@@ -79,7 +79,7 @@ SettingsPage {
             border { width: 1; color: Tok.border }
             AppIcon { x: 12; anchors.verticalCenter: parent.verticalCenter; size: 28; entry: parent.modelData }
             Txt { x: 52; anchors.verticalCenter: parent.verticalCenter; text: parent.modelData.name }
-            Ico { anchors { right: parent.right; rightMargin: 16; verticalCenter: parent.verticalCenter } size: 16; d: "M12 5v14 M5 12h14"; color: Tok.accent }
+            Ico { anchors { right: parent.right; rightMargin: 16; verticalCenter: parent.verticalCenter } size: 16; d: Icons.plus; color: Tok.accent }
             MouseArea { id: aArea; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: { page.add(parent.modelData.id); sInput.text = ""; } }
         }
     }
