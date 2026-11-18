@@ -141,6 +141,10 @@ def main() -> int:
         for m in re.finditer(r"property\s+\w+\s+(on[A-Z]\w*)", src):
             ln = src[: m.start()].count(chr(10)) + 1
             errors.append(f"{rel}:{ln}: propriedade {m.group(1)} (on + maiúscula é nome de sinal)")
+        # Grupo seguido de ";" na mesma linha (`anchors { ... }; y: 1`) não compila: Unexpected token.
+        for m in re.finditer(r"\b(anchors|font|border|margins)\s*\{[^{}\n]*\}\s*;", code):
+            ln = code[: m.start()].count(chr(10)) + 1
+            errors.append(f"{rel}:{ln}: '{m.group(1)} {{ ... }};' não compila (tire o ';' ou use {m.group(1)}.x)")
         if f.parent.name == "services" and "pragma Singleton" not in src:
             errors.append(f"{rel}: service sem pragma Singleton")
         if "theme" not in f.parts:
