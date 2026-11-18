@@ -14,7 +14,7 @@ SettingsPage {
 
     readonly property var keyNames: ({
         space: "Espaço", Return: "Enter", Escape: "Esc", comma: ",", period: ".", Tab: "Tab",
-        left: "←", right: "→", up: "↑", down: "↓", h: "H", j: "J", k: "K", l: "L",
+        left: "←", right: "→", up: "↑", down: "↓", Left: "←", Right: "→", Up: "↑", Down: "↓", h: "H", j: "J", k: "K", l: "L",
         mouse_down: "Roda ↓", mouse_up: "Roda ↑", "mouse:272": "Clique", "mouse:273": "Clique direito",
         Print: "Print"
     })
