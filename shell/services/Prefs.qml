@@ -46,7 +46,9 @@ Singleton {
     readonly property int idleLock: prefs.idleLock
     readonly property int idleSuspend: prefs.idleSuspend
 
-    readonly property bool light: prefs.theme === "claro" || (prefs.theme === "auto" && Clock.now.getHours() >= 7 && Clock.now.getHours() < 19)
+    // Paleta de rice (Tok.schemes): define claro/escuro sozinha
+    readonly property string palette: prefs.palette
+    readonly property bool light: Tok.schemes[prefs.palette] ? Tok.schemes[prefs.palette].light : prefs.theme === "claro" || (prefs.theme === "auto" && Clock.now.getHours() >= 7 && Clock.now.getHours() < 19)
     readonly property string theme: prefs.theme
     readonly property real roundness: prefs.roundness
     readonly property real motion: prefs.motion
@@ -77,6 +79,7 @@ Singleton {
     // Tudo o que a barra ocupa no topo: os painéis abrem logo abaixo disso
     readonly property int barSpace: barHeight + barGap
     Binding { target: Tok; property: "accentName"; value: prefs.accent }
+    Binding { target: Tok; property: "paletteName"; value: prefs.palette }
     // Destaque do wallpaper: a cor amostrada mudou → borda das janelas e terminal acompanham
     Connections {
         target: Tok
@@ -113,7 +116,7 @@ Singleton {
         if (prefs[key] === value) return;
         prefs[key] = value;
         file.writeAdapter();
-        if (key === "accent" || key === "theme") { HyprConf.save(); Terminal.save(); }   // borda e terminal na cor nova
+        if (key === "accent" || key === "theme" || key === "palette") { HyprConf.save(); Terminal.save(); }   // borda e terminal na cor nova
         if (key === "roundness") HyprConf.set("rounding", Math.round(14 * value));   // janelas acompanham
         if (key === "cursorSize") {
             Quickshell.execDetached(["hyprctl", "setcursor", "Adwaita", String(value)]);
@@ -129,7 +132,7 @@ Singleton {
         for (const k of changed) prefs[k] = obj[k];
         file.writeAdapter();
         if (changed.includes("roundness") && !("rounding" in obj)) HyprConf.set("rounding", Math.round(14 * obj.roundness));
-        if (changed.includes("accent") || changed.includes("theme")) { HyprConf.save(); Terminal.save(); }
+        if (changed.includes("accent") || changed.includes("theme") || changed.includes("palette")) { HyprConf.save(); Terminal.save(); }
     }
 
     FileView {
@@ -145,7 +148,7 @@ Singleton {
             const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
                           "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
                           "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
-                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "uiFont", "textScale",
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "palette", "uiFont", "textScale",
                           "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
                           "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
                           "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp", "startupApps", "notifSeconds",
@@ -177,6 +180,7 @@ Singleton {
             property bool showStatus: true
             property string barSize: "normal"
             property string barStyle: "classica"
+            property string palette: ""
             property string uiFont: "Geist"
             property real textScale: 1
             property string dockPosition: "baixo"

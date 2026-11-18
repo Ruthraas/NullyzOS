@@ -8,6 +8,7 @@ desktop = "hyprland"
 tipo = "preset"
 
 [preferencias]
+palette = ""
 theme = "escuro"
 accent = "verde"
 glassOpacity = 1

@@ -1,0 +1,26 @@
+# Paleta "brasa" da prévia do Nullyz (todos os papéis de cor), com barra e dock próprios.
+id = "nullyz-brasa"
+nome = "Nullyz Brasa"
+descricao = "Quase preto com vermelho brasa e barra flutuante."
+autor = "NullyzOS"
+licenca = "GPL-3.0-or-later"
+origem = "https://github.com/Ruthraas/NullyzOS"
+desktop = "hyprland"
+tipo = "preset"
+
+[preferencias]
+palette = "brasa"
+accent = "tema"
+glassOpacity = 0.7
+roundness = 1
+motion = 1
+barSize = "normal"
+barStyle = "flutuante"
+dockStyle = "vidro"
+dockIndicator = "ponto"
+dockMagnify = 0.35
+uiFont = "Geist"
+
+[hyprland]
+gaps = "normal"
+rounding = 14

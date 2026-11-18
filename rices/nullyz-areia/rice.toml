@@ -1,0 +1,26 @@
+# Paleta "areia" da prévia do Nullyz (todos os papéis de cor), com barra e dock próprios.
+id = "nullyz-areia"
+nome = "Nullyz Areia"
+descricao = "Tons de areia e terracota, claro e quente, bem arredondado."
+autor = "NullyzOS"
+licenca = "GPL-3.0-or-later"
+origem = "https://github.com/Ruthraas/NullyzOS"
+desktop = "hyprland"
+tipo = "preset"
+
+[preferencias]
+palette = "areia"
+accent = "tema"
+glassOpacity = 0.82
+roundness = 1.15
+motion = 1
+barSize = "normal"
+barStyle = "flutuante"
+dockStyle = "solido"
+dockIndicator = "ponto"
+dockMagnify = 0.35
+uiFont = "Geist"
+
+[hyprland]
+gaps = "amplo"
+rounding = 16

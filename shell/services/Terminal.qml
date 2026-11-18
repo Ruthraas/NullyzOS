@@ -41,7 +41,7 @@ Singleton {
         const L = Tok.light;
         const e = Tok.accentEntry;
         const acc = L ? e.light : e.color;
-        const p = L ? Tok.palettes.claro : Tok.palettes.escuro;
+        const p = Tok.pal;
         const ansi = L ? Tok.ansiLight : Tok.ansiDark;
         const out = [
             "# Gerado pelas Configurações do NullyzOS (Terminal): não edite, mude por lá.",
@@ -84,7 +84,7 @@ Singleton {
     function fastfetch() {
         const e = Tok.accentEntry;
         const acc = ansi(Tok.light ? e.light : e.color);
-        const dim = ansi(Tok.light ? Tok.palettes.claro.border : Tok.ansiDark[8]);
+        const dim = ansi(Tok.light ? Tok.pal.border : Tok.ansiDark[8]);
         const keys = root.infoKeys;
         const mods = [{ type: "title", format: "{user-name}@{host-name}" }, { type: "separator", string: "─" }];
         for (const o of root.infoOptions) if (o[2] && keys.includes(o[0])) mods.push(o[2]);
@@ -107,7 +107,7 @@ Singleton {
             + `NULLYZ_GREETING=${conf.greeting}\n`
             + `NULLYZ_GREET_STYLE=${conf.greetStyle}\n`
             + `NULLYZ_LOGO=${conf.logo}\n`
-            + `NULLYZ_DIM=${hex(Tok.light ? Tok.palettes.claro.border : Tok.ansiDark[8])}\n`
+            + `NULLYZ_DIM=${hex(Tok.light ? Tok.pal.border : Tok.ansiDark[8])}\n`
             + `NULLYZ_ACCENT=${hex(Tok.light ? e.light : e.color)}\n`;
     }
 

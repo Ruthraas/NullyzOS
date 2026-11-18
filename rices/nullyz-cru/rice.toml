@@ -1,0 +1,26 @@
+# Paleta "cru" da prévia do Nullyz (todos os papéis de cor), com barra e dock próprios.
+id = "nullyz-cru"
+nome = "Nullyz Cru"
+descricao = "Preto no branco, sem enfeite: claro, reto e direto."
+autor = "NullyzOS"
+licenca = "GPL-3.0-or-later"
+origem = "https://github.com/Ruthraas/NullyzOS"
+desktop = "hyprland"
+tipo = "preset"
+
+[preferencias]
+palette = "cru"
+accent = "tema"
+glassOpacity = 0.92
+roundness = 0.7
+motion = 1
+barSize = "normal"
+barStyle = "classica"
+dockStyle = "solido"
+dockIndicator = "traco"
+dockMagnify = 0.35
+uiFont = "Geist"
+
+[hyprland]
+gaps = "compacto"
+rounding = 10

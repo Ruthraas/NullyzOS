@@ -1,6 +1,7 @@
+# Paleta "papel" da prévia do Nullyz (todos os papéis de cor), com barra e dock próprios.
 id = "nullyz-papel"
 nome = "Nullyz Papel"
-descricao = "Claro e calmo: tema claro, azul, dock sólido e cantos suaves."
+descricao = "Claro como papel: fundo creme, azul tinta, barra flutuante e cantos suaves."
 autor = "NullyzOS"
 licenca = "GPL-3.0-or-later"
 origem = "https://github.com/Ruthraas/NullyzOS"
@@ -8,18 +9,18 @@ desktop = "hyprland"
 tipo = "preset"
 
 [preferencias]
-theme = "claro"
-accent = "azul"
+palette = "papel"
+accent = "tema"
 glassOpacity = 0.8
-roundness = 0.55
+roundness = 1
 motion = 1
 barSize = "normal"
 barStyle = "flutuante"
 dockStyle = "solido"
 dockIndicator = "traco"
-dockMagnify = 0
+dockMagnify = 0.35
 uiFont = "Geist"
 
 [hyprland]
 gaps = "amplo"
-rounding = 8
+rounding = 14

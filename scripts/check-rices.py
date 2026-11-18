@@ -37,7 +37,8 @@ PACOTE = re.compile(r"^[a-z0-9@._+-]+$")
 # Preferências que um preset pode mudar, com os valores aceitos (lista) ou o tipo e a faixa.
 PREFS = {
     "theme": ["escuro", "claro", "auto"],
-    "accent": ["violeta", "azul", "ciano", "verde", "coral", "rosa", "auto"],
+    "accent": ["violeta", "azul", "ciano", "verde", "coral", "rosa", "auto", "tema"],
+    "palette": ["", "nulo", "papel", "ouro", "brasa", "cru", "areia", "musgo", "sol"],
     "glassOpacity": (float, 0.2, 1),
     "roundness": (float, 0, 1.6),
     "motion": (float, 0, 1.6),

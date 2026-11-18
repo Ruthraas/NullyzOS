@@ -9,6 +9,7 @@
     "desktop": "hyprland",
     "tipo": "preset",
     "preferencias": {
+      "palette": "",
       "theme": "escuro",
       "accent": "violeta",
       "glassOpacity": 0.55,
@@ -28,6 +29,87 @@
     }
   },
   {
+    "id": "nullyz-areia",
+    "nome": "Nullyz Areia",
+    "descricao": "Tons de areia e terracota, claro e quente, bem arredondado.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "palette": "areia",
+      "accent": "tema",
+      "glassOpacity": 0.82,
+      "roundness": 1.15,
+      "motion": 1,
+      "barSize": "normal",
+      "barStyle": "flutuante",
+      "dockStyle": "solido",
+      "dockIndicator": "ponto",
+      "dockMagnify": 0.35,
+      "uiFont": "Geist"
+    },
+    "hyprland": {
+      "gaps": "amplo",
+      "rounding": 16
+    }
+  },
+  {
+    "id": "nullyz-brasa",
+    "nome": "Nullyz Brasa",
+    "descricao": "Quase preto com vermelho brasa e barra flutuante.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "palette": "brasa",
+      "accent": "tema",
+      "glassOpacity": 0.7,
+      "roundness": 1,
+      "motion": 1,
+      "barSize": "normal",
+      "barStyle": "flutuante",
+      "dockStyle": "vidro",
+      "dockIndicator": "ponto",
+      "dockMagnify": 0.35,
+      "uiFont": "Geist"
+    },
+    "hyprland": {
+      "gaps": "normal",
+      "rounding": 14
+    }
+  },
+  {
+    "id": "nullyz-cru",
+    "nome": "Nullyz Cru",
+    "descricao": "Preto no branco, sem enfeite: claro, reto e direto.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "palette": "cru",
+      "accent": "tema",
+      "glassOpacity": 0.92,
+      "roundness": 0.7,
+      "motion": 1,
+      "barSize": "normal",
+      "barStyle": "classica",
+      "dockStyle": "solido",
+      "dockIndicator": "traco",
+      "dockMagnify": 0.35,
+      "uiFont": "Geist"
+    },
+    "hyprland": {
+      "gaps": "compacto",
+      "rounding": 10
+    }
+  },
+  {
     "id": "nullyz-mono",
     "nome": "Nullyz Mono",
     "descricao": "Para quem vive no teclado: compacto, reto, sem animação e sem vidro. O mais leve.",
@@ -37,6 +119,7 @@
     "desktop": "hyprland",
     "tipo": "preset",
     "preferencias": {
+      "palette": "",
       "theme": "escuro",
       "accent": "verde",
       "glassOpacity": 1,
@@ -55,30 +138,111 @@
     }
   },
   {
-    "id": "nullyz-papel",
-    "nome": "Nullyz Papel",
-    "descricao": "Claro e calmo: tema claro, azul, dock sólido e cantos suaves.",
+    "id": "nullyz-musgo",
+    "nome": "Nullyz Musgo",
+    "descricao": "Verde musgo no escuro, com a barra em ilhas.",
     "autor": "NullyzOS",
     "licenca": "GPL-3.0-or-later",
     "origem": "https://github.com/Ruthraas/NullyzOS",
     "desktop": "hyprland",
     "tipo": "preset",
     "preferencias": {
-      "theme": "claro",
-      "accent": "azul",
+      "palette": "musgo",
+      "accent": "tema",
+      "glassOpacity": 0.7,
+      "roundness": 0.85,
+      "motion": 1,
+      "barSize": "normal",
+      "barStyle": "ilhas",
+      "dockStyle": "vidro",
+      "dockIndicator": "ponto",
+      "dockMagnify": 0.35,
+      "uiFont": "Geist"
+    },
+    "hyprland": {
+      "gaps": "normal",
+      "rounding": 12
+    }
+  },
+  {
+    "id": "nullyz-ouro",
+    "nome": "Nullyz Ouro",
+    "descricao": "Preto quente e dourado, com a barra em ilhas.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "palette": "ouro",
+      "accent": "tema",
+      "glassOpacity": 0.7,
+      "roundness": 0.85,
+      "motion": 1,
+      "barSize": "normal",
+      "barStyle": "ilhas",
+      "dockStyle": "vidro",
+      "dockIndicator": "ponto",
+      "dockMagnify": 0.35,
+      "uiFont": "Geist"
+    },
+    "hyprland": {
+      "gaps": "normal",
+      "rounding": 12
+    }
+  },
+  {
+    "id": "nullyz-papel",
+    "nome": "Nullyz Papel",
+    "descricao": "Claro como papel: fundo creme, azul tinta, barra flutuante e cantos suaves.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "palette": "papel",
+      "accent": "tema",
       "glassOpacity": 0.8,
-      "roundness": 0.55,
+      "roundness": 1,
       "motion": 1,
       "barSize": "normal",
       "barStyle": "flutuante",
       "dockStyle": "solido",
       "dockIndicator": "traco",
-      "dockMagnify": 0,
+      "dockMagnify": 0.35,
       "uiFont": "Geist"
     },
     "hyprland": {
       "gaps": "amplo",
-      "rounding": 8
+      "rounding": 14
+    }
+  },
+  {
+    "id": "nullyz-sol",
+    "nome": "Nullyz Sol",
+    "descricao": "Grafite com amarelo sol, contraste alto e barra flutuante.",
+    "autor": "NullyzOS",
+    "licenca": "GPL-3.0-or-later",
+    "origem": "https://github.com/Ruthraas/NullyzOS",
+    "desktop": "hyprland",
+    "tipo": "preset",
+    "preferencias": {
+      "palette": "sol",
+      "accent": "tema",
+      "glassOpacity": 0.72,
+      "roundness": 1,
+      "motion": 1,
+      "barSize": "normal",
+      "barStyle": "flutuante",
+      "dockStyle": "vidro",
+      "dockIndicator": "traco",
+      "dockMagnify": 0.35,
+      "uiFont": "Geist"
+    },
+    "hyprland": {
+      "gaps": "normal",
+      "rounding": 14
     }
   }
 ]

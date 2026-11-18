@@ -104,6 +104,19 @@ PALETAS = {"escuro": ("0e0e13", "17171f", "22222d", "2b2b37", "5a5a6a"),
            "claro": ("f4f4f7", "ffffff", "e9e9f0", "d9d9e2", "a3a3b3")}
 
 
+# Paletas de rice (as mesmas de shell/theme/Tok.qml, schemes): bg, surface, janela, borda, suave, destaque
+ESQUEMAS = {
+    "nulo": ("0e0e11", "16161a", "202026", "2a2a31", "9898a4", "9d8cff", False),
+    "papel": ("f4f2ee", "fbfaf8", "ebe8e2", "d9d5cc", "5f5c56", "2f5bd3", True),
+    "ouro": ("0a0908", "13110e", "1d1a15", "2b261d", "a39a88", "e3b341", False),
+    "brasa": ("0f0b0b", "181111", "231919", "33221f", "a8918e", "ff5a4e", False),
+    "cru": ("efece4", "f7f5ef", "e4e0d5", "d3cec1", "5a5850", "1a1a1a", True),
+    "areia": ("ece3d3", "f5eee2", "e2d6c2", "cfc0a6", "62553f", "a8461f", True),
+    "musgo": ("0b0d0b", "121612", "1b211b", "263026", "8fa08f", "5fd17a", False),
+    "sol": ("111111", "1a1a19", "252523", "32322e", "a3a196", "ffd23f", False),
+}
+
+
 def hexrgb(h):
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
@@ -111,9 +124,14 @@ def hexrgb(h):
 def rice(r) -> bytes:
     """Prévia de um rice pelas preferências: tema, destaque, cantos, espaçamento, barra, dock."""
     pref, hy = r.get("preferencias", {}), r.get("hyprland", {})
-    bg, surf, win, line, muted = (hexrgb(c) for c in PALETAS.get(pref.get("theme", "escuro"), PALETAS["escuro"]))
-    claro = pref.get("theme") == "claro"
-    acc = hexrgb(ACCENTS.get(pref.get("accent", "violeta"), "9d8cff"))
+    if pref.get("palette") in ESQUEMAS:
+        e = ESQUEMAS[pref["palette"]]
+        bg, surf, win, line, muted, acc = (hexrgb(c) for c in e[:6])
+        claro = e[6]
+    else:
+        bg, surf, win, line, muted = (hexrgb(c) for c in PALETAS.get(pref.get("theme", "escuro"), PALETAS["escuro"]))
+        claro = pref.get("theme") == "claro"
+        acc = hexrgb(ACCENTS.get(pref.get("accent", "violeta"), "9d8cff"))
     rad = int(10 * pref.get("roundness", 1))
     gap = {"compacto": 4, "normal": 10, "amplo": 18}.get(hy.get("gaps", ""), 10)
     barh = {"compacta": 18, "normal": 24, "alta": 30}.get(pref.get("barSize", "normal"), 24)

@@ -1,0 +1,26 @@
+# Paleta "ouro" da prévia do Nullyz (todos os papéis de cor), com barra e dock próprios.
+id = "nullyz-ouro"
+nome = "Nullyz Ouro"
+descricao = "Preto quente e dourado, com a barra em ilhas."
+autor = "NullyzOS"
+licenca = "GPL-3.0-or-later"
+origem = "https://github.com/Ruthraas/NullyzOS"
+desktop = "hyprland"
+tipo = "preset"
+
+[preferencias]
+palette = "ouro"
+accent = "tema"
+glassOpacity = 0.7
+roundness = 0.85
+motion = 1
+barSize = "normal"
+barStyle = "ilhas"
+dockStyle = "vidro"
+dockIndicator = "ponto"
+dockMagnify = 0.35
+uiFont = "Geist"
+
+[hyprland]
+gaps = "normal"
+rounding = 12
