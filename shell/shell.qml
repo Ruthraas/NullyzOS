@@ -54,6 +54,8 @@ ShellRoot {
         function settings(): void { Panels.toggleSettings(); }
         function quick(): void { Panels.toggleQuick(); }
         function calendar(): void { Panels.toggleCalendar(); }
+        // Para scripts: qs -c nullyzos ipc call nullyzos agendaAdd 2026-11-20 14:00 "Dentista"
+        function agendaAdd(day: string, time: string, title: string): bool { return Agenda.add(day, time, title); }
         function settingsPage(page: string): void { Panels.openSettings(page); }
         function lock(): void { Panels.closeAll(); screenLock.lock(); }
         function isLocked(): bool { return screenLock.locked; }
