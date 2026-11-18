@@ -10,7 +10,8 @@ Singleton {
     id: root
 
     readonly property var sink: Pipewire.defaultAudioSink
-    readonly property bool available: Pipewire.ready && !!(sink && sink.audio)
+    // "auto_null" é a saída falsa que o PipeWire cria quando não há placa de som.
+    readonly property bool available: Pipewire.ready && !!(sink && sink.audio) && sink.name !== "auto_null"
     readonly property real volume: available ? sink.audio.volume : 0
     readonly property bool muted: available ? sink.audio.muted : false
     readonly property string icon: !available || muted || volume <= 0.001 ? Icons.volumeOff

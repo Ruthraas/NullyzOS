@@ -11,7 +11,7 @@ SettingsPage {
     title: "Som"
     subtitle: "Saída, entrada e volume."
 
-    readonly property var devices: Pipewire.nodes.values.filter(n => n.audio && !n.isStream)
+    readonly property var devices: Pipewire.nodes.values.filter(n => n.audio && !n.isStream && n.name !== "auto_null")
     readonly property var outputs: devices.filter(n => n.isSink)
     readonly property var inputs: devices.filter(n => !n.isSink)
     readonly property var source: Pipewire.defaultAudioSource
