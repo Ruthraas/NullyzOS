@@ -94,7 +94,7 @@ Singleton {
                 type: "file",
                 source: `/usr/share/nullyzos/terminal/logo-${conf.logo}.txt`,
                 color: { "1": acc, "2": dim },
-                padding: { top: 1, left: 2, right: 4 }
+                padding: { top: 0, left: 2, right: 4 }
             },
             display: { separator: "  ", color: { keys: acc, title: acc }, key: { width: 13 } },
             modules: mods

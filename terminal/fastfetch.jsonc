@@ -6,7 +6,7 @@
         "type": "file",
         "source": "/usr/share/nullyzos/terminal/logo-binario.txt",
         "color": { "1": "38;2;157;140;255", "2": "38;2;74;74;90" },
-        "padding": { "top": 1, "left": 2, "right": 4 }
+        "padding": { "top": 0, "left": 2, "right": 4 }
     },
     "display": {
         "separator": "  ",

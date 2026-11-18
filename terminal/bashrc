@@ -20,7 +20,14 @@ __nz_ff="$__nz_dir/fastfetch.jsonc"
 [ -f "$__nz_ff" ] || __nz_ff=/usr/share/nullyzos/terminal/fastfetch.jsonc
 # `fastfetch` sem config própria do usuário mostra o do Nullyz.
 if command -v fastfetch >/dev/null 2>&1 && [ ! -f "${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/config.jsonc" ]; then
-    fastfetch() { command fastfetch -c "$__nz_ff" "$@"; }
+    fastfetch() {
+        # Quem passa a própria config (-c / --config) usa ela; senão, a do Nullyz.
+        local a
+        for a in "$@"; do
+            case "$a" in -c | --config | --config=*) command fastfetch "$@"; return ;; esac
+        done
+        command fastfetch -c "$__nz_ff" "$@"
+    }
 fi
 
 # Cor 24 bits a partir de "rrggbb"
