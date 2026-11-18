@@ -12,7 +12,7 @@ license=('GPL-3.0-only')
 options=('!debug')
 depends=(
   'hyprland' 'quickshell' 'qt6-wayland' 'qt6-svg' 'xdg-desktop-portal-hyprland' 'polkit-kde-agent'
-  'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'grim' 'slurp' 'wl-clipboard'
+  'pipewire' 'wireplumber' 'pipewire-pulse' 'brightnessctl' 'upower' 'networkmanager' 'power-profiles-daemon' 'pacman-contrib' 'grim' 'slurp' 'wl-clipboard'
   'kitty' 'dolphin' 'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm'
 )
 makedepends=('python')
@@ -40,6 +40,9 @@ package() {
   # Sessão (a tela de login lista "Hyprland" apontando para o nosso lançador)
   install -Dm755 "$src/session/nullyzos-hyprland" "$pkgdir/usr/bin/nullyzos-hyprland"
   install -Dm644 "$src/session/nullyzos-hyprland.desktop" "$pkgdir/usr/share/wayland-sessions/nullyzos-hyprland.desktop"
+  # Limpeza (Configurações → Desempenho): ajudante root via pkexec + regra do polkit
+  install -Dm755 "$src/apps/limpeza" "$pkgdir/usr/lib/nullyzos/limpeza"
+  install -Dm644 "$src/apps/org.nullyzos.limpeza.policy" "$pkgdir/usr/share/polkit-1/actions/org.nullyzos.limpeza.policy"
   # Configurações na busca de apps
   install -Dm644 -t "$pkgdir/usr/share/applications" "$src"/apps/*.desktop
   # Fundos: o padrão (o mesmo da tela de login) e as variações de cor

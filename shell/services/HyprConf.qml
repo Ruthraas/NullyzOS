@@ -24,6 +24,8 @@ Singleton {
     readonly property int rounding: conf.rounding         // -1 = padrão (14)
     readonly property bool animations: conf.animations
     readonly property bool blur: conf.blur
+    readonly property bool shadow: conf.shadow
+    readonly property bool light: !conf.animations && !conf.blur && !conf.shadow   // "efeitos leves"
     readonly property var monitors: { try { return JSON.parse(conf.monitors || "{}"); } catch (e) { return {}; } }
 
     function set(key, value) {
@@ -36,6 +38,13 @@ Singleton {
         const m = Object.assign({}, root.monitors);
         m[name] = Object.assign({}, m[name] || {}, rule);
         conf.monitors = JSON.stringify(m);
+        save();
+    }
+    // Efeitos visuais de uma vez: leve = sem animação, desfoque nem sombra.
+    function setEffects(full) {
+        conf.animations = full;
+        conf.blur = full;
+        conf.shadow = full;
         save();
     }
     function setMonitors(json) { conf.monitors = json; save(); }
@@ -58,6 +67,7 @@ Singleton {
         if (conf.rounding >= 0) out.push(`hl.config({ decoration = { rounding = ${conf.rounding} } })`);
         if (!conf.animations) out.push("hl.config({ animations = { enabled = false } })");
         if (!conf.blur) out.push("hl.config({ decoration = { blur = { enabled = false } } })");
+        if (!conf.shadow) out.push("hl.config({ decoration = { shadow = { enabled = false } } })");
         if (Tok.accentName !== "violeta" || Tok.light) {
             const e = Tok.accents[Tok.accentName] || Tok.accents.violeta;
             const hex = String(Tok.light ? e.light : e.color).replace("#", "");
@@ -100,6 +110,7 @@ Singleton {
             property int rounding: -1
             property bool animations: true
             property bool blur: true
+            property bool shadow: true
         }
     }
     FileView { id: luaFile; path: root.dir + "/hyprland.lua" }

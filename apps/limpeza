@@ -1,0 +1,28 @@
+#!/bin/sh
+# Limpeza do sistema (Configurações → Desempenho). Roda como root via pkexec, regra
+# org.nullyzos.limpeza.
+#   limpeza pacotes   cache do pacman: guarda as 2 últimas versões de cada pacote instalado
+#                     e apaga as de pacotes que já foram removidos
+#   limpeza orfaos    remove pacotes instalados como dependência que nada mais usa
+#   limpeza energia   liga o power-profiles-daemon (perfis de energia)
+set -eu
+
+case "${1:-}" in
+    pacotes)
+        paccache -rk2
+        paccache -ruk0
+        ;;
+    orfaos)
+        orfaos=$(pacman -Qtdq || true)
+        [ -n "$orfaos" ] || exit 0
+        # shellcheck disable=SC2086  # um nome de pacote por palavra, de propósito
+        pacman -Rns --noconfirm $orfaos
+        ;;
+    energia)
+        systemctl enable --now power-profiles-daemon.service
+        ;;
+    *)
+        echo "uso: limpeza pacotes|orfaos|energia" >&2
+        exit 2
+        ;;
+esac
