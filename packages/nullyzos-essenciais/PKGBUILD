@@ -7,7 +7,7 @@
 
 pkgname=nullyzos-essenciais
 pkgver=0.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Apps e serviços básicos do NullyzOS (Hyprland e KDE)"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -39,5 +39,8 @@ package() {
   install -Dm644 "$(_here)/mimeapps.list" "$pkgdir/etc/xdg/mimeapps.list"
   install -Dm644 "$(_here)/zram-generator.conf" "$pkgdir/etc/systemd/zram-generator.conf"
   install -Dm755 "$(_here)/nullyzos-flathub" "$pkgdir/usr/lib/nullyzos/flathub"
+  # Segurança: kernel e rede endurecidos; Wi-Fi sem rastrear o aparelho entre redes
+  install -Dm644 "$(_here)/sysctl-seguranca.conf" "$pkgdir/usr/lib/sysctl.d/50-nullyzos-seguranca.conf"
+  install -Dm644 "$(_here)/nm-privacidade.conf" "$pkgdir/usr/lib/NetworkManager/conf.d/50-nullyzos-privacidade.conf"
   install -Dm644 "$(_here)/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

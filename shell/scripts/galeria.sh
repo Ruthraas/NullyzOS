@@ -20,11 +20,25 @@ if [ "${1:-}" = baixar ]; then
     pics=$(xdg-user-dir PICTURES 2>/dev/null); [ -n "$pics" ] || pics="$HOME/Imagens"
     dir="$pics/Wallpapers"
     mkdir -p "$dir"
+    # Só HTTPS e só das duas fontes da galeria (nada de endereço qualquer vindo da internet)
+    case "$2" in
+        https://w.wallhaven.cc/full/*|https://invent.kde.org/plasma/plasma-workspace-wallpapers/-/raw/*) ;;
+        *) echo "endereço fora da galeria: $2" >&2; exit 1 ;;
+    esac
     ext=${2##*.}; case "$ext" in png|jpg|jpeg|webp) ;; *) ext=png ;; esac
     arq="$dir/$(printf '%s' "$3" | tr -c 'A-Za-z0-9._-' '_' | cut -c1-60).$ext"
-    curl -fsSL --max-time 120 -o "$arq.part" "$2" && mv -f "$arq.part" "$arq" || { rm -f "$arq.part"; exit 1; }
-    grep -qF "$3 " "$dir/CREDITOS.txt" 2>/dev/null ||
-        printf '%s — %s — %s\n' "$3" "$4" "$5" >> "$dir/CREDITOS.txt"
+    curl -fsSL --proto '=https' --proto-redir '=https' --max-time 120 --max-filesize 52428800 \
+        -o "$arq.part" "$2" || { rm -f "$arq.part"; exit 1; }
+    # Tem de ser imagem de verdade (pelos primeiros bytes, não pelo nome)
+    cab=$(od -An -tx1 -N12 "$arq.part" | tr -d ' \n')
+    case "$cab" in
+        89504e47*|ffd8ff*|52494646????????57454250) mv -f "$arq.part" "$arq" ;;
+        *) rm -f "$arq.part"; echo "o arquivo baixado não é imagem" >&2; exit 1 ;;
+    esac
+    # Créditos numa linha só (sem quebras de linha vindas da internet)
+    limpa() { printf '%s' "$1" | tr -d '\r\n' | cut -c1-200; }
+    grep -qF "$(limpa "$3") " "$dir/CREDITOS.txt" 2>/dev/null ||
+        printf '%s — %s — %s\n' "$(limpa "$3")" "$(limpa "$4")" "$(limpa "$5")" >> "$dir/CREDITOS.txt"
     echo "$arq"
     exit 0
 fi
