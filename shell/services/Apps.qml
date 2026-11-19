@@ -25,7 +25,13 @@ Singleton {
         Prefs.setPinned(l);
     }
 
-    function byId(id) { return DesktopEntries.byId(id) || DesktopEntries.heuristicLookup(id); }
+    // A janela das Configurações (app do próprio shell) chega como "org.quickshell": na barra e
+    // no dock ela é o app Configurações, com o nome e o ícone dele.
+    function byId(id) {
+        if (String(id).toLowerCase() === "org.quickshell")
+            return DesktopEntries.byId("nullyzos-configuracoes") || DesktopEntries.byId("nullyzos-configuracoes-kde");
+        return DesktopEntries.byId(id) || DesktopEntries.heuristicLookup(id);
+    }
     // Caminho do ícone, ou "" se o tema não tem nenhum (aí o shell desenha a inicial do app).
     function icon(entry) {
         const name = entry && entry.icon ? entry.icon : "";

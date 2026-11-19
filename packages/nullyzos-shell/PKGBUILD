@@ -6,7 +6,7 @@
 
 pkgname=nullyzos-shell
 pkgver=0.2.0
-pkgrel=13
+pkgrel=14
 pkgdesc="Shell e Configurações do NullyzOS"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"

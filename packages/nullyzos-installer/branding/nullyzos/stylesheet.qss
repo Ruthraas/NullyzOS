@@ -83,3 +83,6 @@ QScrollBar::add-page, QScrollBar::sub-page { background: transparent; }
 
 QToolTip { background-color: #1f1f29; color: #ededf2; border: 1px solid #2b2b37; border-radius: 8px; padding: 6px 10px; }
 QQuickWidget, QQuickView { background-color: #0e0e13; }
+
+/* A caixa de criptografia fica embaixo na tela de Partições: em destaque para não passar batido */
+QCheckBox#m_encryptCheckBox { font-size: 16px; font-weight: 600; color: #f0b45e; padding: 8px 12px; background-color: #2a2416; border-radius: 10px; }

@@ -17,7 +17,8 @@ Rectangle {
     readonly property color line: "#2b2b37"
     // Janela baixa: marca mais perto do topo e passos mais juntos, sem invadir o rodapé
     readonly property bool compact: height < 760
-    readonly property real stepH: Math.max(30, Math.min(48, (height - steps.y - 72) / Math.max(1, rep.count)))
+    property string atual: ""   // nome do passo aberto
+    readonly property real stepH: Math.max(28, Math.min(48, (height - steps.y - 72 - (dicaCaixa.visible ? dicaCaixa.height + 12 : 0)) / Math.max(1, rep.count)))
 
     // Borda direita
     Rectangle { anchors { right: parent.right; top: parent.top; bottom: parent.bottom } width: 1; color: side.line }
@@ -55,6 +56,8 @@ Rectangle {
                 readonly property int cur: ViewManager.currentStepIndex
                 readonly property bool done: index < cur
                 readonly property bool now: index === cur
+                onNowChanged: if (now) side.atual = display
+                Component.onCompleted: if (now) side.atual = display
                 width: steps.width
                 height: side.stepH
                 // Linha do tempo entre os círculos
@@ -89,6 +92,26 @@ Rectangle {
                     font { family: "Geist"; pixelSize: 15; weight: step.now ? Font.DemiBold : Font.Normal }
                 }
             }
+        }
+    }
+
+    // ---- dica do passo Partições: a criptografia fica lá embaixo e a frase do disco é
+    // digitada com teclado americano ao ligar (o GRUB não usa o ABNT2) ---------------------
+    Rectangle {
+        id: dicaCaixa
+        visible: side.atual === "Partições"
+        anchors { left: parent.left; right: parent.right; bottom: parent.bottom; margins: 16; bottomMargin: 56 }
+        height: dica.implicitHeight + 24
+        radius: 12
+        color: "#2a2416"
+        Text {
+            id: dica
+            anchors { left: parent.left; right: parent.right; top: parent.top; margins: 12 }
+            wrapMode: Text.WordWrap
+            textFormat: Text.StyledText
+            color: "#ededf2"
+            font { family: "Geist"; pixelSize: 13 }
+            text: "<b><font color='#f0b45e'>Proteja seus arquivos</font></b><br>Marque <b>Criptografar sistema</b>, embaixo. Na frase use só letras, números e hífen: ao ligar, ela é digitada com teclado americano."
         }
     }
 
