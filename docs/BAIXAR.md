@@ -1,6 +1,6 @@
 # Baixar e instalar o NullyzOS
 
-Sistema baseado em Arch Linux, com Hyprland ou KDE Plasma e o visual Nullyz. **Versão beta:** use num PC de teste ou com backup dos seus arquivos.
+Sistema baseado em Arch Linux, com Hyprland ou KDE Plasma e o visual Nullyz. **Primeira versão pública:** tenha backup dos seus arquivos antes de instalar.
 
 ## O que vem nesta página
 

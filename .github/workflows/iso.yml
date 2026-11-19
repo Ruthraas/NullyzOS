@@ -103,5 +103,5 @@ jobs:
         run: |
           pre=""; case "$VERSAO" in *-*) pre="--prerelease" ;; esac
           gh release create "v$VERSAO" $pre --target "$GITHUB_SHA" \
-            --title "NullyzOS $VERSAO" --notes-file docs/BAIXAR.md \
+            --title "NullyzOS" --notes-file docs/BAIXAR.md \
             "out/$NOME" "out/$NOME.sig" out/SHA256SUMS out/SHA256SUMS.asc

@@ -13,7 +13,7 @@ assinado, a ISO e o site.
 
 | Versão | Recebe correções |
 |---|---|
-| 0.2.x (beta) | sim |
+| 0.2.x | sim |
 | anteriores | não |
 
 ## Como o projeto se protege
