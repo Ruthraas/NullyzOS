@@ -102,13 +102,20 @@ SettingsPage {
         }
     }
     // Lê o wallpaper do Plasma e, com as cores no Tok, gera e aplica o esquema
-    WallpaperSampler { source: Prefs.palette === "wallpaper" ? Kde.wallpaperUrl : "" }
+    WallpaperSampler {
+        source: Prefs.palette === "wallpaper" ? Kde.wallpaperUrl : ""
+        onPainted: if (Prefs.palette === "wallpaper") regen.restart()   // cores lidas → esquema novo
+    }
     Timer { id: regen; interval: 1500; onTriggered: if (Prefs.palette === "wallpaper") Kde.applyWallpaperColors() }
     Connections {
         target: Kde
         function onWallpaperUrlChanged() { if (Prefs.palette === "wallpaper") regen.restart(); }
     }
-    Component.onCompleted: if (Prefs.palette === "wallpaper") { Kde.readWallpaper(); regen.restart(); }
+    // As preferências chegam do arquivo depois de a página abrir: lê o fundo quando a paleta
+    // "wallpaper" aparece (e já na abertura, se ela já estiver lá)
+    function startWall() { if (Prefs.palette === "wallpaper") { Kde.readWallpaper(); regen.restart(); } }
+    Connections { target: Prefs; function onPaletteChanged() { page.startWall(); } }
+    Component.onCompleted: startWall()
     SettingsRow {
         title: "Vidro"
         description: "Barra, dock e menus translúcidos, com o fundo desfocado por trás."
