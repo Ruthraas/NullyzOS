@@ -5,7 +5,7 @@
 
 pkgname=nullyzos-desktop-kde
 pkgver=0.2.0
-pkgrel=10
+pkgrel=11
 pkgdesc="Visual do NullyzOS para KDE Plasma"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -54,6 +54,8 @@ package() {
   install -Dm755 "$p/nullyzos-kde-sessao" "$pkgdir/usr/lib/nullyzos/kde-sessao"
   install -Dm644 "$p/nullyzos-kde-sessao.desktop" "$pkgdir/etc/xdg/autostart/nullyzos-kde-sessao.desktop"
   install -Dm644 "$p/barra-v2.js" "$pkgdir/usr/share/nullyzos/kde/barra-v2.js"
+  # Tela de login: com o KDE do Nullyz instalado, a sessão Plasma aparece
+  install -Dm644 "$p/sddm-theme.conf.user" "$pkgdir/usr/share/sddm/themes/nullyzos/theme.conf.user"
   # Widget da barra: nome do app em foco
   install -dm755 "$pkgdir/usr/share/plasma/plasmoids"
   cp -r "$p/plasmoids/org.nullyzos.appname" "$pkgdir/usr/share/plasma/plasmoids/"

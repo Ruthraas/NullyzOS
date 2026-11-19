@@ -16,7 +16,21 @@ Rectangle {
     readonly property var ptBR: Qt.locale("pt_BR")
 
     property int userIndex: userModel.lastIndex >= 0 ? userModel.lastIndex : 0
-    property int sessionIndex: sessionModel.lastIndex >= 0 ? sessionModel.lastIndex : 0
+    // Sessão Plasma só aparece com o visual Nullyz do KDE instalado (nullyzos-desktop-kde põe
+    // kde=true em theme.conf.user). No Hyprland, o plasma-workspace vem só como dependência
+    // (portal do KDE) e a sessão dele abriria uma tela preta.
+    readonly property bool kde: config.boolValue("kde")
+    function sessionHidden(i) {
+        const f = String(sessionModel.data(sessionModel.index(i, 0), Qt.UserRole + 2) || "");
+        const x = String(sessionModel.data(sessionModel.index(i, 0), Qt.UserRole + 5) || "");
+        return !kde && (/plasma/i.test(f) || /startplasma/.test(x));
+    }
+    function firstVisible(prefer) {
+        if (prefer >= 0 && prefer < sessionModel.rowCount() && !sessionHidden(prefer)) return prefer;
+        for (let i = 0; i < sessionModel.rowCount(); i++) if (!sessionHidden(i)) return i;
+        return 0;
+    }
+    property int sessionIndex: firstVisible(sessionModel.lastIndex)
     property string userName: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 1) || userModel.lastUser
     property string realName: userModel.data(userModel.index(userIndex, 0), Qt.UserRole + 2) || userName
     // Foto de perfil (AccountsService ou ~/.face.icon), escolhida nas Configurações → Usuário
@@ -241,6 +255,7 @@ Rectangle {
                     required property int index
                     required property string name
                     readonly property bool active: index === root.sessionIndex
+                    visible: !root.sessionHidden(index)
                     height: 36; radius: 12
                     width: sessLabel.implicitWidth + 28
                     color: active ? root.accent : (sessHover.containsMouse ? Qt.rgba(1, 1, 1, 0.10) : "transparent")
