@@ -120,4 +120,11 @@ Singleton {
         }
     }
     FileView { id: luaFile; path: root.dir + "/hyprland.lua" }
+    // Ao subir: se a config gerada não bate com o arquivo (cor ou opção mudou com o shell
+    // fechado, ex.: rice aplicado por arquivo), regrava e recarrega. Espera as preferências.
+    Timer {
+        interval: 3000
+        running: true
+        onTriggered: if (luaFile.text() !== root.lua()) root.save()
+    }
 }
