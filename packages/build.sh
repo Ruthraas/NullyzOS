@@ -31,7 +31,7 @@ mkdir -p "$OUT"
 # Ordem: primeiro quem só depende de pacotes oficiais; os nossos que dependem de outros nossos
 # depois. Cada pacote pronto entra num repositório local temporário ("nullyzos-local", que o
 # pacman.conf precisa listar com Server = file://<esta pasta>/out) para o próximo achar.
-ORDER=(ttf-geist calamares nullyzos-branding nullyzos-plymouth nullyzos-sddm nullyzos-essenciais nullyzos-terminal nullyzos-shell nullyzos-desktop-hyprland nullyzos-desktop-kde nullyzos-installer)
+ORDER=(ttf-geist ckbcomp calamares nullyzos-branding nullyzos-plymouth nullyzos-sddm nullyzos-essenciais nullyzos-terminal nullyzos-shell nullyzos-desktop-hyprland nullyzos-desktop-kde nullyzos-installer)
 dirs=()
 for name in "${ORDER[@]}"; do [ -f "$ROOT/$name/PKGBUILD" ] && dirs+=("$ROOT/$name"); done
 for pkgbuild in "$ROOT"/*/PKGBUILD; do
