@@ -1,0 +1,107 @@
+# Gera a ISO do NullyzOS na nuvem (sem depender do PC de ninguém), confere, assina e publica
+# numa release vX.Y.Z com o SHA256SUMS e a assinatura GPG (chave Nullyz Packages, a mesma dos
+# pacotes: docs/REPOSITORIO.md). Rodar: Actions → "ISO" → Run workflow, com a versão.
+# Secrets: NULLYZ_GPG_PRIVATE_KEY e NULLYZ_GPG_KEY (os mesmos do repositório pacman).
+name: ISO
+
+on:
+  workflow_dispatch:
+    inputs:
+      versao:
+        description: "Versão (ex.: 0.2.0-beta)"
+        required: true
+      publicar:
+        description: "Publicar como release (senão só deixa o arquivo no Actions)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: iso
+  cancel-in-progress: false
+
+jobs:
+  iso:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Versão válida
+        env:
+          VERSAO: ${{ inputs.versao }}
+        run: |
+          [[ "$VERSAO" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-z0-9.]+)?$ ]] || { echo "versão inválida: $VERSAO"; exit 1; }
+
+      # A ISO precisa de ~10 GB durante o build: tira do runner o que ele traz e não usamos.
+      - name: Espaço em disco
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - uses: actions/checkout@v4
+
+      - name: Gera a ISO (contêiner Arch, mkarchiso)
+        run: |
+          mkdir -p out
+          docker run --rm --privileged -v "$PWD:/repo" -w /repo archlinux:latest bash -euc '
+            pacman-key --init && pacman-key --populate archlinux
+            pacman -Syu --noconfirm --needed archiso git python
+            NULLYZ_ISO_OUT=/repo/out iso/build.sh
+          '
+          ls -lh out
+
+      - name: Nome, tamanho e SHA256
+        id: iso
+        env:
+          VERSAO: ${{ inputs.versao }}
+        run: |
+          sudo chown -R "$(id -u)" out
+          src=$(ls out/*.iso | head -n1)
+          nome="nullyzos-$VERSAO-x86_64.iso"
+          mv "$src" "out/$nome"
+          tam=$(stat -c %s "out/$nome")
+          echo "tamanho: $tam bytes"
+          # Release do GitHub aceita até 2 GiB por arquivo
+          [ "$tam" -lt 2147483648 ] || { echo "ISO passou de 2 GiB"; exit 1; }
+          (cd out && sha256sum "$nome" > SHA256SUMS)
+          cat out/SHA256SUMS
+          echo "nome=$nome" >> "$GITHUB_OUTPUT"
+
+      - name: Assina (GPG, chave Nullyz Packages)
+        env:
+          KEY: ${{ secrets.NULLYZ_GPG_PRIVATE_KEY }}
+          FPR: ${{ secrets.NULLYZ_GPG_KEY }}
+          NOME: ${{ steps.iso.outputs.nome }}
+        run: |
+          test -n "$KEY" || { echo "falta o secret NULLYZ_GPG_PRIVATE_KEY"; exit 1; }
+          export GNUPGHOME="$(mktemp -d)"
+          printf '%s\n' "$KEY" | gpg --batch --import
+          gpg --batch --yes --local-user "$FPR" --detach-sign "out/$NOME"
+          gpg --batch --yes --local-user "$FPR" --clearsign --output out/SHA256SUMS.asc out/SHA256SUMS
+          # Confere com a chave pública que está no repositório (a que o usuário usa)
+          gpg --batch --import docs/nullyz-repo.asc
+          gpg --batch --verify "out/$NOME.sig" "out/$NOME"
+          gpg --batch --verify out/SHA256SUMS.asc
+          rm -rf "$GNUPGHOME"
+
+      - name: Guarda no Actions (teste)
+        if: ${{ !inputs.publicar }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nullyzos-${{ inputs.versao }}
+          path: out/*
+          retention-days: 7
+          compression-level: 0
+
+      - name: Publica a release
+        if: ${{ inputs.publicar }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSAO: ${{ inputs.versao }}
+          NOME: ${{ steps.iso.outputs.nome }}
+        run: |
+          pre=""; case "$VERSAO" in *-*) pre="--prerelease" ;; esac
+          gh release create "v$VERSAO" $pre --target "$GITHUB_SHA" \
+            --title "NullyzOS $VERSAO" --notes-file docs/BAIXAR.md \
+            "out/$NOME" "out/$NOME.sig" out/SHA256SUMS out/SHA256SUMS.asc
