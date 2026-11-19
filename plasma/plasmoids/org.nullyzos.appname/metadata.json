@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Id": "org.nullyzos.appname",
+        "Name": "Nome do app",
+        "Description": "Nome do app em foco, em negrito, antes do menu global (como no macOS)",
+        "Icon": "window",
+        "Authors": [{ "Name": "NullyzOS" }],
+        "License": "GPL-3.0-only",
+        "Version": "1.0",
+        "Website": "https://github.com/Ruthraas/NullyzOS"
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

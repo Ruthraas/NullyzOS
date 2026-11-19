@@ -4,6 +4,22 @@
 # kde-cores) e avisa o Hyprland para reaplicar as dele no próximo login.
 conf="${XDG_CONFIG_HOME:-$HOME/.config}/nullyzos"
 rm -f "$conf/apps-tema.sig"
+
+# Barra nova (nome do app, som e rede à mostra) para quem já tinha a antiga: uma vez só,
+# quando o plasmashell estiver de pé
+if [ ! -e "$conf/barra-v2" ] && [ -r /usr/share/nullyzos/kde/barra-v2.js ]; then
+    (
+        js=/usr/share/nullyzos/kde/barra-v2.js
+        i=0
+        shell() { dbus-send --session --print-reply --dest=org.kde.plasmashell /PlasmaShell "$@"; }
+        until shell org.freedesktop.DBus.Peer.Ping >/dev/null 2>&1; do
+            i=$((i + 1)); [ "$i" -gt 30 ] && exit 0; sleep 1
+        done
+        sleep 2   # deixa o layout terminar de subir
+        shell org.kde.PlasmaShell.evaluateScript "string:$(cat "$js")" >/dev/null 2>&1 &&
+            mkdir -p "$conf" && : > "$conf/barra-v2"
+    ) &
+fi
 [ -s "$conf/kde-cores" ] || exit 0
 read -r esquema destaque < "$conf/kde-cores"
 [ -n "$esquema" ] || exit 0

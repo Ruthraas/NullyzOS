@@ -1,4 +1,4 @@
-// Layout do NullyzOS no Plasma: barra em cima (N que abre o menu, menu global do app, bandeja
+// Layout do NullyzOS no Plasma: barra em cima (N que abre o menu, nome e menu global do app, bandeja
 // e relógio) e dock flutuante embaixo (só ícones, do tamanho do conteúdo). Fundo Nullyz.
 var fundo = "file:///usr/share/wallpapers/Nullyz/";   // pacote de wallpaper (o Plasma escolhe o tamanho)
 
@@ -12,9 +12,18 @@ menu.currentConfigGroup = ["General"];
 menu.writeConfig("icon", "nullyzos-symbolic");   // segue a cor do tema
 menu.writeConfig("favoritesPortedToKAstats", true);
 
+barra.addWidget("org.nullyzos.appname");   // nome do app em foco, em negrito (como no macOS)
 barra.addWidget("org.kde.plasma.appmenu");
 barra.addWidget("org.kde.plasma.panelspacer");
-barra.addWidget("org.kde.plasma.systemtray");
+var bandeja = barra.addWidget("org.kde.plasma.systemtray");
+// Som, rede e bateria sempre à mostra (o resto fica na setinha)
+try {
+    var dentro = desktopById(bandeja.readConfig("SystrayContainmentId"));
+    if (dentro) {
+        dentro.currentConfigGroup = ["General"];
+        dentro.writeConfig("shownItems", ["org.kde.plasma.volume", "org.kde.plasma.networkmanagement", "org.kde.plasma.battery"]);
+    }
+} catch (e) {}
 var relogio = barra.addWidget("org.kde.plasma.digitalclock");
 relogio.currentConfigGroup = ["Appearance"];
 relogio.writeConfig("showDate", true);

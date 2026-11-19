@@ -9,4 +9,5 @@ plasma-apply-colorscheme NullyzEscuro >/dev/null 2>&1
 plasma-apply-desktoptheme NullyzVidro >/dev/null 2>&1
 # Rice escolhido no instalador (passo Visual), se for de KDE ou dos dois
 command -v nullyzos-rice >/dev/null && nullyzos-rice inicial >/dev/null 2>&1
+: > "$(dirname "$marca")/barra-v2"   # o layout já vem com a barra nova
 date > "$marca"

@@ -5,14 +5,14 @@
 
 pkgname=nullyzos-desktop-kde
 pkgver=0.2.0
-pkgrel=9
+pkgrel=10
 pkgdesc="Visual do NullyzOS para KDE Plasma"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
 options=('!debug')
 backup=('etc/xdg/kdeglobals' 'etc/xdg/kwinrc' 'etc/xdg/breezerc' 'etc/xdg/ksplashrc' 'etc/xdg/konsolerc' 'etc/xdg/plasmarc' 'etc/xdg/kscreenlockerrc')
-depends=('plasma-desktop' 'plasma-workspace' 'kwin' 'breeze' 'breeze-icons' 'aurorae' 'konsole' 'dolphin'
+depends=('plasma-desktop' 'plasma-workspace' 'kwin' 'breeze' 'breeze-icons' 'aurorae' 'konsole' 'dolphin' 'plasma-pa' 'plasma-nm'
          'ttf-geist' 'adwaita-cursors' 'nullyzos-branding' 'nullyzos-sddm' 'nullyzos-essenciais' 'nullyzos-terminal' 'nullyzos-shell')
 makedepends=('python')
 source=()
@@ -53,5 +53,10 @@ package() {
   # Todo login: as cores do KDE de volta (o Hyprland divide o kdeglobals)
   install -Dm755 "$p/nullyzos-kde-sessao" "$pkgdir/usr/lib/nullyzos/kde-sessao"
   install -Dm644 "$p/nullyzos-kde-sessao.desktop" "$pkgdir/etc/xdg/autostart/nullyzos-kde-sessao.desktop"
+  install -Dm644 "$p/barra-v2.js" "$pkgdir/usr/share/nullyzos/kde/barra-v2.js"
+  # Widget da barra: nome do app em foco
+  install -dm755 "$pkgdir/usr/share/plasma/plasmoids"
+  cp -r "$p/plasmoids/org.nullyzos.appname" "$pkgdir/usr/share/plasma/plasmoids/"
+  chmod -R u=rwX,go=rX "$pkgdir/usr/share/plasma/plasmoids/org.nullyzos.appname"
   install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
