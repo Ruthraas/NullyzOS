@@ -2,9 +2,11 @@
 
 > Sistema baseado em Arch, leve, moderno e minimalista. Na instalação você escolhe o desktop (Hyprland ou KDE) e o visual: o Nullyz padrão ou um rice pronto da comunidade.
 
-**Status: planejamento.** Ainda não há ISO. A visão completa está em [`docs/VISAO.md`](docs/VISAO.md).
+**[Baixar o NullyzOS 0.2.0](https://github.com/Ruthraas/NullyzOS/releases/latest)** · [Site](https://nullyzos.vercel.app) · [Passo a passo de instalação](https://nullyzos.vercel.app/instalar.html) · [Guia de segurança](https://nullyzos.vercel.app/seguranca.html)
 
-## Como vai ser
+Primeira versão pública: testada em máquina virtual (Hyprland e KDE, com e sem criptografia). Tenha backup antes de instalar. A visão completa está em [`docs/VISAO.md`](docs/VISAO.md).
+
+## Como é
 
 ```
 NullyzOS
@@ -23,12 +25,13 @@ NullyzOS
 
 | Versão | Entrega |
 |---|---|
-| v0.1 — Base | ISO instala Arch + Hyprland + desktop Nullyz mínimo |
-| v0.2 — KDE | Opção KDE com o visual Nullyz |
-| v0.3 — Receitas | Formato de receita e os primeiros rices da comunidade |
-| v0.4 — Loja de rices | Aplicar e desfazer rices com snapshot |
-| v0.5 — Sistema | Configurações, Boas-vindas e atualizações |
-| v1.0 — Lançamento | ISO estável e repositório público |
+| ✅ v0.1 — Base | ISO instala Arch + Hyprland + desktop Nullyz |
+| ✅ v0.2 — KDE | Opção KDE com o visual Nullyz |
+| ✅ Receitas | Formato de receita, verificador e 9 rices do Nullyz |
+| ✅ Loja de rices | Aplicar e desfazer rices com snapshot |
+| ✅ Sistema | Configurações, boas-vindas e atualizações |
+| ⏳ Próximos | Rices da comunidade, ícones próprios, Secure Boot, testes em hardware real |
+| v1.0 — Lançamento | ISO estável |
 
 ## Estrutura
 
