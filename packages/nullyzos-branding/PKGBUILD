@@ -4,15 +4,20 @@
 
 pkgname=nullyzos-branding
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Identidade visual do NullyzOS: símbolo N pixelado, tokens de cor e logo do terminal"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
 options=('!debug')
+makedepends=('python')
 source=()
 
 _root() { cd "$startdir/../.." && pwd; }
+
+build() {
+  python "$(_root)/branding/gerar-icones.py" "$srcdir/icones"
+}
 
 package() {
   local src share
@@ -28,6 +33,11 @@ package() {
   install -dm755 "$share/logo"
   install -m644 "$src"/branding/logo/* "$share/logo/"
   install -Dm644 "$src/branding/tokens.json" "$share/tokens.json"
+
+  # Temas de ícones Nullyz (escuro) e Nullyz-Claro: ícones de app próprios, o resto do Breeze
+  install -dm755 "$pkgdir/usr/share/icons"
+  cp -r "$srcdir/icones/Nullyz" "$srcdir/icones/Nullyz-Claro" "$pkgdir/usr/share/icons/"
+  chmod -R u=rwX,go=rX "$pkgdir/usr/share/icons/Nullyz" "$pkgdir/usr/share/icons/Nullyz-Claro"
 
   install -Dm644 "$src/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

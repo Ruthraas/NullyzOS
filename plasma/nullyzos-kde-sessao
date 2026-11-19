@@ -20,6 +20,10 @@ if [ ! -e "$conf/barra-v2" ] && [ -r /usr/share/nullyzos/kde/barra-v2.js ]; then
             mkdir -p "$conf" && : > "$conf/barra-v2"
     ) &
 fi
+# Ícones do NullyzOS para quem já usava o KDE (uma vez só)
+if [ ! -e "$conf/icones-v1" ]; then
+    kwriteconfig6 --file kdeglobals --group Icons --key Theme Nullyz && mkdir -p "$conf" && : > "$conf/icones-v1"
+fi
 [ -s "$conf/kde-cores" ] || exit 0
 read -r esquema destaque < "$conf/kde-cores"
 [ -n "$esquema" ] || exit 0

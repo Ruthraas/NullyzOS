@@ -20,7 +20,8 @@ if command -v kwriteconfig6 >/dev/null 2>&1; then
         esac
     done < "$colors"
     kwriteconfig6 --file kdeglobals --group KDE --key widgetStyle Breeze
-    if [ "$modo" = claro ]; then icones=breeze; else icones=breeze-dark; fi
+    # Ícones de app do NullyzOS (o resto vem do Breeze claro ou escuro)
+    if [ "$modo" = claro ]; then icones=Nullyz-Claro; else icones=Nullyz; fi
     kwriteconfig6 --file kdeglobals --group Icons --key Theme "$icones"
     kwriteconfig6 --file kdeglobals --group General --key font "$fonte,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
     kwriteconfig6 --file kdeglobals --group General --key fixed "Geist Mono,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
@@ -40,11 +41,11 @@ if command -v gsettings >/dev/null 2>&1; then
     if [ "$modo" = claro ]; then
         gsettings set org.gnome.desktop.interface color-scheme prefer-light
         gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3
-        gsettings set org.gnome.desktop.interface icon-theme breeze
+        gsettings set org.gnome.desktop.interface icon-theme Nullyz-Claro
     else
         gsettings set org.gnome.desktop.interface color-scheme prefer-dark
         gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
-        gsettings set org.gnome.desktop.interface icon-theme breeze-dark
+        gsettings set org.gnome.desktop.interface icon-theme Nullyz
     fi
     gsettings set org.gnome.desktop.interface font-name "$fonte 11"
     gsettings set org.gnome.desktop.interface monospace-font-name "Geist Mono 11"
