@@ -116,3 +116,17 @@
 - VM "NullyzOS-limpa" (UEFI, 3D, disco 30 GB): instalação da ISO 18/11 + correções à mão.
   snap-pac funcionando (root 1/2 no pacman). Pendente: ISO nova com o instalador corrigido
   (pkgrel 14) e o botão Concluído; testar o passo Visual do zero.
+
+## 18/11/2026 (tarde) — KDE v0.2, paletas e pacotes novos
+- Pacotes novos: nullyzos-terminal (prompt + N no fastfetch, kitty e Konsole), nullyzos-shell
+  (Quickshell, ajudantes pkexec, rices, fundos; usado pelos dois desktops), nullyzos-desktop-kde.
+- KDE: tema global org.nullyzos.desktop, Plasma Nullyz Vidro, Aurorae Nullyz (plugin é
+  org.kde.kwin.aurorae.v2 no Plasma 6.8 — com o nome antigo cai no Breeze sem avisar),
+  esquemas Nullyz*.colors gerados de branding/tokens.json (paletas), kde-primeiro/kde-sessao.
+- Configurações como app: NULLYZ_APP=configuracoes (nullyzos-configuracoes); páginas KDE
+  próprias (SettingsKde*.qml + services/Kde.qml via evaluateScript do plasmashell).
+- Rices por desktop: shell.json/rice (Hyprland) e kde.json/rice-kde (KDE); kdeglobals é
+  dividido, cada desktop reaplica as cores ao entrar.
+- Barra: estilos classica/flutuante/ilhas/semfundo (Prefs.barStyle, barSpace).
+- Pendente: testar na VM as páginas KDE (Aparência/Barra/Dock) e "cores do wallpaper";
+  ISO nova + instalação limpa (Hyprland e KDE); medir RAM.
