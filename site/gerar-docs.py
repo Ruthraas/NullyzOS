@@ -108,7 +108,7 @@ MOLDE = """<!doctype html>
 <div class="janela">
   <nav class="lateral" id="lateral" aria-label="Documentação">
     <label class="busca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><span class="oculto">Procurar na documentação</span><input id="filtro" type="search" placeholder="Procurar" autocomplete="off"></label>
-    <div class="versao"><span class="logo"><img src="img/nullyz.svg" alt="" width="22" height="22"></span><div><strong>NullyzOS 0.2</strong><span>Arch Linux · Hyprland ou KDE</span></div></div>
+    <div class="versao"><span class="logo"><img src="img/nullyz.svg" alt="" width="22" height="22"></span><div><strong>NullyzOS</strong><span>Arch Linux · Hyprland ou KDE</span></div></div>
 {lateral}
   </nav>
 

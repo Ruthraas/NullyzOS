@@ -11,10 +11,7 @@ assinado, a ISO e o site.
 
 ## Versões com correção
 
-| Versão | Recebe correções |
-|---|---|
-| 0.2.x | sim |
-| anteriores | não |
+Recebe correções: a ISO publicada mais recente e os pacotes do repositório (`sudo pacman -Syu`).
 
 ## Como o projeto se protege
 

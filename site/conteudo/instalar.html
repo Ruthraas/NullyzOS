@@ -18,7 +18,7 @@
             <button role="tab" aria-selected="false" aria-controls="c-win" id="t-win" tabindex="-1">Windows</button>
           </div>
           <div class="codigo" role="tabpanel" id="c-linux" aria-labelledby="t-linux"><pre><code>sha256sum -c SHA256SUMS</code></pre><button class="copiar" type="button">Copiar</button></div>
-          <div class="codigo" role="tabpanel" id="c-win" aria-labelledby="t-win" hidden><pre><code>Get-FileHash .\nullyzos-0.2.0-x86_64.iso -Algorithm SHA256</code></pre><button class="copiar" type="button">Copiar</button></div>
+          <div class="codigo" role="tabpanel" id="c-win" aria-labelledby="t-win" hidden><pre><code>Get-FileHash .\nullyzos*.iso -Algorithm SHA256</code></pre><button class="copiar" type="button">Copiar</button></div>
         </div>
         <p>No Linux tem de aparecer <strong>OK</strong>. No Windows, o número tem de ser igual ao que está dentro do <code>SHA256SUMS</code>. Diferente? Baixe de novo.</p>
       </li>

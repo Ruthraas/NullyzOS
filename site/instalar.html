@@ -30,7 +30,7 @@
 <div class="janela">
   <nav class="lateral" id="lateral" aria-label="Documentação">
     <label class="busca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><span class="oculto">Procurar na documentação</span><input id="filtro" type="search" placeholder="Procurar" autocomplete="off"></label>
-    <div class="versao"><span class="logo"><img src="img/nullyz.svg" alt="" width="22" height="22"></span><div><strong>NullyzOS 0.2</strong><span>Arch Linux · Hyprland ou KDE</span></div></div>
+    <div class="versao"><span class="logo"><img src="img/nullyz.svg" alt="" width="22" height="22"></span><div><strong>NullyzOS</strong><span>Arch Linux · Hyprland ou KDE</span></div></div>
       <p class="grupo">Começando</p>
       <a href="docs.html"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span>Visão geral</span></a>
       <a href="instalar.html" aria-current="page"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg></span><span>Instalar</span></a>
@@ -65,7 +65,7 @@
             <button role="tab" aria-selected="false" aria-controls="c-win" id="t-win" tabindex="-1">Windows</button>
           </div>
           <div class="codigo" role="tabpanel" id="c-linux" aria-labelledby="t-linux"><pre><code>sha256sum -c SHA256SUMS</code></pre><button class="copiar" type="button">Copiar</button></div>
-          <div class="codigo" role="tabpanel" id="c-win" aria-labelledby="t-win" hidden><pre><code>Get-FileHash .\nullyzos-0.2.0-x86_64.iso -Algorithm SHA256</code></pre><button class="copiar" type="button">Copiar</button></div>
+          <div class="codigo" role="tabpanel" id="c-win" aria-labelledby="t-win" hidden><pre><code>Get-FileHash .\nullyzos*.iso -Algorithm SHA256</code></pre><button class="copiar" type="button">Copiar</button></div>
         </div>
         <p>No Linux tem de aparecer <strong>OK</strong>. No Windows, o número tem de ser igual ao que está dentro do <code>SHA256SUMS</code>. Diferente? Baixe de novo.</p>
       </li>

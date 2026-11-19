@@ -118,6 +118,7 @@ Rectangle {
     // ---- rodapé -----------------------------------------------------------------------
     Text {
         anchors { left: parent.left; leftMargin: 32; bottom: parent.bottom; bottomMargin: 28 }
+        visible: Branding.string(Branding.Version) !== ""
         text: "v" + Branding.string(Branding.Version)
         color: side.line
         font { family: "Geist Mono"; pixelSize: 12 }

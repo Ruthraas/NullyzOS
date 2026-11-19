@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       versao:
-        description: "Versão (ex.: 0.2.0-beta)"
+        description: "Marca interna da release (ex.: 0.2.0); para quem baixa é só NullyzOS"
         required: true
       publicar:
         description: "Publicar como release (senão só deixa o arquivo no Actions)"
@@ -58,7 +58,7 @@ jobs:
         run: |
           sudo chown -R "$(id -u)" out
           src=$(ls out/*.iso | head -n1)
-          nome="nullyzos-$VERSAO-x86_64.iso"
+          nome="nullyzos-x86_64.iso"   # para quem baixa, só NullyzOS (a marca vX.Y.Z fica interna)
           mv "$src" "out/$nome"
           tam=$(stat -c %s "out/$nome")
           echo "tamanho: $tam bytes"
@@ -101,7 +101,16 @@ jobs:
           VERSAO: ${{ inputs.versao }}
           NOME: ${{ steps.iso.outputs.nome }}
         run: |
-          pre=""; case "$VERSAO" in *-*) pre="--prerelease" ;; esac
-          gh release create "v$VERSAO" $pre --target "$GITHUB_SHA" \
-            --title "NullyzOS" --notes-file docs/BAIXAR.md \
-            "out/$NOME" "out/$NOME.sig" out/SHA256SUMS out/SHA256SUMS.asc
+          arquivos=("out/$NOME" "out/$NOME.sig" out/SHA256SUMS out/SHA256SUMS.asc)
+          if gh release view "v$VERSAO" >/dev/null 2>&1; then
+            # Mesma release (versão única "NullyzOS"): troca a ISO e tira as de nome antigo
+            gh release view "v$VERSAO" --json assets -q '.assets[].name' \
+              | grep -E '^nullyzos-.*\.iso(\.sig)?$' | grep -vxF -e "$NOME" -e "$NOME.sig" \
+              | while read -r velho; do gh release delete-asset "v$VERSAO" "$velho" --yes; done
+            gh release upload "v$VERSAO" "${arquivos[@]}" --clobber
+            gh release edit "v$VERSAO" --title "NullyzOS" --notes-file docs/BAIXAR.md
+          else
+            pre=""; case "$VERSAO" in *-*) pre="--prerelease" ;; esac
+            gh release create "v$VERSAO" $pre --target "$GITHUB_SHA" \
+              --title "NullyzOS" --notes-file docs/BAIXAR.md "${arquivos[@]}"
+          fi
