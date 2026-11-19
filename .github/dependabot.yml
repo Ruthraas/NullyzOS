@@ -1,0 +1,7 @@
+# Avisa quando sair versão nova das actions (elas ficam fixadas por commit, por segurança).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

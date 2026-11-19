@@ -25,7 +25,7 @@ jobs:
       - name: Dependências
         run: pacman -Syu --noconfirm --needed git github-cli sudo
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Pacotes já publicados (reaproveitados se a versão não mudou)
         env:
