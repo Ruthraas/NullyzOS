@@ -3,178 +3,177 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NullyzOS · Arch Linux pronto para usar</title>
-<meta name="description" content="NullyzOS: sistema baseado em Arch Linux com Hyprland ou KDE, visual de vidro, rices que se trocam com segurança e cores tiradas do seu wallpaper. Grátis, em português.">
+<title>NullyzOS · Introdução</title>
+<meta name="description" content="NullyzOS é um sistema baseado em Arch Linux, com Hyprland ou KDE, rices que se trocam com segurança e cores tiradas do wallpaper. Grátis e em português.">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="color-scheme" content="dark light">
+<meta name="color-scheme" content="dark">
 <meta property="og:title" content="NullyzOS">
-<meta property="og:description" content="Arch Linux pronto para usar, com o visual que você escolhe.">
-<meta property="og:image" content="img/og.png">
+<meta property="og:description" content="Arch Linux escuro, leve e seguro, pronto para usar.">
 <link rel="icon" href="img/nullyz.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/site.css">
 <script src="js/site.js" defer></script>
 </head>
-<body data-rice="nulo">
+<body>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
-<header class="topo">
-  <a class="marca" href="#inicio" aria-label="NullyzOS, início"><img src="img/nullyz.svg" alt="" width="28" height="28"> NullyzOS</a>
-  <nav aria-label="Seções">
-    <a href="#rices">Rices</a>
-    <a href="#desktops">Desktops</a>
-    <a href="#seguranca">Segurança</a>
-    <a href="#perguntas">Perguntas</a>
-    <a class="acao" href="#baixar">Baixar</a>
-  </nav>
+<header class="barra">
+  <a class="marca" href="index.html"><img src="img/nullyz.svg" alt="" width="20" height="20"><span>NullyzOS</span></a>
+  <span class="versao">0.2 beta</span>
+  <div class="barra-dir">
+    <a class="barra-link" href="https://github.com/Ruthraas/NullyzOS" rel="noopener noreferrer">GitHub</a>
+    <a class="botao" href="#baixar">Baixar</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="lateral">Menu</button>
+  </div>
 </header>
 
-<main id="conteudo">
-<!-- Metade fixa: a tela do sistema, que muda com a seção e com o rice escolhido -->
-<div class="palco-e-leitura">
-  <figure class="palco" aria-live="polite">
-    <img class="tela ativa" id="tela" src="img/tela-nulo.webp" width="1920" height="1080"
-         alt="Área de trabalho do NullyzOS com o rice Nulo: barra de menus em cima, terminal e Configurações abertos, dock embaixo.">
-    <figcaption id="legenda">Hyprland com o rice Nulo, o padrão.</figcaption>
-  </figure>
+<div class="docs">
+  <nav class="lateral" id="lateral" aria-label="Documentação">
+    <p class="grupo">Começando</p>
+    <a href="index.html" aria-current="page">Introdução</a>
+    <a href="index.html#baixar">Baixar e instalar</a>
+    <a href="index.html#requisitos">Requisitos</a>
+    <p class="grupo">Usando</p>
+    <a href="index.html#rices">Rices</a>
+    <a href="index.html#desktops">Hyprland ou KDE</a>
+    <a href="index.html#atalhos">Atalhos</a>
+    <p class="grupo">Segurança</p>
+    <a href="seguranca.html">Guia de segurança</a>
+    <a href="index.html#perguntas">Perguntas</a>
+  </nav>
 
-  <div class="leitura">
-    <section class="inicio" id="inicio" data-tela="nulo">
-      <h1 class="nome"><span>nullyz</span><span class="os">os</span></h1>
-      <p class="frase">Arch Linux pronto para usar, com o visual que você escolhe. Grátis e em português.</p>
-      <div class="acoes">
-        <a class="botao" href="#baixar">Baixar o NullyzOS</a>
-        <a class="link" href="#rices">Ver os rices</a>
+  <main class="conteudo" id="conteudo">
+    <p class="trilha">Começando</p>
+    <h1>Introdução</h1>
+    <p class="lead">NullyzOS é um sistema baseado em Arch Linux, pronto para usar. Você escolhe o desktop, Hyprland ou KDE Plasma, e o visual: troca quando quiser e volta em um clique.</p>
+
+    <figure class="tela">
+      <img src="img/tela-nulo.webp" width="1920" height="1080" alt="Área de trabalho do NullyzOS com o rice Nulo, o padrão.">
+    </figure>
+
+    <div class="cartoes">
+      <a class="cartao" href="#baixar"><strong>Baixar e instalar</strong><span>ISO assinada, pendrive e instalador gráfico.</span></a>
+      <a class="cartao" href="#rices"><strong>Rices</strong><span>Nove visuais completos, com desfazer.</span></a>
+      <a class="cartao" href="seguranca.html"><strong>Segurança</strong><span>O que já vem ligado e como manter assim.</span></a>
+      <a class="cartao" href="#perguntas"><strong>Perguntas</strong><span>Preço, uso no dia a dia, máquina virtual.</span></a>
+    </div>
+
+    <h2 id="o-que-e">O que vem nele</h2>
+    <ul>
+      <li><strong>Dois desktops:</strong> Hyprland (leve, janelas lado a lado) ou KDE Plasma (completo e familiar), com o mesmo visual Nullyz.</li>
+      <li><strong>Rices:</strong> visuais completos que mudam cores, barra, cantos e terminal. Antes de trocar, um snapshot.</li>
+      <li><strong>Cores do wallpaper:</strong> a paleta inteira do sistema sai da imagem de fundo.</li>
+      <li><strong>Configurações em português</strong> para Wi-Fi, Bluetooth, som, impressora, usuários e atualizações.</li>
+      <li><strong>Seguro por padrão:</strong> firewall ligado, pacotes assinados, sem AUR, snapshots antes de cada atualização.</li>
+    </ul>
+
+    <h2 id="baixar">Baixar e instalar</h2>
+    <p>A ISO tem cerca de 1,7 GB e vem com a soma SHA256 e a assinatura GPG.</p>
+    <p><a class="botao" href="https://github.com/Ruthraas/NullyzOS/releases/latest" rel="noopener noreferrer">Baixar a ISO</a></p>
+
+    <h3 id="conferir">1. Confira o arquivo</h3>
+    <p>Prova que a ISO chegou inteira e é a original. Rode na pasta onde baixou:</p>
+    <div class="abas">
+      <div class="abas-botoes" role="tablist" aria-label="Sistema">
+        <button role="tab" aria-selected="true" aria-controls="c-linux" id="t-linux">Linux e macOS</button>
+        <button role="tab" aria-selected="false" aria-controls="c-win" id="t-win" tabindex="-1">Windows</button>
       </div>
-      <p class="nota">Versão 0.2 beta · Hyprland ou KDE Plasma · 64 bits</p>
-    </section>
+      <div class="codigo" role="tabpanel" id="c-linux" aria-labelledby="t-linux"><pre><code>sha256sum -c SHA256SUMS</code></pre><button class="copiar" type="button">Copiar</button></div>
+      <div class="codigo" role="tabpanel" id="c-win" aria-labelledby="t-win" hidden><pre><code>Get-FileHash .\nullyzos-*.iso -Algorithm SHA256</code></pre><button class="copiar" type="button">Copiar</button></div>
+    </div>
+    <p>A assinatura GPG é da chave <strong>Nullyz Packages</strong>: <code>C43C 292B 0901 FB84 D4A1 A174 3682 8706 C86F B94A</code>.</p>
 
-    <section class="rices" id="rices" aria-labelledby="t-rices">
-      <h2 id="t-rices">Nove visuais, um clique</h2>
-      <p class="grande">Um rice muda o sistema inteiro: cores, barra, cantos e terminal. Escolha um aqui e veja a tela e esta página mudarem com ele.</p>
-      <div class="seletor" role="radiogroup" aria-label="Escolha um rice" data-ui>
-        <button role="radio" aria-checked="true" data-rice="nulo" data-legenda="O padrão: escuro, vidro, violeta e cantos arredondados.">Nulo</button>
-        <button role="radio" aria-checked="false" data-rice="papel" data-legenda="Claro como papel: fundo creme, azul tinta, barra flutuante.">Papel</button>
-        <button role="radio" aria-checked="false" data-rice="ouro" data-legenda="Preto quente e dourado, com a barra em ilhas.">Ouro</button>
-        <button role="radio" aria-checked="false" data-rice="brasa" data-legenda="Quase preto com vermelho brasa e barra flutuante.">Brasa</button>
-        <button role="radio" aria-checked="false" data-rice="cru" data-legenda="Preto no branco, sem enfeite: claro, reto e direto.">Cru</button>
-        <button role="radio" aria-checked="false" data-rice="areia" data-legenda="Tons de areia e terracota, claro e quente.">Areia</button>
-        <button role="radio" aria-checked="false" data-rice="musgo" data-legenda="Verde musgo no escuro, com a barra em ilhas.">Musgo</button>
-        <button role="radio" aria-checked="false" data-rice="sol" data-legenda="Grafite com amarelo sol e contraste alto.">Sol</button>
-        <button role="radio" aria-checked="false" data-rice="mono" data-legenda="Para quem vive no teclado: compacto, reto, sem animação. O mais leve.">Mono</button>
-      </div>
-      <p id="rice-desc" class="desc-rice">O padrão: escuro, vidro, violeta e cantos arredondados.</p>
-      <p>Antes de trocar, o sistema guarda um snapshot. Não gostou? <strong>Desfazer</strong> volta tudo como estava. Os rices da comunidade entram como receitas revisadas, com o nome e a licença de quem fez.</p>
-    </section>
+    <h3 id="gravar">2. Grave num pendrive</h3>
+    <p>Use um pendrive de 8 GB ou mais com o <a href="https://rufus.ie" rel="noopener noreferrer">Rufus</a>, o <a href="https://www.ventoy.net" rel="noopener noreferrer">Ventoy</a> ou o <a href="https://github.com/FedoraQt/MediaWriter" rel="noopener noreferrer">Fedora Media Writer</a>. Tudo o que estiver nele será apagado.</p>
 
-    <section class="wallpaper" id="wallpaper" data-tela="wallpaper" aria-labelledby="t-wall">
-      <h2 id="t-wall">As cores saem do seu fundo</h2>
-      <p class="grande">Ligue “Cores do wallpaper: Tudo” e o NullyzOS monta a paleta inteira a partir da imagem: barra, dock, janelas, terminal e apps.</p>
-      <p>Trocou o fundo, as cores acompanham. Funciona no Hyprland e no KDE. Também dá para pegar só a cor de destaque, ou deixar o fundo fora disso.</p>
-      <figure class="par" data-ui>
-        <img src="img/wall-azul.webp" width="960" height="540" loading="lazy" alt="Mesmo sistema com um fundo azul: barra, borda das janelas e destaque em azul.">
-        <img src="img/wall-vermelho.webp" width="960" height="540" loading="lazy" alt="Mesmo sistema com um fundo vermelho: Configurações e destaque em vermelho coral.">
-        <figcaption>O mesmo NullyzOS com dois fundos diferentes.</figcaption>
-      </figure>
-    </section>
+    <h3 id="instalar">3. Instale</h3>
+    <p>Ligue o computador pelo pendrive. O instalador abre sozinho: idioma, teclado, desktop e visual, já mostrando como cada um fica. Em "Apagar disco", marque <strong>Criptografar o sistema</strong>.</p>
+    <div class="nota"><strong>Secure Boot:</strong> por enquanto, desligue na BIOS. A ISO ainda não é assinada para ele.</div>
 
-    <section class="instalar" id="instalar" data-tela="instalador" aria-labelledby="t-inst">
-      <h2 id="t-inst">Instalar é guiado, do início ao fim</h2>
-      <p><strong>Para começar,</strong> baixe a ISO e confira a soma SHA256 (o passo a passo está logo abaixo, em Baixar). Grave num pendrive de 8 GB com o Rufus, o Ventoy ou o Fedora Media Writer.</p>
-      <p><strong>Ao ligar pelo pendrive,</strong> o instalador abre sozinho. Você escolhe o idioma, o teclado, o desktop (Hyprland ou KDE) e o visual, já vendo como cada um fica.</p>
-      <p><strong>No disco,</strong> “Apagar disco” faz tudo. Marque “Criptografar” e seus arquivos ficam protegidos se o computador for perdido ou roubado.</p>
-      <p><strong>No primeiro login,</strong> o rice escolhido já está aplicado, com o firewall ligado, os snapshots configurados e o navegador instalado.</p>
-    </section>
-  </div>
+    <h2 id="requisitos">Requisitos</h2>
+    <table>
+      <tbody>
+        <tr><th scope="row">Processador</th><td>64 bits (x86_64)</td></tr>
+        <tr><th scope="row">Memória</th><td>4 GB (8 GB recomendado)</td></tr>
+        <tr><th scope="row">Disco</th><td>30 GB</td></tr>
+        <tr><th scope="row">Firmware</th><td>UEFI (recomendado) ou BIOS</td></tr>
+        <tr><th scope="row">Internet</th><td>Durante a instalação</td></tr>
+        <tr><th scope="row">Máquina virtual</th><td>Com Hyprland, ligue a aceleração 3D. Sem 3D, escolha o KDE.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="rices">Rices</h2>
+    <p>Um rice muda o sistema inteiro de uma vez. Escolha um para ver:</p>
+    <div class="rices" role="radiogroup" aria-label="Rices">
+      <button role="radio" aria-checked="true" data-rice="nulo"><i class="cor nulo"></i>Nulo</button>
+      <button role="radio" aria-checked="false" data-rice="papel"><i class="cor papel"></i>Papel</button>
+      <button role="radio" aria-checked="false" data-rice="ouro"><i class="cor ouro"></i>Ouro</button>
+      <button role="radio" aria-checked="false" data-rice="brasa"><i class="cor brasa"></i>Brasa</button>
+      <button role="radio" aria-checked="false" data-rice="cru"><i class="cor cru"></i>Cru</button>
+      <button role="radio" aria-checked="false" data-rice="areia"><i class="cor areia"></i>Areia</button>
+      <button role="radio" aria-checked="false" data-rice="musgo"><i class="cor musgo"></i>Musgo</button>
+      <button role="radio" aria-checked="false" data-rice="sol"><i class="cor sol"></i>Sol</button>
+      <button role="radio" aria-checked="false" data-rice="mono"><i class="cor mono"></i>Mono</button>
+    </div>
+    <figure class="tela">
+      <img id="tela-rice" src="img/tela-nulo.webp" width="1920" height="1080" loading="lazy" alt="O rice Nulo aplicado.">
+    </figure>
+    <p>Para trocar, abra <strong>Configurações, Rices</strong> e clique em "Usar este". Se não gostar, <strong>Desfazer</strong> volta tudo. Pelo terminal:</p>
+    <div class="codigo"><pre><code>nullyzos-rice aplicar musgo</code></pre><button class="copiar" type="button">Copiar</button></div>
+
+    <h2 id="desktops">Hyprland ou KDE</h2>
+    <table>
+      <thead><tr><th scope="col"></th><th scope="col">Hyprland</th><th scope="col">KDE Plasma</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Janelas</th><td>Lado a lado ou soltas</td><td>Soltas, como no Windows</td></tr>
+        <tr><th scope="row">Memória após o login</th><td>cerca de 780 MiB</td><td>um pouco mais</td></tr>
+        <tr><th scope="row">Rices</th><td>Todos</td><td>Os marcados para KDE</td></tr>
+        <tr><th scope="row">Para quem</th><td>Quem gosta de teclado e leveza</td><td>Quem quer tudo familiar</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="atalhos">Atalhos</h2>
+    <p>No Hyprland. No KDE valem os atalhos do próprio Plasma.</p>
+    <table>
+      <tbody>
+        <tr><td><kbd>Super</kbd> <kbd>Espaço</kbd></td><td>Buscar apps</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>,</kbd></td><td>Configurações</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>Enter</kbd></td><td>Terminal</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>Tab</kbd></td><td>Visão geral</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>Shift</kbd> <kbd>V</kbd></td><td>Área de transferência</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>.</kbd></td><td>Emojis</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>Shift</kbd> <kbd>S</kbd></td><td>Captura de tela</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>L</kbd></td><td>Bloquear a tela</td></tr>
+        <tr><td><kbd>Super</kbd> <kbd>Q</kbd></td><td>Fechar janela</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="perguntas">Perguntas</h2>
+    <details><summary>É de graça?</summary><p>Sim. O código é aberto (GPL-3.0) e está no GitHub.</p></details>
+    <details><summary>Posso usar no dia a dia?</summary><p>É uma versão beta. Funciona, mas teste antes num computador sem nada importante, ou com backup.</p></details>
+    <details><summary>Preciso saber Linux?</summary><p>Não. O que se usa no dia a dia tem tela própria nas Configurações, em português.</p></details>
+    <details><summary>Onde instalo programas?</summary><p>Na loja de apps (Flathub) ou pelo pacman, dos repositórios oficiais do Arch. O NullyzOS não usa o AUR.</p></details>
+    <details><summary>Achei um problema. E agora?</summary><p>Abra uma <a href="https://github.com/Ruthraas/NullyzOS/issues" rel="noopener noreferrer">issue no GitHub</a> com o modelo do computador e o que aconteceu. Falha de segurança vai pelo <a href="https://github.com/Ruthraas/NullyzOS/security/advisories/new" rel="noopener noreferrer">aviso privado</a>.</p></details>
+
+    <nav class="proximo" aria-label="Próxima página">
+      <a href="seguranca.html"><span>Próximo</span><strong>Guia de segurança</strong></a>
+    </nav>
+  </main>
+
+  <aside class="indice" aria-label="Nesta página">
+    <p class="grupo">Nesta página</p>
+    <a href="#o-que-e">O que vem nele</a>
+    <a href="#baixar">Baixar e instalar</a>
+    <a href="#requisitos">Requisitos</a>
+    <a href="#rices">Rices</a>
+    <a href="#desktops">Hyprland ou KDE</a>
+    <a href="#atalhos">Atalhos</a>
+    <a href="#perguntas">Perguntas</a>
+  </aside>
 </div>
 
-<section class="desktops" id="desktops" aria-labelledby="t-desk">
-  <div class="campo escuro">
-    <p class="papel">Janelas lado a lado ou soltas, tudo pelo teclado se você quiser. O mais leve, com a maior parte dos rices.</p>
-    <img src="img/hyprland.webp" width="1920" height="1080" loading="lazy" alt="NullyzOS com Hyprland: duas janelas lado a lado sob a barra de menus.">
-    <h2 id="t-desk"><span>Hyprland</span></h2>
-  </div>
-  <div class="campo claro">
-    <p class="papel">Completo e familiar: menu global, apps do KDE, as Configurações do NullyzOS no lugar das do KDE.</p>
-    <img src="img/kde.webp" width="1920" height="1080" loading="lazy" alt="NullyzOS com KDE Plasma: barra em cima com o nome do app em foco e dock flutuante.">
-    <p class="meia"><span>ou KDE Plasma</span></p>
-  </div>
-</section>
-
-<section class="seguranca" id="seguranca" aria-labelledby="t-seg">
-  <div class="figuras">
-    <h2 id="t-seg">Seguro sem você configurar nada</h2>
-    <dl>
-      <div><dt>0</dt><dd>scripts baixados da internet e nada do AUR. Tudo vem dos repositórios oficiais do Arch ou do nosso, assinado.</dd></div>
-      <div><dt>1</dt><dd>clique para voltar: snapshot antes de cada atualização e de cada troca de rice, também no menu do boot.</dd></div>
-      <div><dt>ON</dt><dd>firewall ligado desde o primeiro boot, bloqueando conexões de fora.</dd></div>
-      <div><dt>8+</dt><dd>caracteres na senha, conta root bloqueada e kernel e rede endurecidos.</dd></div>
-      <div><dt>Wi-Fi</dt><dd>sem rastrear o aparelho: endereço aleatório ao procurar redes e um diferente em cada rede.</dd></div>
-    </dl>
-  </div>
-  <figure class="quadro">
-    <img src="img/atualizacoes.webp" width="1280" height="800" loading="lazy" alt="Configurações do NullyzOS, página Atualizações, com a lista de snapshots para voltar.">
-    <figcaption>Atualizações e snapshots nas Configurações.</figcaption>
-  </figure>
-</section>
-
-<section class="leve" aria-labelledby="t-leve">
-  <h2 id="t-leve">Leve de verdade</h2>
-  <p class="numero"><span>780</span> MiB</p>
-  <p>de memória em uso com o Hyprland, o desktop Nullyz e um terminal aberto, medido logo depois do login numa máquina virtual com 4 GB.</p>
-</section>
-
-<section class="feito" aria-labelledby="t-feito">
-  <h2 id="t-feito">Feito sobre</h2>
-  <ul>
-    <li>Arch Linux</li>
-    <li>Hyprland</li>
-    <li>KDE Plasma</li>
-    <li>Quickshell</li>
-    <li>Calamares</li>
-    <li>Snapper</li>
-  </ul>
-</section>
-
-<section class="perguntas" id="perguntas" aria-labelledby="t-perg">
-  <h2 id="t-perg">Perguntas</h2>
-  <div class="texto">
-    <p><strong>É de graça?</strong> Sim, e o código é aberto (GPL-3.0), no GitHub.</p>
-    <p><strong>Posso usar no dia a dia?</strong> É uma versão beta. Funciona, mas teste antes num PC sem nada importante ou tenha backup.</p>
-    <p><strong>Hyprland ou KDE?</strong> O Hyprland é mais leve e tem mais rices; o KDE é mais familiar para quem vem do Windows. Dá para escolher na instalação.</p>
-    <p><strong>Preciso saber Linux?</strong> Não. Configurações, atualizações, Wi-Fi e Bluetooth ficam em telas próprias, em português.</p>
-    <p><strong>O que é um rice?</strong> Um visual completo do sistema: cores, barra, cantos, terminal. Troca em um clique e volta se não gostar.</p>
-    <p><strong>Funciona em máquina virtual?</strong> Sim. Com o Hyprland, ligue a aceleração 3D da VM; sem 3D, escolha o KDE.</p>
-    <p><strong>E o Secure Boot?</strong> Por enquanto, desligue na BIOS. A ISO ainda não é assinada para ele.</p>
-    <p><strong>Como sei que a ISO é original?</strong> Confira a soma SHA256 e a assinatura GPG da chave Nullyz Packages. O passo a passo está em Baixar.</p>
-    <p><strong>Onde instalo programas?</strong> Na loja de apps (Flathub) ou pelo pacman, dos repositórios oficiais do Arch.</p>
-    <p><strong>Achei um problema.</strong> Abra uma issue no GitHub com o modelo do PC e o que aconteceu.</p>
-  </div>
-</section>
-
-<section class="baixar" id="baixar" aria-labelledby="t-baixar">
-  <div class="fecho">
-    <h2 id="t-baixar">Baixe e experimente</h2>
-    <p>A ISO tem cerca de 1,8 GB. Confira a soma antes de gravar no pendrive: assim você sabe que ela chegou inteira e é a original.</p>
-  </div>
-  <div class="janela" data-ui aria-label="Download do NullyzOS">
-    <p class="janela-titulo">NullyzOS 0.2 beta</p>
-    <div class="escolha" role="radiogroup" aria-label="Seu sistema, para o comando de conferência">
-      <button role="radio" aria-checked="true" data-so="linux">Linux ou macOS</button>
-      <button role="radio" aria-checked="false" data-so="windows">Windows</button>
-    </div>
-    <pre><code id="cmd">sha256sum -c SHA256SUMS</code></pre>
-    <p class="digital">Chave GPG Nullyz Packages<br><code>C43C 292B 0901 FB84 D4A1  A174 3682 8706 C86F B94A</code></p>
-    <a class="botao cheio" href="https://github.com/Ruthraas/NullyzOS/releases/latest" rel="noopener noreferrer">Baixar a ISO no GitHub</a>
-    <a class="link" href="https://github.com/Ruthraas/NullyzOS/blob/main/docs/BAIXAR.md" rel="noopener noreferrer">Requisitos e passo a passo</a>
-  </div>
-</section>
-</main>
-
 <footer class="rodape">
-  <p>NullyzOS, baseado em Arch Linux</p>
-  <p class="links"><a href="https://github.com/Ruthraas/NullyzOS" rel="noopener noreferrer">GitHub</a> <a href="https://github.com/Ruthraas/NullyzOS/issues" rel="noopener noreferrer">Problemas</a> <a href="https://github.com/Ruthraas/NullyzOS/blob/main/CREDITS.md" rel="noopener noreferrer">Créditos</a></p>
-  <p>2026 · Sem cookies e sem rastreamento · Geist (SIL OFL)</p>
+  <p>NullyzOS · baseado em Arch Linux, sem vínculo com o projeto Arch · sem cookies e sem rastreamento</p>
 </footer>
 </body>
 </html>
