@@ -70,7 +70,7 @@ Singleton {
         // Janelas: espaço, cantos, animações, desfoque; borda na cor de destaque.
         const g = { compacto: [2, 4], normal: [5, 10], amplo: [10, 20] }[conf.gaps];
         if (g) out.push(`hl.config({ general = { gaps_in = ${g[0]}, gaps_out = ${g[1]} } })`);
-        if (conf.rounding >= 0) out.push(`hl.config({ decoration = { rounding = ${conf.rounding} } })`);
+        if (conf.rounding >= 0) out.push(`hl.config({ decoration = { rounding = ${Math.round(Number(conf.rounding) || 0)} } })`);
         if (!conf.animations) out.push("hl.config({ animations = { enabled = false } })");
         if (!conf.blur) out.push("hl.config({ decoration = { blur = { enabled = false } } })");
         if (!conf.shadow) out.push("hl.config({ decoration = { shadow = { enabled = false } } })");
@@ -86,7 +86,7 @@ Singleton {
         for (const name in mons) {
             const r = mons[name];
             if (!r.mode && !r.scale) continue;
-            out.push(`hl.monitor({ output = ${q(name)}, mode = ${q(r.mode || "preferred")}, position = "auto", scale = ${r.scale || "\"auto\""} })`);
+            out.push(`hl.monitor({ output = ${q(name)}, mode = ${q(r.mode || "preferred")}, position = "auto", scale = ${Number(r.scale) > 0 ? Number(r.scale) : "\"auto\""} })`);
         }
         return out.join("\n") + "\n";
     }
