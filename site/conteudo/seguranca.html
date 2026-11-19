@@ -1,0 +1,58 @@
+
+    <header class="cabeca">
+      <h1>Guia de segurança</h1>
+      <p class="sub">O NullyzOS já vem fechado. Estes são os hábitos que mantêm ele assim, do mais importante para o menos.</p>
+    </header>
+
+    <h2 id="ja-vem">O que já vem ligado</h2>
+    <div class="linhas">
+      <div class="linha"><div><strong>Firewall</strong><span>Ligado no primeiro boot, bloqueando conexões de fora.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Pacotes</strong><span>Assinados. Sem AUR e sem scripts da internet.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Snapshots</strong><span>Antes de cada atualização e troca de rice, também no menu do boot.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Contas</strong><span>Root bloqueado, senha com 8 caracteres ou mais, trava após muitos erros.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Kernel e rede</strong><span>Endereços internos escondidos de programas comuns, sem redirecionamentos forjados.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Wi-Fi</strong><span>Endereço aleatório ao procurar redes e um diferente em cada rede.</span></div><span class="ok">Ligado</span></div>
+    </div>
+
+    <h2 id="atualize">Atualize sempre</h2>
+    <p>No Arch, quem fica sem atualizar fica com falhas que já foram corrigidas. Quando houver atualização, abra <strong>Configurações, Atualizações</strong> e clique em Atualizar, ou rode:</p>
+    <div class="codigo"><pre><code>sudo pacman -Syu</code></pre><button class="copiar" type="button">Copiar</button></div>
+    <p>Faça isso pelo menos uma vez por semana. Se algo quebrar depois, escolha no menu do boot o snapshot de antes e o computador volta como estava. Se o kernel foi atualizado, reinicie.</p>
+
+    <h2 id="instale">Instale do lugar certo</h2>
+    <p>O que vem pelo <strong>pacman</strong> sai dos repositórios oficiais do Arch ou do NullyzOS, e chega assinado. Apps com interface vêm da <strong>loja (Flathub)</strong>: prefira os verificados e veja as permissões antes de instalar.</p>
+    <ul>
+      <li>Não use o AUR nem ajudantes como yay e paru: qualquer pessoa publica lá, sem revisão.</li>
+      <li>Nunca rode um comando do tipo <code>curl … | bash</code>. Ele executa um programa da internet sem você ver o que faz.</li>
+      <li>Desconfie de tutorial que manda desligar o firewall, rodar tudo com sudo ou usar <code>chmod 777</code>.</li>
+      <li>Arquivo <code>.sh</code> ou <code>.AppImage</code> de origem desconhecida: não rode.</li>
+    </ul>
+
+    <h2 id="senhas">Senhas e sudo</h2>
+    <ul>
+      <li>Use uma frase longa, só sua, que você não repete em nenhum site.</li>
+      <li>Quando uma janela pedir a senha, leia o que ela vai fazer. Se você não pediu nada, cancele.</li>
+      <li>Saiu de perto do computador: <kbd>Super</kbd> <kbd>L</kbd> bloqueia a tela.</li>
+    </ul>
+
+    <h2 id="disco">Criptografia e backup</h2>
+    <p>Na instalação, marque <strong>Criptografar o sistema</strong>. A caixa fica embaixo, acima das barras do disco. Use na frase só letras, números e hífen: ao ligar, a tela que pede essa senha usa o teclado americano, e ç, acentos e alguns símbolos saem em outras teclas. Se o notebook for roubado, ninguém lê seus arquivos sem a senha do disco. Não dá para ligar depois sem reinstalar.</p>
+    <div class="aviso"><strong>Snapshot não é backup.</strong><span>Ele fica no mesmo disco. Guarde uma cópia dos arquivos importantes num HD externo ou numa nuvem, e teste de vez em quando se ela abre.</span></div>
+
+    <h2 id="rede">Rede e firewall</h2>
+    <p>Deixe o firewall ligado. Se um programa precisar receber conexões, libere só a porta dele:</p>
+    <div class="codigo"><pre><code>sudo ufw allow 25565/tcp</code></pre><button class="copiar" type="button">Copiar</button></div>
+    <p>Em Wi-Fi público, só entre em sites com HTTPS e, se puder, use uma VPN de confiança.</p>
+
+    <h2 id="navegador">Navegador e contas</h2>
+    <ul>
+      <li>O Brave já vem instalado e se atualiza pela loja. Instale poucas extensões, só as que conhece.</li>
+      <li>Ligue a verificação em duas etapas no e-mail, no banco e nas redes sociais.</li>
+      <li>Use um gerenciador de senhas, como KeePassXC ou Bitwarden, da loja.</li>
+      <li>Mensagem com pressa, prêmio ou ameaça é golpe até provar o contrário.</li>
+    </ul>
+
+    <h2 id="sinais">Se algo parecer errado</h2>
+    <p>Lentidão do nada, pedido de senha sem motivo, programa que você não instalou: desconecte da internet, volte para um snapshot de antes do problema e troque as senhas importantes usando outro aparelho.</p>
+    <p>Achou uma falha de segurança no NullyzOS? Conte pelo <a href="https://github.com/Ruthraas/NullyzOS/security/advisories/new" rel="noopener noreferrer">aviso privado do GitHub</a>, não em issue pública.</p>
+

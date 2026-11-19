@@ -1,5 +1,5 @@
-// NullyzOS — site. Sem dependências e sem nada de fora: menu no celular, abas, botões de
-// copiar, seletor de rices e o índice "Nesta página" acompanhando a leitura.
+// NullyzOS — documentação. Sem dependências e sem nada de fora: menu no celular, busca na
+// lateral, abas, copiar, seletor de rices, índice da página e os passos marcados ao ler.
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -7,17 +7,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const menu = document.querySelector(".menu");
   const lateral = document.getElementById("lateral");
   if (menu && lateral) {
-    const fechar = () => { lateral.classList.remove("aberta"); menu.setAttribute("aria-expanded", "false"); };
-    menu.addEventListener("click", () => {
-      const abrir = !lateral.classList.contains("aberta");
-      lateral.classList.toggle("aberta", abrir);
-      menu.setAttribute("aria-expanded", String(abrir));
-    });
-    lateral.addEventListener("click", e => { if (e.target.closest("a")) fechar(); });
-    document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
+    const abrir = sim => { lateral.classList.toggle("aberta", sim); menu.setAttribute("aria-expanded", String(sim)); };
+    menu.addEventListener("click", () => abrir(!lateral.classList.contains("aberta")));
+    lateral.addEventListener("click", e => { if (e.target.closest("a")) abrir(false); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") abrir(false); });
   }
 
-  // Abas (com setas, como manda o padrão de abas)
+  // Busca na lateral: filtra os itens (sem acento e sem maiúscula)
+  const filtro = document.getElementById("filtro");
+  if (filtro && lateral) {
+    const sem = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+    const itens = [...lateral.querySelectorAll("a")];
+    filtro.addEventListener("input", () => {
+      const q = sem(filtro.value.trim());
+      itens.forEach(a => { a.hidden = q !== "" && !sem(a.textContent).includes(q); });
+      lateral.querySelectorAll(".grupo").forEach(g => {
+        let n = g.nextElementSibling, algum = false;
+        while (n && n.tagName === "A") { if (!n.hidden) algum = true; n = n.nextElementSibling; }
+        g.hidden = !algum;
+      });
+    });
+    filtro.addEventListener("keydown", e => {
+      if (e.key !== "Enter") return;
+      const primeiro = itens.find(a => !a.hidden);
+      if (primeiro) window.location.href = primeiro.href;
+    });
+  }
+
+  // Abas (setas também)
   document.querySelectorAll(".abas").forEach(abas => {
     const botoes = [...abas.querySelectorAll('[role="tab"]')];
     const ativar = (b, foco) => {
@@ -43,39 +60,30 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Copiar
-  document.querySelectorAll(".copiar").forEach(b => {
-    b.addEventListener("click", async () => {
-      const texto = b.parentElement.querySelector("code").textContent;
-      try {
-        await navigator.clipboard.writeText(texto);
-        b.textContent = "Copiado";
-      } catch {
-        b.textContent = "Selecione e copie";
-      }
-      setTimeout(() => { b.textContent = "Copiar"; }, 1600);
-    });
-  });
+  document.querySelectorAll(".copiar").forEach(b => b.addEventListener("click", async () => {
+    const texto = b.parentElement.querySelector("code").textContent;
+    try { await navigator.clipboard.writeText(texto); b.textContent = "Copiado"; }
+    catch { b.textContent = "Selecione e copie"; }
+    setTimeout(() => { b.textContent = "Copiar"; }, 1600);
+  }));
 
-  // Seletor de rices
+  // Seletor de rices: troca o print e a legenda
   const tela = document.getElementById("tela-rice");
+  const legenda = document.getElementById("rice-texto");
   const rices = [...document.querySelectorAll(".rices [data-rice]")];
   const escolher = (b, foco) => {
-    rices.forEach(x => {
-      const sim = x === b;
-      x.setAttribute("aria-checked", String(sim));
-      x.tabIndex = sim ? 0 : -1;
-    });
+    rices.forEach(x => { const sim = x === b; x.setAttribute("aria-checked", String(sim)); x.tabIndex = sim ? 0 : -1; });
     if (foco) b.focus();
+    if (legenda) legenda.textContent = b.dataset.texto || "";
     if (!tela) return;
-    const nome = b.textContent.trim();
-    const src = `img/tela-${b.dataset.rice}.webp`;
+    const src = `img/telas/tela-${b.dataset.rice}.webp`;
     if (tela.getAttribute("src") === src) return;
     const nova = new Image();
     nova.src = src;
     tela.classList.add("trocando");
-    Promise.all([nova.decode().catch(() => {}), new Promise(r => setTimeout(r, 150))]).then(() => {
+    Promise.all([nova.decode().catch(() => {}), new Promise(r => setTimeout(r, 120))]).then(() => {
       tela.src = src;
-      tela.alt = `O rice ${nome} aplicado.`;
+      tela.alt = `O rice ${b.textContent.trim()} aplicado.`;
       tela.classList.remove("trocando");
     });
   };
@@ -88,16 +96,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // "Nesta página" marca a seção que está sendo lida
-  const links = [...document.querySelectorAll(".indice a")];
-  const alvos = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
-  if (links.length && "IntersectionObserver" in window) {
-    const olho = new IntersectionObserver(entradas => {
-      entradas.forEach(e => {
-        if (!e.isIntersecting) return;
-        links.forEach(a => a.classList.toggle("ativo", a.getAttribute("href") === "#" + e.target.id));
-      });
-    }, { rootMargin: "-80px 0px -70% 0px" });
+  // "Nesta página" e os passos já lidos
+  if ("IntersectionObserver" in window) {
+    const links = [...document.querySelectorAll(".indice a")];
+    const alvos = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    const olho = new IntersectionObserver(entradas => entradas.forEach(e => {
+      if (!e.isIntersecting) return;
+      links.forEach(a => a.classList.toggle("ativo", a.getAttribute("href") === "#" + e.target.id));
+    }), { rootMargin: "-90px 0px -65% 0px" });
     alvos.forEach(t => olho.observe(t));
+
+    const passos = document.querySelectorAll(".passo");
+    const visto = new IntersectionObserver(entradas => entradas.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("visto"); visto.unobserve(e.target); }
+    }), { rootMargin: "0px 0px -55% 0px" });
+    passos.forEach(p => visto.observe(p));
   }
 });

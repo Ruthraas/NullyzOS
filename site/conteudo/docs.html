@@ -1,0 +1,87 @@
+    <header class="cabeca">
+      <h1>Visão geral</h1>
+      <p class="sub">O que é o NullyzOS, do que ele precisa e o que vem nele.</p>
+    </header>
+
+    <figure class="tela grande">
+      <img src="img/telas/tela-nulo.webp" width="1920" height="1080" alt="NullyzOS com o rice Nulo: terminal com o N em binário e as Configurações, Aparência, abertas lado a lado.">
+      <figcaption>Hyprland com o rice Nulo, o padrão.</figcaption>
+    </figure>
+
+    <p class="lead">NullyzOS é um sistema baseado em Arch Linux, pronto para usar. Você escolhe o desktop, Hyprland ou KDE Plasma, e o visual. Depois troca quando quiser, e um clique desfaz.</p>
+
+    <div class="atalhos">
+      <a class="atalho" href="instalar.html"><span class="icone azul"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg></span><strong>Instalar</strong><span>O passo a passo, do download ao primeiro login.</span></a>
+      <a class="atalho" href="#rices"><span class="icone violeta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r="1.3" class="cheio"/><circle cx="13" cy="8" r="1.3" class="cheio"/><circle cx="16" cy="12" r="1.3" class="cheio"/></svg></span><strong>Rices</strong><span>Nove visuais completos, com desfazer.</span></a>
+      <a class="atalho" href="seguranca.html"><span class="icone verde"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 9 4-1 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><strong>Segurança</strong><span>O que já vem ligado e como manter assim.</span></a>
+      <a class="atalho" href="#perguntas"><span class="icone coral"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5V14"/><circle cx="12" cy="17" r="1" class="cheio"/></svg></span><strong>Perguntas</strong><span>Preço, uso no dia a dia, máquina virtual.</span></a>
+    </div>
+
+    <h2 id="o-que-vem">O que vem nele</h2>
+    <div class="linhas">
+      <div class="linha"><div><strong>Dois desktops</strong><span>Hyprland, leve e com janelas lado a lado, ou KDE Plasma, completo e familiar. Os dois com o visual Nullyz.</span></div></div>
+      <div class="linha"><div><strong>Rices</strong><span>Visuais completos: cores, barra, cantos e terminal mudam juntos. Antes de trocar, um snapshot.</span></div></div>
+      <div class="linha"><div><strong>Cores do wallpaper</strong><span>A paleta do sistema inteiro pode sair da sua imagem de fundo.</span></div></div>
+      <div class="linha"><div><strong>Configurações em português</strong><span>Wi-Fi, Bluetooth, som, impressora, usuários, atualizações e aparência, num lugar só.</span></div></div>
+      <div class="linha"><div><strong>Seguro por padrão</strong><span>Firewall ligado, pacotes assinados, sem AUR, snapshots antes de cada atualização.</span></div></div>
+    </div>
+
+    <h2 id="requisitos">Requisitos</h2>
+    <div class="linhas">
+      <div class="linha"><div><strong>Processador</strong><span>64 bits (x86_64)</span></div></div>
+      <div class="linha"><div><strong>Memória</strong><span>4 GB, 8 GB recomendado</span></div></div>
+      <div class="linha"><div><strong>Disco</strong><span>30 GB</span></div></div>
+      <div class="linha"><div><strong>Firmware</strong><span>UEFI (recomendado) ou BIOS. Secure Boot desligado.</span></div></div>
+      <div class="linha"><div><strong>Internet</strong><span>Durante a instalação, para o navegador e as últimas atualizações.</span></div></div>
+      <div class="linha"><div><strong>Máquina virtual</strong><span>Com Hyprland, ligue a aceleração 3D. Sem 3D, escolha o KDE.</span></div></div>
+    </div>
+    <p><a class="botao cheio" href="instalar.html">Ver o passo a passo de instalação</a></p>
+
+    <h2 id="rices">Rices</h2>
+    <p>Um rice muda o sistema inteiro de uma vez. Escolha um para ver como fica:</p>
+    <div class="rices" role="radiogroup" aria-label="Rices">
+      <button role="radio" aria-checked="true" data-rice="nulo" data-texto="O padrão: escuro, vidro, violeta e cantos arredondados."><i class="cor nulo"></i>Nulo</button>
+      <button role="radio" aria-checked="false" data-rice="papel" data-texto="Claro como papel: fundo creme, azul tinta, barra flutuante."><i class="cor papel"></i>Papel</button>
+      <button role="radio" aria-checked="false" data-rice="ouro" data-texto="Preto quente e dourado, com a barra em ilhas."><i class="cor ouro"></i>Ouro</button>
+      <button role="radio" aria-checked="false" data-rice="brasa" data-texto="Quase preto com vermelho brasa e barra flutuante."><i class="cor brasa"></i>Brasa</button>
+      <button role="radio" aria-checked="false" data-rice="cru" data-texto="Preto no branco, sem enfeite: claro, reto e direto."><i class="cor cru"></i>Cru</button>
+      <button role="radio" aria-checked="false" data-rice="areia" data-texto="Areia e terracota, claro e quente."><i class="cor areia"></i>Areia</button>
+      <button role="radio" aria-checked="false" data-rice="musgo" data-texto="Verde musgo no escuro, com a barra em ilhas."><i class="cor musgo"></i>Musgo</button>
+      <button role="radio" aria-checked="false" data-rice="sol" data-texto="Grafite com amarelo sol e contraste alto."><i class="cor sol"></i>Sol</button>
+      <button role="radio" aria-checked="false" data-rice="mono" data-texto="Compacto, sem vidro e sem animação. O mais leve. Só Hyprland."><i class="cor mono"></i>Mono</button>
+    </div>
+    <figure class="tela">
+      <img id="tela-rice" src="img/telas/tela-nulo.webp" width="1920" height="1080" loading="lazy" alt="O rice Nulo aplicado.">
+      <figcaption id="rice-texto">O padrão: escuro, vidro, violeta e cantos arredondados.</figcaption>
+    </figure>
+    <p>Para trocar, abra <strong>Configurações, Rices</strong> e clique em "Usar este". Não gostou? <strong>Desfazer</strong> volta tudo. Pelo terminal:</p>
+    <div class="codigo"><pre><code>nullyzos-rice aplicar nullyz-musgo</code></pre><button class="copiar" type="button">Copiar</button></div>
+
+    <h2 id="desktops">Hyprland ou KDE</h2>
+    <div class="comparar">
+      <div><strong>Hyprland</strong><p>Janelas lado a lado ou soltas, tudo pelo teclado se quiser. Cerca de 790 MiB de memória depois do login. Todos os rices.</p><p class="quem">Para quem gosta de teclado e leveza.</p></div>
+      <div><strong>KDE Plasma</strong><p>Janelas soltas, menu global e os apps do KDE, com as Configurações do NullyzOS. Cerca de 1 GB depois do login.</p><p class="quem">Para quem quer tudo familiar.</p></div>
+    </div>
+
+    <h2 id="atalhos">Atalhos</h2>
+    <p>No Hyprland. No KDE valem os atalhos do próprio Plasma.</p>
+    <div class="linhas">
+      <div class="linha"><div><strong>Buscar apps</strong></div><div class="teclas"><kbd>Super</kbd><kbd>Espaço</kbd></div></div>
+      <div class="linha"><div><strong>Configurações</strong></div><div class="teclas"><kbd>Super</kbd><kbd>,</kbd></div></div>
+      <div class="linha"><div><strong>Terminal</strong></div><div class="teclas"><kbd>Super</kbd><kbd>Enter</kbd></div></div>
+      <div class="linha"><div><strong>Visão geral</strong></div><div class="teclas"><kbd>Super</kbd><kbd>Tab</kbd></div></div>
+      <div class="linha"><div><strong>Área de transferência</strong></div><div class="teclas"><kbd>Super</kbd><kbd>Shift</kbd><kbd>V</kbd></div></div>
+      <div class="linha"><div><strong>Emojis</strong></div><div class="teclas"><kbd>Super</kbd><kbd>.</kbd></div></div>
+      <div class="linha"><div><strong>Captura de tela</strong></div><div class="teclas"><kbd>Super</kbd><kbd>Shift</kbd><kbd>S</kbd></div></div>
+      <div class="linha"><div><strong>Bloquear a tela</strong></div><div class="teclas"><kbd>Super</kbd><kbd>L</kbd></div></div>
+      <div class="linha"><div><strong>Fechar janela</strong></div><div class="teclas"><kbd>Super</kbd><kbd>Q</kbd></div></div>
+    </div>
+
+    <h2 id="perguntas">Perguntas</h2>
+    <div class="linhas">
+      <details class="linha"><summary>É de graça?</summary><p>Sim. O código é aberto (GPL-3.0) e está no GitHub.</p></details>
+      <details class="linha"><summary>Posso usar no dia a dia?</summary><p>É a primeira versão pública. Funciona, mas tenha backup dos seus arquivos antes de instalar.</p></details>
+      <details class="linha"><summary>Preciso saber Linux?</summary><p>Não. O que se usa no dia a dia tem tela própria nas Configurações, em português.</p></details>
+      <details class="linha"><summary>Onde instalo programas?</summary><p>Na loja de apps (Flathub) ou pelo pacman, dos repositórios oficiais do Arch. O NullyzOS não usa o AUR.</p></details>
+      <details class="linha"><summary>Achei um problema. E agora?</summary><p>Abra uma <a href="https://github.com/Ruthraas/NullyzOS/issues" rel="noopener noreferrer">issue no GitHub</a> com o modelo do computador e o que aconteceu. Falha de segurança vai pelo <a href="https://github.com/Ruthraas/NullyzOS/security/advisories/new" rel="noopener noreferrer">aviso privado</a>.</p></details>
+    </div>

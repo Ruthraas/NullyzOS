@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instalar · Documentação do NullyzOS</title>
+<meta name="description" content="Passo a passo para instalar o NullyzOS: baixar e conferir a ISO, gravar no pendrive, instalar com ou sem criptografia e o primeiro login.">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="img/nullyz.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/docs.css">
+<script src="js/docs.js" defer></script>
+</head>
+<!-- Gerado por gerar-docs.py a partir de conteudo/instalar.html. Não edite à mão. -->
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<img class="fundo" src="img/arte/hero.webp" width="2560" height="1440" alt="">
+
+<header class="topo">
+  <a class="marca" href="index.html"><img src="img/nullyz.svg" alt="" width="20" height="20"><span>NullyzOS</span></a>
+  <span class="selo">Documentação</span>
+  <div class="topo-dir">
+    <a class="topo-link" href="https://github.com/Ruthraas/NullyzOS" rel="noopener noreferrer">GitHub</a>
+    <a class="botao cheio" href="https://github.com/Ruthraas/NullyzOS/releases/latest" rel="noopener noreferrer">Baixar</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="lateral">Menu</button>
+  </div>
+</header>
+
+<div class="janela">
+  <nav class="lateral" id="lateral" aria-label="Documentação">
+    <label class="busca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><span class="oculto">Procurar na documentação</span><input id="filtro" type="search" placeholder="Procurar" autocomplete="off"></label>
+    <div class="versao"><span class="logo"><img src="img/nullyz.svg" alt="" width="22" height="22"></span><div><strong>NullyzOS 0.2</strong><span>Arch Linux · Hyprland ou KDE</span></div></div>
+      <p class="grupo">Começando</p>
+      <a href="docs.html"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span>Visão geral</span></a>
+      <a href="instalar.html" aria-current="page"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg></span><span>Instalar</span></a>
+      <a href="docs.html#requisitos"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M9 20h6M12 16v4"/></svg></span><span>Requisitos</span></a>
+      <p class="grupo">Usando</p>
+      <a href="docs.html#rices"><span class="icone azul" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r="1.3" class="cheio"/><circle cx="13" cy="8" r="1.3" class="cheio"/><circle cx="16" cy="12" r="1.3" class="cheio"/></svg></span><span>Rices</span></a>
+      <a href="docs.html#desktops"><span class="icone azul" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M12 9v10"/></svg></span><span>Hyprland ou KDE</span></a>
+      <a href="docs.html#atalhos"><span class="icone azul" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="2"/><path d="M7 11h1M11 11h1M15 11h1M7 14h10"/></svg></span><span>Atalhos</span></a>
+      <p class="grupo">Ajuda</p>
+      <a href="seguranca.html"><span class="icone verde" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 9 4-1 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><span>Guia de segurança</span></a>
+      <a href="docs.html#perguntas"><span class="icone coral" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5V14"/><circle cx="12" cy="17" r="1" class="cheio"/></svg></span><span>Perguntas</span></a>
+  </nav>
+
+  <main class="conteudo" id="conteudo">
+    <header class="cabeca">
+      <h1>Instalar o NullyzOS</h1>
+      <p class="sub">Do download ao primeiro login, na ordem em que as coisas aparecem.</p>
+    </header>
+
+    <div class="aviso">
+      <strong>Antes de começar</strong>
+      <span>Faça backup dos seus arquivos. "Apagar disco" apaga tudo o que está no disco escolhido.</span>
+    </div>
+
+    <ol class="passos">
+      <li class="passo" id="passo-1">
+        <div class="passo-cab"><span class="num">1</span><h2>Baixe e confira a ISO</h2></div>
+        <p>Baixe a ISO (cerca de 1,7 GB), o <code>SHA256SUMS</code> e a assinatura na <a href="https://github.com/Ruthraas/NullyzOS/releases/latest" rel="noopener noreferrer">página da versão</a>. Depois confira, na pasta onde baixou:</p>
+        <div class="abas">
+          <div class="abas-botoes" role="tablist" aria-label="Sistema">
+            <button role="tab" aria-selected="true" aria-controls="c-linux" id="t-linux">Linux e macOS</button>
+            <button role="tab" aria-selected="false" aria-controls="c-win" id="t-win" tabindex="-1">Windows</button>
+          </div>
+          <div class="codigo" role="tabpanel" id="c-linux" aria-labelledby="t-linux"><pre><code>sha256sum -c SHA256SUMS</code></pre><button class="copiar" type="button">Copiar</button></div>
+          <div class="codigo" role="tabpanel" id="c-win" aria-labelledby="t-win" hidden><pre><code>Get-FileHash .\nullyzos-0.2.0-x86_64.iso -Algorithm SHA256</code></pre><button class="copiar" type="button">Copiar</button></div>
+        </div>
+        <p>No Linux tem de aparecer <strong>OK</strong>. No Windows, o número tem de ser igual ao que está dentro do <code>SHA256SUMS</code>. Diferente? Baixe de novo.</p>
+      </li>
+
+      <li class="passo" id="passo-2">
+        <div class="passo-cab"><span class="num">2</span><h2>Grave num pendrive</h2></div>
+        <p>Use um pendrive de 8 GB ou mais. <strong>Tudo o que estiver nele será apagado.</strong></p>
+        <div class="linhas">
+          <div class="linha"><div><strong>Windows</strong><span><a href="https://rufus.ie" rel="noopener noreferrer">Rufus</a>: escolha a ISO e, se ele perguntar, o modo "DD".</span></div></div>
+          <div class="linha"><div><strong>Qualquer sistema</strong><span><a href="https://www.ventoy.net" rel="noopener noreferrer">Ventoy</a> (copie a ISO para o pendrive) ou <a href="https://github.com/FedoraQt/MediaWriter" rel="noopener noreferrer">Fedora Media Writer</a>.</span></div></div>
+        </div>
+      </li>
+
+      <li class="passo" id="passo-3">
+        <div class="passo-cab"><span class="num">3</span><h2>Ligue pelo pendrive</h2></div>
+        <p>Com o pendrive conectado, ligue o computador e aperte a tecla do menu de boot: <kbd>F12</kbd>, <kbd>F8</kbd>, <kbd>F11</kbd> ou <kbd>Esc</kbd>, depende da marca. Escolha o pendrive. O N do NullyzOS aparece enquanto ele carrega.</p>
+        <div class="aviso"><strong>Secure Boot</strong><span>Se não aparecer o pendrive ou der erro de assinatura, desligue o Secure Boot na BIOS. O NullyzOS ainda não é assinado para ele.</span></div>
+        <figure class="tela"><img src="img/guia/boot.webp" width="1280" height="800" loading="lazy" alt="Tela de abertura do NullyzOS: o N em pixels e o nome NULLYZOS."><figcaption>A abertura, ao ligar pelo pendrive.</figcaption></figure>
+      </li>
+
+      <li class="passo" id="passo-4">
+        <div class="passo-cab"><span class="num">4</span><h2>Idioma, local e teclado</h2></div>
+        <p>O instalador abre sozinho. Os passos ficam numerados à esquerda, como neste guia. Escolha <strong>português (Brasil)</strong>, a sua cidade e o teclado. Para teclado brasileiro, <strong>Português (Brasil) ABNT2</strong>: a prévia mostra as letras de cada tecla.</p>
+        <figure class="tela"><img src="img/guia/boas-vindas.webp" width="1280" height="800" loading="lazy" alt="Instalador do NullyzOS na tela de boas-vindas, com a lista de passos à esquerda e o idioma português (Brasil)."><figcaption>Boas-vindas, com os passos à esquerda.</figcaption></figure>
+      </li>
+
+      <li class="passo" id="passo-5">
+        <div class="passo-cab"><span class="num">5</span><h2>Desktop e visual</h2></div>
+        <p>Escolha o desktop: <strong>Hyprland</strong> (leve, janelas lado a lado) ou <strong>KDE Plasma</strong> (completo e familiar). Depois o visual: cada rice mostra uma prévia. Ele já vem aplicado no primeiro login, e dá para trocar depois.</p>
+        <figure class="tela"><img src="img/guia/visual.webp" width="1280" height="800" loading="lazy" alt="Passo Visual do instalador: lista de rices à esquerda e a prévia do rice Sol."><figcaption>O passo Visual, com a prévia de cada rice.</figcaption></figure>
+      </li>
+
+      <li class="passo" id="passo-6">
+        <div class="passo-cab"><span class="num">6</span><h2>Disco e criptografia</h2></div>
+        <p>Escolha <strong>Apagar disco</strong>, que faz tudo sozinho. Lá embaixo, acima das barras "Atual" e "Depois", marque <strong>Criptografar sistema</strong> e crie a frase do disco: ela protege seus arquivos se o computador for perdido ou roubado.</p>
+        <div class="aviso alerta"><strong>Use só letras, números e hífen na frase do disco</strong><span>Ao ligar o computador, a tela que pede essa frase usa o teclado americano. Ç, acentos e alguns símbolos saem em outras teclas e a frase não confere.</span></div>
+        <figure class="tela"><img src="img/guia/particoes.webp" width="1280" height="800" loading="lazy" alt="Passo Partições: Apagar disco marcado e, embaixo, a caixa Criptografar sistema."><figcaption>"Criptografar sistema" fica embaixo, acima das barras do disco.</figcaption></figure>
+      </li>
+
+      <li class="passo" id="passo-7">
+        <div class="passo-cab"><span class="num">7</span><h2>Seu usuário</h2></div>
+        <p>Nome, nome de usuário e senha. A senha precisa ter pelo menos <strong>8 caracteres</strong>; é ela que você usa para entrar e para mudanças de administrador. Não dá para usar root: a conta root vem bloqueada.</p>
+      </li>
+
+      <li class="passo" id="passo-8">
+        <div class="passo-cab"><span class="num">8</span><h2>Resumo e instalação</h2></div>
+        <p>Confira o resumo e clique em <strong>Instalar</strong>. Com internet, ele baixa o navegador e as últimas atualizações e liga o firewall e os snapshots. No fim aparece <strong>Tudo pronto</strong>: marque "Reiniciar agora", clique em <strong>Concluído</strong> e tire o pendrive.</p>
+        <figure class="tela"><img src="img/guia/concluido.webp" width="1280" height="800" loading="lazy" alt="Fim da instalação: Tudo pronto, com a opção Reiniciar agora e o botão Concluído."><figcaption>Tudo pronto.</figcaption></figure>
+      </li>
+
+      <li class="passo" id="passo-9">
+        <div class="passo-cab"><span class="num">9</span><h2>Primeiro login</h2></div>
+        <p>Se marcou a criptografia, digite a frase do disco quando o computador pedir. Na tela de login, entre com a sua senha. O rice escolhido já está lá. Para começar: <kbd>Super</kbd> <kbd>Espaço</kbd> busca apps e <kbd>Super</kbd> <kbd>,</kbd> abre as Configurações.</p>
+        <figure class="tela"><img src="img/guia/primeiro-login.webp" width="1280" height="800" loading="lazy" alt="Primeiro login no Hyprland com o rice Musgo: barra em ilhas verde sobre o fundo do NullyzOS."><figcaption>Primeiro login com o rice Musgo.</figcaption></figure>
+      </li>
+    </ol>
+
+    <div class="fim">
+      <strong>Pronto.</strong>
+      <span>Próximo passo: <a href="seguranca.html">como manter o sistema seguro</a>.</span>
+    </div>
+    <nav class="seguir" aria-label="Páginas">
+      <a class="ant" href="docs.html"><span>Anterior</span><strong>Visão geral</strong></a>
+      <a class="prox" href="seguranca.html"><span>Próximo</span><strong>Guia de segurança</strong></a>
+    </nav>
+  </main>
+
+  <aside class="indice" aria-label="Nesta página">
+    <p class="grupo">Nesta página</p>
+      <a href="#passo-1">Baixe e confira a ISO</a>
+      <a href="#passo-2">Grave num pendrive</a>
+      <a href="#passo-3">Ligue pelo pendrive</a>
+      <a href="#passo-4">Idioma, local e teclado</a>
+      <a href="#passo-5">Desktop e visual</a>
+      <a href="#passo-6">Disco e criptografia</a>
+      <a href="#passo-7">Seu usuário</a>
+      <a href="#passo-8">Resumo e instalação</a>
+      <a href="#passo-9">Primeiro login</a>
+  </aside>
+</div>
+
+<footer class="rodape">
+  <p>NullyzOS · baseado em Arch Linux, sem vínculo com o projeto Arch · sem cookies e sem rastreamento · <a href="index.html">Página inicial</a></p>
+</footer>
+</body>
+</html>

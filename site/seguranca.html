@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Guia de segurança · NullyzOS</title>
-<meta name="description" content="Como manter o seu NullyzOS seguro: atualizações, de onde instalar, senhas, criptografia, backup, firewall, navegador e o que fazer se algo parecer errado.">
+<title>Guia de segurança · Documentação do NullyzOS</title>
+<meta name="description" content="Como manter o seu NullyzOS seguro: atualizações, de onde instalar, senhas, criptografia, backup, firewall e navegador.">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="img/nullyz.svg" type="image/svg+xml">
@@ -12,50 +12,54 @@
 <link rel="stylesheet" href="css/docs.css">
 <script src="js/docs.js" defer></script>
 </head>
+<!-- Gerado por gerar-docs.py a partir de conteudo/seguranca.html. Não edite à mão. -->
 <body>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<img class="fundo" src="img/arte/hero.webp" width="2560" height="1440" alt="">
 
-<header class="barra">
+<header class="topo">
   <a class="marca" href="index.html"><img src="img/nullyz.svg" alt="" width="20" height="20"><span>NullyzOS</span></a>
-  <span class="versao">0.2</span>
-  <div class="barra-dir">
-    <a class="barra-link" href="https://github.com/Ruthraas/NullyzOS" rel="noopener noreferrer">GitHub</a>
-    <a class="botao" href="docs.html#baixar">Baixar</a>
+  <span class="selo">Documentação</span>
+  <div class="topo-dir">
+    <a class="topo-link" href="https://github.com/Ruthraas/NullyzOS" rel="noopener noreferrer">GitHub</a>
+    <a class="botao cheio" href="https://github.com/Ruthraas/NullyzOS/releases/latest" rel="noopener noreferrer">Baixar</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="lateral">Menu</button>
   </div>
 </header>
 
-<div class="docs">
+<div class="janela">
   <nav class="lateral" id="lateral" aria-label="Documentação">
-    <p class="grupo">Começando</p>
-    <a href="docs.html">Introdução</a>
-    <a href="docs.html#baixar">Baixar e instalar</a>
-    <a href="docs.html#requisitos">Requisitos</a>
-    <p class="grupo">Usando</p>
-    <a href="docs.html#rices">Rices</a>
-    <a href="docs.html#desktops">Hyprland ou KDE</a>
-    <a href="docs.html#atalhos">Atalhos</a>
-    <p class="grupo">Segurança</p>
-    <a href="seguranca.html" aria-current="page">Guia de segurança</a>
-    <a href="docs.html#perguntas">Perguntas</a>
+    <label class="busca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><span class="oculto">Procurar na documentação</span><input id="filtro" type="search" placeholder="Procurar" autocomplete="off"></label>
+    <div class="versao"><span class="logo"><img src="img/nullyz.svg" alt="" width="22" height="22"></span><div><strong>NullyzOS 0.2</strong><span>Arch Linux · Hyprland ou KDE</span></div></div>
+      <p class="grupo">Começando</p>
+      <a href="docs.html"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span>Visão geral</span></a>
+      <a href="instalar.html"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg></span><span>Instalar</span></a>
+      <a href="docs.html#requisitos"><span class="icone violeta" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M9 20h6M12 16v4"/></svg></span><span>Requisitos</span></a>
+      <p class="grupo">Usando</p>
+      <a href="docs.html#rices"><span class="icone azul" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r="1.3" class="cheio"/><circle cx="13" cy="8" r="1.3" class="cheio"/><circle cx="16" cy="12" r="1.3" class="cheio"/></svg></span><span>Rices</span></a>
+      <a href="docs.html#desktops"><span class="icone azul" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M12 9v10"/></svg></span><span>Hyprland ou KDE</span></a>
+      <a href="docs.html#atalhos"><span class="icone azul" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="2"/><path d="M7 11h1M11 11h1M15 11h1M7 14h10"/></svg></span><span>Atalhos</span></a>
+      <p class="grupo">Ajuda</p>
+      <a href="seguranca.html" aria-current="page"><span class="icone verde" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 9 4-1 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><span>Guia de segurança</span></a>
+      <a href="docs.html#perguntas"><span class="icone coral" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5V14"/><circle cx="12" cy="17" r="1" class="cheio"/></svg></span><span>Perguntas</span></a>
   </nav>
 
   <main class="conteudo" id="conteudo">
-    <p class="trilha">Segurança</p>
-    <h1>Guia de segurança</h1>
-    <p class="lead">O NullyzOS já vem fechado. Estes são os hábitos que mantêm ele assim, do mais importante para o menos.</p>
+
+    <header class="cabeca">
+      <h1>Guia de segurança</h1>
+      <p class="sub">O NullyzOS já vem fechado. Estes são os hábitos que mantêm ele assim, do mais importante para o menos.</p>
+    </header>
 
     <h2 id="ja-vem">O que já vem ligado</h2>
-    <table>
-      <tbody>
-        <tr><th scope="row">Firewall</th><td>Ligado no primeiro boot, bloqueando conexões de fora.</td></tr>
-        <tr><th scope="row">Pacotes</th><td>Assinados. Sem AUR e sem scripts da internet.</td></tr>
-        <tr><th scope="row">Snapshots</th><td>Antes de cada atualização e troca de rice, também no menu do boot.</td></tr>
-        <tr><th scope="row">Contas</th><td>Root bloqueado, senha com 8 caracteres ou mais, trava após muitos erros.</td></tr>
-        <tr><th scope="row">Kernel e rede</th><td>Endereços internos escondidos de programas comuns, sem redirecionamentos forjados.</td></tr>
-        <tr><th scope="row">Wi-Fi</th><td>Endereço aleatório ao procurar redes e um diferente em cada rede.</td></tr>
-      </tbody>
-    </table>
+    <div class="linhas">
+      <div class="linha"><div><strong>Firewall</strong><span>Ligado no primeiro boot, bloqueando conexões de fora.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Pacotes</strong><span>Assinados. Sem AUR e sem scripts da internet.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Snapshots</strong><span>Antes de cada atualização e troca de rice, também no menu do boot.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Contas</strong><span>Root bloqueado, senha com 8 caracteres ou mais, trava após muitos erros.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Kernel e rede</strong><span>Endereços internos escondidos de programas comuns, sem redirecionamentos forjados.</span></div><span class="ok">Ligado</span></div>
+      <div class="linha"><div><strong>Wi-Fi</strong><span>Endereço aleatório ao procurar redes e um diferente em cada rede.</span></div><span class="ok">Ligado</span></div>
+    </div>
 
     <h2 id="atualize">Atualize sempre</h2>
     <p>No Arch, quem fica sem atualizar fica com falhas que já foram corrigidas. Quando houver atualização, abra <strong>Configurações, Atualizações</strong> e clique em Atualizar, ou rode:</p>
@@ -80,7 +84,7 @@
 
     <h2 id="disco">Criptografia e backup</h2>
     <p>Na instalação, marque <strong>Criptografar o sistema</strong>. A caixa fica embaixo, acima das barras do disco. Use na frase só letras, números e hífen: ao ligar, a tela que pede essa senha usa o teclado americano, e ç, acentos e alguns símbolos saem em outras teclas. Se o notebook for roubado, ninguém lê seus arquivos sem a senha do disco. Não dá para ligar depois sem reinstalar.</p>
-    <div class="nota"><strong>Snapshot não é backup.</strong> Ele fica no mesmo disco. Guarde uma cópia dos arquivos importantes num HD externo ou numa nuvem, e teste de vez em quando se ela abre.</div>
+    <div class="aviso"><strong>Snapshot não é backup.</strong><span>Ele fica no mesmo disco. Guarde uma cópia dos arquivos importantes num HD externo ou numa nuvem, e teste de vez em quando se ela abre.</span></div>
 
     <h2 id="rede">Rede e firewall</h2>
     <p>Deixe o firewall ligado. Se um programa precisar receber conexões, libere só a porta dele:</p>
@@ -98,27 +102,27 @@
     <h2 id="sinais">Se algo parecer errado</h2>
     <p>Lentidão do nada, pedido de senha sem motivo, programa que você não instalou: desconecte da internet, volte para um snapshot de antes do problema e troque as senhas importantes usando outro aparelho.</p>
     <p>Achou uma falha de segurança no NullyzOS? Conte pelo <a href="https://github.com/Ruthraas/NullyzOS/security/advisories/new" rel="noopener noreferrer">aviso privado do GitHub</a>, não em issue pública.</p>
-
-    <nav class="proximo anterior" aria-label="Página anterior">
-      <a href="docs.html"><span>Anterior</span><strong>Introdução</strong></a>
+    <nav class="seguir" aria-label="Páginas">
+      <a class="ant" href="instalar.html"><span>Anterior</span><strong>Instalar</strong></a>
+      <span></span>
     </nav>
   </main>
 
   <aside class="indice" aria-label="Nesta página">
     <p class="grupo">Nesta página</p>
-    <a href="#ja-vem">O que já vem ligado</a>
-    <a href="#atualize">Atualize sempre</a>
-    <a href="#instale">Instale do lugar certo</a>
-    <a href="#senhas">Senhas e sudo</a>
-    <a href="#disco">Criptografia e backup</a>
-    <a href="#rede">Rede e firewall</a>
-    <a href="#navegador">Navegador e contas</a>
-    <a href="#sinais">Se algo parecer errado</a>
+      <a href="#ja-vem">O que já vem ligado</a>
+      <a href="#atualize">Atualize sempre</a>
+      <a href="#instale">Instale do lugar certo</a>
+      <a href="#senhas">Senhas e sudo</a>
+      <a href="#disco">Criptografia e backup</a>
+      <a href="#rede">Rede e firewall</a>
+      <a href="#navegador">Navegador e contas</a>
+      <a href="#sinais">Se algo parecer errado</a>
   </aside>
 </div>
 
 <footer class="rodape">
-  <p>NullyzOS · baseado em Arch Linux, sem vínculo com o projeto Arch · sem cookies e sem rastreamento</p>
+  <p>NullyzOS · baseado em Arch Linux, sem vínculo com o projeto Arch · sem cookies e sem rastreamento · <a href="index.html">Página inicial</a></p>
 </footer>
 </body>
 </html>

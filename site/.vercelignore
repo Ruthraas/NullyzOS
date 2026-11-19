@@ -5,3 +5,5 @@ _headers
 .gitignore
 .env*
 .vercel
+conteudo
+gerar-docs.py
