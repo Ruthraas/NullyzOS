@@ -1,103 +1,145 @@
-// NullyzOS — site. Sem dependências e sem nada de fora: menu no celular, abas, botões de
-// copiar, seletor de rices e o índice "Nesta página" acompanhando a leitura.
+// NullyzOS — página inicial. Sem dependências e sem nada de fora.
 "use strict";
+document.documentElement.classList.add("js");
+
+const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Menu (celular)
-  const menu = document.querySelector(".menu");
-  const lateral = document.getElementById("lateral");
-  if (menu && lateral) {
-    const fechar = () => { lateral.classList.remove("aberta"); menu.setAttribute("aria-expanded", "false"); };
-    menu.addEventListener("click", () => {
-      const abrir = !lateral.classList.contains("aberta");
-      lateral.classList.toggle("aberta", abrir);
-      menu.setAttribute("aria-expanded", String(abrir));
-    });
-    lateral.addEventListener("click", e => { if (e.target.closest("a")) fechar(); });
-    document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
-  }
+  // ---- Navbar: encolhe ao rolar; a pílula segue o link sob o mouse ou a seção lida ----------
+  const nav = document.getElementById("nav");
+  const links = [...document.querySelectorAll(".nav-links a[data-secao]")];
+  const pilula = document.querySelector(".nav-pilula");
+  let secaoAtual = links[0];
 
-  // Abas (com setas, como manda o padrão de abas)
-  document.querySelectorAll(".abas").forEach(abas => {
-    const botoes = [...abas.querySelectorAll('[role="tab"]')];
-    const ativar = (b, foco) => {
-      botoes.forEach(x => {
-        const sim = x === b;
-        x.setAttribute("aria-selected", String(sim));
-        x.tabIndex = sim ? 0 : -1;
-        document.getElementById(x.getAttribute("aria-controls")).hidden = !sim;
-      });
-      if (foco) b.focus();
-    };
-    botoes.forEach((b, i) => {
-      b.addEventListener("click", () => ativar(b));
-      b.addEventListener("keydown", e => {
-        const passo = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
-        if (passo) { e.preventDefault(); ativar(botoes[(i + passo + botoes.length) % botoes.length], true); }
-      });
-    });
-    if (/Windows/i.test(navigator.userAgent)) {
-      const win = botoes.find(b => /Windows/.test(b.textContent));
-      if (win) ativar(win);
-    }
-  });
-
-  // Copiar
-  document.querySelectorAll(".copiar").forEach(b => {
-    b.addEventListener("click", async () => {
-      const texto = b.parentElement.querySelector("code").textContent;
-      try {
-        await navigator.clipboard.writeText(texto);
-        b.textContent = "Copiado";
-      } catch {
-        b.textContent = "Selecione e copie";
-      }
-      setTimeout(() => { b.textContent = "Copiar"; }, 1600);
-    });
-  });
-
-  // Seletor de rices
-  const tela = document.getElementById("tela-rice");
-  const rices = [...document.querySelectorAll(".rices [data-rice]")];
-  const escolher = (b, foco) => {
-    rices.forEach(x => {
-      const sim = x === b;
-      x.setAttribute("aria-checked", String(sim));
-      x.tabIndex = sim ? 0 : -1;
-    });
-    if (foco) b.focus();
-    if (!tela) return;
-    const nome = b.textContent.trim();
-    const src = `img/tela-${b.dataset.rice}.webp`;
-    if (tela.getAttribute("src") === src) return;
-    const nova = new Image();
-    nova.src = src;
-    tela.classList.add("trocando");
-    Promise.all([nova.decode().catch(() => {}), new Promise(r => setTimeout(r, 150))]).then(() => {
-      tela.src = src;
-      tela.alt = `O rice ${nome} aplicado.`;
-      tela.classList.remove("trocando");
-    });
+  const moverPilula = a => {
+    if (!pilula || !a) return;
+    pilula.style.width = `${a.offsetWidth}px`;
+    pilula.style.transform = `translateX(${a.offsetLeft}px)`;
+    pilula.style.opacity = "1";
   };
-  rices.forEach((b, i) => {
-    b.tabIndex = i === 0 ? 0 : -1;
-    b.addEventListener("click", () => escolher(b));
-    b.addEventListener("keydown", e => {
-      const passo = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-      if (passo) { e.preventDefault(); escolher(rices[(i + passo + rices.length) % rices.length], true); }
-    });
-  });
+  const marcar = a => {
+    secaoAtual = a;
+    links.forEach(x => x.classList.toggle("ativo", x === a));
+    moverPilula(a);
+  };
+  links.forEach(a => a.addEventListener("mouseenter", () => moverPilula(a)));
+  document.querySelector(".nav-links")?.addEventListener("mouseleave", () => moverPilula(secaoAtual));
+  window.addEventListener("resize", () => moverPilula(secaoAtual));
+  requestAnimationFrame(() => moverPilula(secaoAtual));
 
-  // "Nesta página" marca a seção que está sendo lida
-  const links = [...document.querySelectorAll(".indice a")];
-  const alvos = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
-  if (links.length && "IntersectionObserver" in window) {
-    const olho = new IntersectionObserver(entradas => {
+  const aoRolar = () => nav?.classList.toggle("rolou", window.scrollY > 40);
+  window.addEventListener("scroll", aoRolar, { passive: true });
+  aoRolar();
+
+  if ("IntersectionObserver" in window) {
+    const olhoSecao = new IntersectionObserver(entradas => {
       entradas.forEach(e => {
         if (!e.isIntersecting) return;
-        links.forEach(a => a.classList.toggle("ativo", a.getAttribute("href") === "#" + e.target.id));
+        const a = links.find(x => x.dataset.secao === e.target.id);
+        if (a) marcar(a);
       });
-    }, { rootMargin: "-80px 0px -70% 0px" });
-    alvos.forEach(t => olho.observe(t));
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    links.forEach(a => { const s = document.getElementById(a.dataset.secao); if (s) olhoSecao.observe(s); });
+  }
+
+  // Relógio, como na barra do sistema
+  const relogio = document.getElementById("relogio");
+  if (relogio) {
+    const fmt = new Intl.DateTimeFormat("pt-BR", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    const tic = () => { relogio.textContent = fmt.format(new Date()).replace(/\./g, ""); };
+    tic();
+    setInterval(tic, 15000);
+  }
+
+  // Menu do celular
+  const botaoMenu = document.querySelector(".nav-menu");
+  const menu = document.getElementById("menu-celular");
+  if (botaoMenu && menu) {
+    const abrir = sim => {
+      menu.hidden = !sim;
+      botaoMenu.setAttribute("aria-expanded", String(sim));
+      botaoMenu.setAttribute("aria-label", sim ? "Fechar menu" : "Abrir menu");
+    };
+    botaoMenu.addEventListener("click", () => abrir(menu.hidden));
+    menu.addEventListener("click", e => { if (e.target.closest("a")) abrir(false); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") abrir(false); });
+  }
+
+  // ---- Carrossel ---------------------------------------------------------------------------
+  const trilho = document.getElementById("trilho");
+  const pontos = document.getElementById("pontos");
+  const slides = trilho ? [...trilho.children] : [];
+  let atual = 0;
+  let pausa = false;
+
+  const botoes = slides.map((s, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-label", s.querySelector("h3").textContent);
+    b.addEventListener("click", () => ir(i));
+    pontos?.append(b);
+    return b;
+  });
+  const marcarSlide = i => {
+    atual = i;
+    botoes.forEach((b, j) => b.setAttribute("aria-selected", String(j === i)));
+    slides.forEach((s, j) => s.classList.toggle("atual", j === i));
+  };
+  function ir(i) {
+    if (!trilho) return;
+    const n = (i + slides.length) % slides.length;
+    trilho.scrollTo({ left: slides[n].offsetLeft, behavior: reduzido ? "auto" : "smooth" });
+    marcarSlide(n);
+  }
+  document.getElementById("anterior")?.addEventListener("click", () => ir(atual - 1));
+  document.getElementById("proximo")?.addEventListener("click", () => ir(atual + 1));
+  if (trilho) {
+    // Arrastar com o dedo também troca o slide: acompanha a rolagem do trilho
+    let espera;
+    trilho.addEventListener("scroll", () => {
+      clearTimeout(espera);
+      espera = setTimeout(() => marcarSlide(Math.round(trilho.scrollLeft / trilho.clientWidth)), 80);
+    }, { passive: true });
+    const carrossel = document.getElementById("carrossel");
+    carrossel.addEventListener("mouseenter", () => { pausa = true; });
+    carrossel.addEventListener("mouseleave", () => { pausa = false; });
+    carrossel.addEventListener("focusin", () => { pausa = true; });
+    carrossel.addEventListener("focusout", () => { pausa = false; });
+    carrossel.addEventListener("keydown", e => {
+      if (e.key === "ArrowRight") ir(atual + 1);
+      if (e.key === "ArrowLeft") ir(atual - 1);
+    });
+    marcarSlide(0);
+    if (!reduzido) setInterval(() => { if (!pausa && !document.hidden) ir(atual + 1); }, 5000);
+  }
+
+  // ---- Copiar e comando conforme o sistema ----------------------------------------------------
+  const cmd = document.getElementById("cmd");
+  if (cmd && /Windows/i.test(navigator.userAgent)) cmd.textContent = "Get-FileHash .\\nullyzos-*.iso -Algorithm SHA256";
+  document.querySelectorAll(".copiar").forEach(b => b.addEventListener("click", async () => {
+    const alvo = document.getElementById(b.dataset.copiar);
+    try { await navigator.clipboard.writeText(alvo.textContent); b.textContent = "Copiado"; }
+    catch { b.textContent = "Selecione e copie"; }
+    setTimeout(() => { b.textContent = "Copiar"; }, 1600);
+  }));
+
+  // ---- Entradas ao rolar --------------------------------------------------------------------
+  const partes = document.querySelectorAll(".sobre-texto > *, .carrossel, .baixar-topo > *, .passos li, .baixar-acoes, .baixar-nota, .rodape-colunas > div, .rodape-nome");
+  if (!reduzido && "IntersectionObserver" in window) {
+    const grupos = new Map();
+    partes.forEach(p => {
+      const s = p.closest("section, footer");
+      const n = grupos.get(s) || 0;
+      grupos.set(s, n + 1);
+      p.style.setProperty("--i", String(Math.min(n, 6)));
+      p.classList.add("entra");
+    });
+    const olho = new IntersectionObserver(entradas => entradas.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("dentro");
+      olho.unobserve(e.target);
+    }), { rootMargin: "0px 0px -8% 0px" });
+    requestAnimationFrame(() => requestAnimationFrame(() => partes.forEach(p => olho.observe(p))));
   }
 });
