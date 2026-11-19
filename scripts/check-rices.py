@@ -183,9 +183,11 @@ def visual_conf(cat):
         quem = "" if r["autor"] == "NullyzOS" else f" Por {r['autor']} ({r['licenca']})."
         so = {"hyprland": " Só Hyprland.", "kde": " Só KDE."}.get(r["desktop"], "") if r["id"] != "nullyz" else ""
         desc = (r["descricao"] + so + quem).replace('"', "'")
+        # No nome também: a lista é a mesma para os dois desktops
+        rotulo = {"hyprland": " (só Hyprland)", "kde": " (só KDE)"}.get(r["desktop"], "")
         linhas += [
             f"    - id: {r['id']}",
-            f"      name: \"{r['nome']}\"",
+            f"      name: \"{r['nome']}{rotulo}\"",
             f"      description: \"{desc}\"",
             f"      screenshot: \"/etc/calamares/branding/nullyzos/rice-{r['id']}.png\"",
         ]

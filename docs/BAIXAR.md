@@ -52,7 +52,7 @@ Apaga tudo o que estiver no pendrive.
 
 1. Ligue o PC pelo pendrive (tecla do menu de boot: F12, F8, F11 ou Esc, depende da marca).
 2. O instalador abre sozinho. Escolha idioma, teclado, o **desktop** (Hyprland ou KDE) e o **visual** (Nullyz ou um rice).
-3. Disco: "Apagar disco" faz tudo sozinho. Marque **Criptografar o sistema** para proteger seus arquivos se o PC for roubado ou perdido (vai pedir a senha ao ligar).
+3. Disco: "Apagar disco" faz tudo sozinho. Marque **Criptografar o sistema** para proteger seus arquivos se o PC for roubado ou perdido (vai pedir a senha ao ligar). A caixa fica embaixo, acima das barras do disco. Na frase use só letras, números e hífen: a tela que pede essa senha ao ligar usa o teclado americano, e ç, acentos e alguns símbolos saem em outras teclas.
 4. Crie seu usuário (senha com 8 caracteres ou mais) e confirme.
 
 Secure Boot: desligue na BIOS por enquanto (o NullyzOS ainda não é assinado para ele).
