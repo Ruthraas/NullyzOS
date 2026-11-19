@@ -186,10 +186,24 @@ SettingsPage {
             onPicked: v => Prefs.set("motion", v)
         }
     }
+    // Cores do wallpaper: nada, só o vidro (barra, dock, painéis) ou a paleta inteira (fundo,
+    // superfícies, texto, destaque, bordas das janelas, terminal e apps), como o Material You.
     SettingsRow {
-        title: "Barra e dock com as cores do wallpaper"
-        description: "O vidro da barra, do dock e dos painéis pega o tom do fundo e acompanha quando ele troca."
-        Toggle { checked: Prefs.wallpaperTint; onToggled: v => Prefs.set("wallpaperTint", v) }
+        title: "Cores do wallpaper"
+        description: Prefs.palette === "wallpaper" ? "Tudo sai do fundo e acompanha quando ele troca: painéis, janelas, terminal e apps."
+            : Prefs.wallpaperTint ? "A barra, o dock e os painéis pegam o tom do fundo."
+            : "Deixe o sistema pegar as cores do seu wallpaper."
+        Segmented {
+            readonly property bool wall: Prefs.palette === "wallpaper"
+            options: [["nao", "Não"], ["vidro", "Barra e dock"], ["tudo", "Tudo"]]
+            current: wall ? "tudo" : Prefs.wallpaperTint ? "vidro" : "nao"
+            onPicked: v => {
+                // Sair do "Tudo" volta para o Nullyz (paleta vazia, destaque violeta)
+                const sair = wall && v !== "tudo" ? { palette: "", accent: "violeta" } : {};
+                if (v === "tudo") Prefs.setMany({ palette: "wallpaper", accent: "tema", wallpaperTint: false });
+                else Prefs.setMany(Object.assign(sair, { wallpaperTint: v === "vidro" }));
+            }
+        }
     }
     SettingsRow {
         title: "Transparência do vidro"

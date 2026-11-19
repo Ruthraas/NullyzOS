@@ -76,14 +76,39 @@ SettingsPage {
 
     Item { width: 1; height: 6 }
 
+    // Cores do wallpaper: só o destaque (recurso do Plasma) ou tudo (esquema de cores gerado
+    // do wallpaper do Plasma, como o Material You). "Tudo" lê o fundo aqui e gera o esquema.
     SettingsRow {
         title: "Cores do wallpaper"
-        description: "A cor de destaque (seleção, dock, botões) sai do fundo e acompanha quando ele troca."
-        Toggle {
-            checked: Prefs.wallpaperTint
-            onToggled: v => { Prefs.set("wallpaperTint", v); Kde.setAccentFromWallpaper(v); }
+        description: Prefs.palette === "wallpaper" ? "Tudo sai do fundo: janelas, painéis, menus e apps."
+            : Prefs.wallpaperTint ? "A cor de destaque sai do fundo e acompanha quando ele troca."
+            : "Deixe o KDE pegar as cores do seu wallpaper."
+        Segmented {
+            readonly property bool wall: Prefs.palette === "wallpaper"
+            options: [["nao", "Não"], ["destaque", "Só o destaque"], ["tudo", "Tudo"]]
+            current: wall ? "tudo" : Prefs.wallpaperTint ? "destaque" : "nao"
+            onPicked: v => {
+                if (v === "tudo") {
+                    Prefs.setMany({ palette: "wallpaper", accent: "tema", wallpaperTint: false });
+                    Kde.setAccentFromWallpaper(false);
+                    Kde.readWallpaper();
+                    regen.restart();
+                } else {
+                    Kde.setAccentFromWallpaper(v === "destaque");
+                    if (wall) page.applyColors(Prefs.theme === "claro" ? "claro" : "escuro", "violeta");
+                    Prefs.set("wallpaperTint", v === "destaque");
+                }
+            }
         }
     }
+    // Lê o wallpaper do Plasma e, com as cores no Tok, gera e aplica o esquema
+    WallpaperSampler { source: Prefs.palette === "wallpaper" ? Kde.wallpaperUrl : "" }
+    Timer { id: regen; interval: 1500; onTriggered: if (Prefs.palette === "wallpaper") Kde.applyWallpaperColors() }
+    Connections {
+        target: Kde
+        function onWallpaperUrlChanged() { if (Prefs.palette === "wallpaper") regen.restart(); }
+    }
+    Component.onCompleted: if (Prefs.palette === "wallpaper") { Kde.readWallpaper(); regen.restart(); }
     SettingsRow {
         title: "Vidro"
         description: "Barra, dock e menus translúcidos, com o fundo desfocado por trás."

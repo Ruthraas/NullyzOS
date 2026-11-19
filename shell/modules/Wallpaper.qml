@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Wayland
 import qs.theme
 import qs.services
+import qs.components
 
 // Fundo da área de trabalho: a imagem escolhida em Configurações → Aparência (padrão: as
 // manchas de cor do Nullyz). Trocou, a nova aparece por cima da antiga num fade.
@@ -50,45 +51,11 @@ PanelWindow {
         Behavior on opacity { id: fade; NumberAnimation { duration: Tok.slow; easing.type: Easing.InOutCubic } }
     }
 
-    // Cor de destaque "Do wallpaper": só a primeira tela amostra (mesma imagem em todas).
-    // Lê a imagem em 48x27, separa os pixels coloridos por matiz (12 faixas, pesando
-    // saturação e brilho), pega a faixa mais forte e acerta brilho/saturação para servir
-    // de destaque legível no tema escuro.
-    Canvas {
-        id: sampler
-        visible: false
-        width: 48; height: 27
-        enabled: (Prefs.accent === "auto" || Prefs.wallpaperTint) && root.screen === Quickshell.screens[0]
-        readonly property string src: enabled ? root.want : ""
-        onSrcChanged: if (src) { if (isImageLoaded(src)) requestPaint(); else loadImage(src); }
-        onImageLoaded: requestPaint()
-        onPaint: {
-            if (!src || !isImageLoaded(src)) return;
-            const ctx = getContext("2d");
-            ctx.drawImage(src, 0, 0, width, height);
-            const d = ctx.getImageData(0, 0, width, height).data;
-            const bins = [];
-            // Tom médio (para tingir o vidro): média de todos os pixels, com a saturação contida
-            let ar = 0, ag = 0, ab = 0;
-            for (let i = 0; i < d.length; i += 4) { ar += d[i]; ag += d[i + 1]; ab += d[i + 2]; }
-            const n = d.length / 4;
-            const avg = Qt.rgba(ar / n / 255, ag / n / 255, ab / n / 255, 1);
-            Tok.autoTint = Qt.hsla(Math.max(0, avg.hslHue), Math.min(0.75, avg.hslSaturation * 1.8), Tok.light ? 0.84 : 0.24, 1);
-            for (let b = 0; b < 12; b++) bins.push({ w: 0, r: 0, g: 0, b: 0 });
-            for (let i = 0; i < d.length; i += 4) {
-                const c = Qt.rgba(d[i] / 255, d[i + 1] / 255, d[i + 2] / 255, 1);
-                const s = c.hsvSaturation, v = c.hsvValue;
-                if (s < 0.25 || v < 0.2 || c.hsvHue < 0) continue;
-                const w = s * s * v;
-                const bin = bins[Math.floor(c.hsvHue * 12) % 12];
-                bin.w += w; bin.r += d[i] * w; bin.g += d[i + 1] * w; bin.b += d[i + 2] * w;
-            }
-            let best = bins[0];
-            for (const b of bins) if (b.w > best.w) best = b;
-            if (best.w < 0.5) { Tok.autoAccent = Tok.accents.violeta.color; return; }
-            const m = Qt.rgba(best.r / best.w / 255, best.g / best.w / 255, best.b / best.w / 255, 1);
-            Tok.autoAccent = Qt.hsla(m.hslHue, Math.max(0.55, Math.min(0.9, m.hslSaturation)), 0.68, 1);
-        }
+    // Cores do wallpaper (destaque automático, tom da barra e do dock, paleta "Do wallpaper"):
+    // só a primeira tela amostra (a mesma imagem em todas).
+    WallpaperSampler {
+        source: (Prefs.accent === "auto" || Prefs.wallpaperTint || Prefs.palette === "wallpaper")
+                && root.screen === Quickshell.screens[0] ? root.want : ""
     }
 
     // Escurecer o fundo (legibilidade em imagens claras)

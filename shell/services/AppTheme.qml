@@ -16,7 +16,7 @@ Singleton {
 
     // Só reaplica quando muda (a assinatura aplicada fica gravada): antes rodava ~60
     // kwriteconfig6 a cada login à toa.
-    readonly property string signature: ["v1", Tok.light, Tok.accentName, Tok.paletteName, String(Tok.accentEntry.color), Tok.font].join("|")
+    readonly property string signature: ["v1", Tok.light, Tok.accentName, Tok.paletteName, String(Tok.accentEntry.color), String(Tok.bg), Tok.font].join("|")
     onSignatureChanged: debounce.restart()
     Timer { id: debounce; interval: 800; onTriggered: if (applied.loaded && applied.text().trim() !== root.signature) root.apply() }
     FileView {

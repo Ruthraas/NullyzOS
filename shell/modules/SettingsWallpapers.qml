@@ -35,7 +35,10 @@ SettingsPage {
     function use(path) {
         const padrao = path === Prefs.defaultWallpaper;
         Prefs.set("wallpaper", padrao ? "" : path);
-        if (kde) Quickshell.execDetached(["plasma-apply-wallpaperimage", padrao ? "/usr/share/wallpapers/Nullyz" : path]);
+        if (kde) {
+            Quickshell.execDetached(["plasma-apply-wallpaperimage", padrao ? "/usr/share/wallpapers/Nullyz" : path]);
+            if (Prefs.palette === "wallpaper") kdeWall.source = Prefs.url(padrao ? Prefs.defaultWallpaper : path);
+        }
     }
     // Categoria nova (ou busca) começa do zero; "Mostrar mais" pede a próxima página.
     function loadGallery(more) {
@@ -96,6 +99,10 @@ SettingsPage {
         }
         onExited: code => { page.downloading = ""; if (code !== 0) page.galleryFailed = true; }
     }
+
+    // KDE com "Cores do wallpaper: Tudo": lê o fundo novo e regera o esquema do Plasma
+    WallpaperSampler { id: kdeWall; onPainted: if (page.kde) kdeRegen.restart() }
+    Timer { id: kdeRegen; interval: 300; onTriggered: Kde.applyWallpaperColors() }
 
     // ---- os seus --------------------------------------------------------------------------
     Txt { text: "Seus fundos"; font.weight: Font.DemiBold }

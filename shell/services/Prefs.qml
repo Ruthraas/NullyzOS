@@ -90,7 +90,8 @@ Singleton {
     // Destaque do wallpaper: a cor amostrada mudou → borda das janelas e terminal acompanham
     Connections {
         target: Tok
-        function onAutoAccentChanged() { if (prefs.accent === "auto") autoSave.restart(); }
+        function onAutoAccentChanged() { if (prefs.accent === "auto" || prefs.palette === "wallpaper") autoSave.restart(); }
+        function onAutoHueChanged() { if (prefs.palette === "wallpaper") autoSave.restart(); }
     }
     Timer { id: autoSave; interval: 600; onTriggered: { HyprConf.save(); Terminal.save(); } }
     Binding { target: Tok; property: "light"; value: root.light }

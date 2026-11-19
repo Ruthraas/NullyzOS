@@ -35,7 +35,26 @@ Singleton {
         sol:   { name: "Sol",   light: false, bg: "#111111", surface: "#1a1a19", surfaceHi: "#252523", border: "#32322e", accent: "#ffd23f", onAccent: "#1c1600", text: "#f1efe8", muted: "#a3a196", success: "#7dd38f", warning: "#ffb347", error: "#f27066" }
     })
     readonly property var schemeOrder: ["nulo", "papel", "ouro", "brasa", "cru", "areia", "musgo", "sol"]
-    readonly property var scheme: schemes[paletteName] || null
+    // Paleta "Do wallpaper" (paletteName = "wallpaper"): tudo sai do fundo, como o Material You.
+    // Base na matiz do wallpaper (autoHue), destaque na cor mais viva (autoAccent); escura ou
+    // clara conforme o tema. modules/Wallpaper.qml (ou as Configurações no KDE) amostram.
+    property real autoHue: 0.7
+    readonly property var wallScheme: light ? {
+        name: "Do wallpaper", light: true,
+        bg: Qt.hsla(autoHue, 0.35, 0.95, 1), surface: Qt.hsla(autoHue, 0.4, 0.985, 1),
+        surfaceHi: Qt.hsla(autoHue, 0.3, 0.91, 1), border: Qt.hsla(autoHue, 0.22, 0.83, 1),
+        text: Qt.hsla(autoHue, 0.3, 0.11, 1), muted: Qt.hsla(autoHue, 0.12, 0.38, 1),
+        accent: Qt.darker(autoAccent, 1.55), onAccent: "#ffffff",
+        success: "#1f8a4c", warning: "#a8650f", error: "#c93a3a"
+    } : {
+        name: "Do wallpaper", light: false,
+        bg: Qt.hsla(autoHue, 0.22, 0.065, 1), surface: Qt.hsla(autoHue, 0.2, 0.1, 1),
+        surfaceHi: Qt.hsla(autoHue, 0.18, 0.14, 1), border: Qt.hsla(autoHue, 0.16, 0.21, 1),
+        text: Qt.hsla(autoHue, 0.18, 0.93, 1), muted: Qt.hsla(autoHue, 0.1, 0.66, 1),
+        accent: autoAccent, onAccent: Qt.hsla(autoHue, 0.4, 0.08, 1),
+        success: "#5fd18b", warning: "#f0b45e", error: "#f06a6a"
+    }
+    readonly property var scheme: paletteName === "wallpaper" ? wallScheme : (schemes[paletteName] || null)
     // Paleta ativa como objeto (terminal, apps Qt/GTK e KDE geram a partir daqui)
     readonly property var pal: ({ bg: String(bg), surface: String(surface), surfaceHi: String(surfaceHi),
                                   border: String(border), text: String(text), muted: String(muted) })
