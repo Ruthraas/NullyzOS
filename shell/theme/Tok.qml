@@ -75,9 +75,9 @@ Singleton {
     property bool tintGlass: false
     property color autoTint: "#17171f"
     readonly property color glassBase: tintGlass
-        ? Qt.rgba(surface.r + (autoTint.r - surface.r) * (light ? 0.22 : 0.38),
-                  surface.g + (autoTint.g - surface.g) * (light ? 0.22 : 0.38),
-                  surface.b + (autoTint.b - surface.b) * (light ? 0.22 : 0.38), 1)
+        ? Qt.rgba(surface.r + (autoTint.r - surface.r) * (light ? 0.3 : 0.6),
+                  surface.g + (autoTint.g - surface.g) * (light ? 0.3 : 0.6),
+                  surface.b + (autoTint.b - surface.b) * (light ? 0.3 : 0.6), 1)
         : surface
     // "tema" = a cor da paleta do rice (Ouro dourado, Brasa vermelho…)
     readonly property var accentEntry: accentName === "auto"

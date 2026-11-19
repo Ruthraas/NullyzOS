@@ -73,7 +73,7 @@ PanelWindow {
             for (let i = 0; i < d.length; i += 4) { ar += d[i]; ag += d[i + 1]; ab += d[i + 2]; }
             const n = d.length / 4;
             const avg = Qt.rgba(ar / n / 255, ag / n / 255, ab / n / 255, 1);
-            Tok.autoTint = Qt.hsla(Math.max(0, avg.hslHue), Math.min(0.6, avg.hslSaturation * 1.4), Tok.light ? 0.86 : 0.2, 1);
+            Tok.autoTint = Qt.hsla(Math.max(0, avg.hslHue), Math.min(0.75, avg.hslSaturation * 1.8), Tok.light ? 0.84 : 0.24, 1);
             for (let b = 0; b < 12; b++) bins.push({ w: 0, r: 0, g: 0, b: 0 });
             for (let i = 0; i < d.length; i += 4) {
                 const c = Qt.rgba(d[i] / 255, d[i + 1] / 255, d[i + 2] / 255, 1);
