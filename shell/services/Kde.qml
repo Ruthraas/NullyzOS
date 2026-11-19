@@ -106,9 +106,9 @@ Singleton {
         wallFlip = !wallFlip;
         const name = wallFlip ? "NullyzWallpaperA" : "NullyzWallpaperB";
         run(["sh", "-c", "d=\"${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes\"; mkdir -p \"$d\" && printf '%s' \"$2\" > \"$d/$1.colors\""
-                       + " && plasma-apply-colorscheme \"$1\" >/dev/null 2>&1"
-                       + " && mkdir -p \"$3\" && echo \"$1\" > \"$3/kde-cores\"",
-             "sh", name, colorsText(name), Prefs.dir]);
+                       + " && plasma-apply-colorscheme --accent-color \"$4\" \"$1\" >/dev/null 2>&1"
+                       + " && mkdir -p \"$3\" && echo \"$1 $4\" > \"$3/kde-cores\"",
+             "sh", name, colorsText(name), Prefs.dir, String(Tok.accentEntry.color)]);   // destaque também nos realces de foco
     }
     // Wallpaper atual do Plasma (arquivo de imagem; pacote de wallpaper → a maior imagem dele)
     property string wallpaperUrl: ""
