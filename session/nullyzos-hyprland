@@ -32,7 +32,9 @@ start-hyprland
 rc=$?
 if [ "$rc" -ne 0 ] && [ "${NULLYZ_VM:-}" = "1" ] && [ -z "${LIBGL_ALWAYS_SOFTWARE:-}" ] \
    && [ $(( $(date +%s) - started )) -lt 15 ]; then
-  export LIBGL_ALWAYS_SOFTWARE=1
+  # Sem aceleração 3D (VirtualBox/VMware com 3D desligado): o driver da placa virtual não cria
+  # o contexto EGL. Tudo por software: llvmpipe pelo kms_swrast, que só precisa do KMS.
+  export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe MESA_LOADER_DRIVER_OVERRIDE=kms_swrast
   exec start-hyprland
 fi
 exit "$rc"
