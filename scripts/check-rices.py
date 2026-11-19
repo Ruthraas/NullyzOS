@@ -157,6 +157,10 @@ def le(pasta, offline):
                 erro(rid, f"[kde] {chave} não existe (colorscheme, desktoptheme, decoracao)")
             elif not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,60}", str(valor)):
                 erro(rid, f"[kde] {chave} com nome estranho: {valor!r}")
+        pv = r.get("previa", {})
+        for k in ("fundo", "superficie", "janela", "borda", "suave", "destaque"):
+            if not re.fullmatch(r"#[0-9a-fA-F]{6}", str(pv.get(k, ""))):
+                erro(rid, f"[previa] {k} precisa de uma cor #rrggbb (prévia nas Configurações e no instalador)")
         arqs = r.get("arquivos", [])
         if not arqs:
             erro(rid, "lista [[arquivos]] vazia")

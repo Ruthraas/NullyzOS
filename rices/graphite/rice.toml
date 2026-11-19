@@ -1,0 +1,44 @@
+# Graphite, de Vince Liu (vinceliuice): tema do KDE Plasma em grafite escuro, sóbrio.
+# Só cores, tema do Plasma e decoração das janelas, copiados para ~/.local/share.
+id = "graphite"
+nome = "Graphite"
+descricao = "Grafite escuro e sóbrio, sem cor de destaque forte, com cantos arredondados."
+autor = "Vince Liu (vinceliuice)"
+licenca = "GPL-3.0-only"
+origem = "https://github.com/vinceliuice/Graphite-kde-theme"
+aviso = "https://github.com/vinceliuice/Graphite-kde-theme/issues/37"
+desktop = "kde"
+tipo = "arquivos"
+commit = "5eb5020c327e133ff147cf1f47b5ab2807f11ae3"
+sha256 = "9a621e34b5c6526d2a74ad613d1e813d0124051c9613d894b292f017dd5570d0"
+
+[[arquivos]]
+de = "color-schemes/GraphiteDark.colors"
+para = "~/.local/share/color-schemes/GraphiteDark.colors"
+
+[[arquivos]]
+de = "plasma/desktoptheme/Graphite"
+para = "~/.local/share/plasma/desktoptheme/Graphite-dark"
+
+[[arquivos]]
+de = "plasma/desktoptheme/Graphite-dark"
+para = "~/.local/share/plasma/desktoptheme/Graphite-dark"
+juntar = true
+
+[[arquivos]]
+de = "aurorae/Graphite-dark-round"
+para = "~/.local/share/aurorae/themes/Graphite-dark-round"
+
+[kde]
+colorscheme = "GraphiteDark"
+desktoptheme = "Graphite-dark"
+decoracao = "Graphite-dark-round"
+
+# Cores da prévia (Configurações e instalador), tiradas de GraphiteDark.colors
+[previa]
+fundo = "#1e1e1e"
+superficie = "#2c2c2c"
+janela = "#303030"
+borda = "#474747"
+suave = "#9a9a9a"
+destaque = "#dfdfdf"

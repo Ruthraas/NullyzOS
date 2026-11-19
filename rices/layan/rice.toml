@@ -1,0 +1,48 @@
+# Layan, de Vince Liu (vinceliuice): tema do KDE Plasma em roxo e azul, com vidro.
+# Só cores, tema do Plasma e decoração das janelas, copiados para ~/.local/share.
+id = "layan"
+nome = "Layan"
+descricao = "Roxo e azul com vidro, cantos arredondados e botões redondos nas janelas."
+autor = "Vince Liu (vinceliuice)"
+licenca = "GPL-3.0-only"
+origem = "https://github.com/vinceliuice/Layan-kde"
+aviso = "https://github.com/vinceliuice/Layan-kde/issues/84"
+desktop = "kde"
+tipo = "arquivos"
+commit = "a0b6a4956022276aee33309b2e07d1d0ef3db30c"
+sha256 = "5a01713e1fbf932a9aa643db98ba4aa7ab387a8e42eead2f1f832c0b2612e0f0"
+
+[[arquivos]]
+de = "color-schemes/Layan.colors"
+para = "~/.local/share/color-schemes/Layan.colors"
+
+[[arquivos]]
+de = "plasma/desktoptheme/common"
+para = "~/.local/share/plasma/desktoptheme/Layan"
+
+[[arquivos]]
+de = "plasma/desktoptheme/Layan"
+para = "~/.local/share/plasma/desktoptheme/Layan"
+juntar = true
+
+[[arquivos]]
+de = "color-schemes/Layan.colors"
+para = "~/.local/share/plasma/desktoptheme/Layan/colors"
+
+[[arquivos]]
+de = "aurorae/themes/Layan"
+para = "~/.local/share/aurorae/themes/Layan"
+
+[kde]
+colorscheme = "Layan"
+desktoptheme = "Layan"
+decoracao = "Layan"
+
+# Cores da prévia (Configurações e instalador), tiradas de Layan.colors
+[previa]
+fundo = "#1f1f26"
+superficie = "#31313a"
+janela = "#31313a"
+borda = "#44454b"
+suave = "#999999"
+destaque = "#5657f5"

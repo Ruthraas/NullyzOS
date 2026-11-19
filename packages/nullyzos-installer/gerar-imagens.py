@@ -124,7 +124,11 @@ def hexrgb(h):
 def rice(r) -> bytes:
     """Prévia de um rice pelas preferências: tema, destaque, cantos, espaçamento, barra, dock."""
     pref, hy = r.get("preferencias", {}), r.get("hyprland", {})
-    if pref.get("palette") in ESQUEMAS:
+    pv = r.get("previa")
+    if pv:
+        bg, surf, win, line, muted, acc = (hexrgb(pv[k].lstrip("#")) for k in ("fundo", "superficie", "janela", "borda", "suave", "destaque"))
+        claro = bool(pv.get("claro"))
+    elif pref.get("palette") in ESQUEMAS:
         e = ESQUEMAS[pref["palette"]]
         bg, surf, win, line, muted, acc = (hexrgb(c) for c in e[:6])
         claro = e[6]

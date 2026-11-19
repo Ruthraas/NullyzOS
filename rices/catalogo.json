@@ -268,5 +268,99 @@
     "kde": {
       "colorscheme": "NullyzSol"
     }
+  },
+  {
+    "id": "graphite",
+    "nome": "Graphite",
+    "descricao": "Grafite escuro e sóbrio, sem cor de destaque forte, com cantos arredondados.",
+    "autor": "Vince Liu (vinceliuice)",
+    "licenca": "GPL-3.0-only",
+    "origem": "https://github.com/vinceliuice/Graphite-kde-theme",
+    "aviso": "https://github.com/vinceliuice/Graphite-kde-theme/issues/37",
+    "desktop": "kde",
+    "tipo": "arquivos",
+    "commit": "5eb5020c327e133ff147cf1f47b5ab2807f11ae3",
+    "sha256": "9a621e34b5c6526d2a74ad613d1e813d0124051c9613d894b292f017dd5570d0",
+    "arquivos": [
+      {
+        "de": "color-schemes/GraphiteDark.colors",
+        "para": "~/.local/share/color-schemes/GraphiteDark.colors"
+      },
+      {
+        "de": "plasma/desktoptheme/Graphite",
+        "para": "~/.local/share/plasma/desktoptheme/Graphite-dark"
+      },
+      {
+        "de": "plasma/desktoptheme/Graphite-dark",
+        "para": "~/.local/share/plasma/desktoptheme/Graphite-dark",
+        "juntar": true
+      },
+      {
+        "de": "aurorae/Graphite-dark-round",
+        "para": "~/.local/share/aurorae/themes/Graphite-dark-round"
+      }
+    ],
+    "kde": {
+      "colorscheme": "GraphiteDark",
+      "desktoptheme": "Graphite-dark",
+      "decoracao": "Graphite-dark-round"
+    },
+    "previa": {
+      "fundo": "#1e1e1e",
+      "superficie": "#2c2c2c",
+      "janela": "#303030",
+      "borda": "#474747",
+      "suave": "#9a9a9a",
+      "destaque": "#dfdfdf"
+    }
+  },
+  {
+    "id": "layan",
+    "nome": "Layan",
+    "descricao": "Roxo e azul com vidro, cantos arredondados e botões redondos nas janelas.",
+    "autor": "Vince Liu (vinceliuice)",
+    "licenca": "GPL-3.0-only",
+    "origem": "https://github.com/vinceliuice/Layan-kde",
+    "aviso": "https://github.com/vinceliuice/Layan-kde/issues/84",
+    "desktop": "kde",
+    "tipo": "arquivos",
+    "commit": "a0b6a4956022276aee33309b2e07d1d0ef3db30c",
+    "sha256": "5a01713e1fbf932a9aa643db98ba4aa7ab387a8e42eead2f1f832c0b2612e0f0",
+    "arquivos": [
+      {
+        "de": "color-schemes/Layan.colors",
+        "para": "~/.local/share/color-schemes/Layan.colors"
+      },
+      {
+        "de": "plasma/desktoptheme/common",
+        "para": "~/.local/share/plasma/desktoptheme/Layan"
+      },
+      {
+        "de": "plasma/desktoptheme/Layan",
+        "para": "~/.local/share/plasma/desktoptheme/Layan",
+        "juntar": true
+      },
+      {
+        "de": "color-schemes/Layan.colors",
+        "para": "~/.local/share/plasma/desktoptheme/Layan/colors"
+      },
+      {
+        "de": "aurorae/themes/Layan",
+        "para": "~/.local/share/aurorae/themes/Layan"
+      }
+    ],
+    "kde": {
+      "colorscheme": "Layan",
+      "desktoptheme": "Layan",
+      "decoracao": "Layan"
+    },
+    "previa": {
+      "fundo": "#1f1f26",
+      "superficie": "#31313a",
+      "janela": "#31313a",
+      "borda": "#44454b",
+      "suave": "#999999",
+      "destaque": "#5657f5"
+    }
   }
 ]

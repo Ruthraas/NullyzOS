@@ -30,6 +30,13 @@ SettingsPage {
         const p = (r && r.preferencias) || {};
         const s = Tok.schemes[p.palette || ""];
         if (s) return s;
+        // Rice de terceiro: as cores que a receita declara em [previa]
+        const v = r && r.previa;
+        if (v && v.fundo) return {
+            name: r.nome, light: !!v.claro, bg: v.fundo, surface: v.superficie, border: v.borda,
+            surfaceHi: v.janela, text: v.claro ? Tok.palettes.claro.text : Tok.palettes.escuro.text, muted: v.suave, accent: v.destaque,
+            onAccent: v.claro ? Tok.palettes.claro.surface : Tok.palettes.escuro.bg, success: Tok.success, warning: Tok.warning, error: Tok.error
+        };
         const light = p.theme === "claro";
         const base = Tok.palettes[light ? "claro" : "escuro"];
         const a = Tok.accents[p.accent] || Tok.accents.violeta;
