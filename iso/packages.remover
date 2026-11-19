@@ -30,14 +30,13 @@ xl2tpd
 nmap
 tcpdump
 modemmanager
-# Programas de terminal que o desktop substitui
+# Programas de terminal que o desktop substitui (o zsh fica: é o shell do root no live e
+# o .zlogin dele abre o instalador)
 irssi
 lynx
 mc
 screen
 tmux
-zsh
-grml-zsh-config
 # Instalador em texto, nuvem e máquinas virtuais de servidor
 archinstall
 cloud-init
