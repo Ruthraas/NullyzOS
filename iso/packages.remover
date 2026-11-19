@@ -1,0 +1,64 @@
+# Pacotes do perfil releng (ISO de instalação do Arch) que a ISO do NullyzOS NÃO leva.
+# A ISO do NullyzOS é copiada inteira para o disco na instalação: o que fica aqui de fora
+# deixa a ISO e o sistema instalado menores, e com menos programas expostos.
+# Recuperação de disco e clonagem (há ferramentas próprias para isso)
+clonezilla
+partclone
+partimage
+fsarchiver
+testdisk
+ddrescue
+gpart
+# Rede de servidor, VPNs antigas e discagem (NetworkManager cobre o dia a dia)
+bind
+dnsmasq
+darkhttpd
+ldns
+lftp
+nbd
+ndisc6
+nfs-utils
+mkinitcpio-nfs-utils
+open-iscsi
+openconnect
+openvpn
+ppp
+pptpclient
+vpnc
+wvdial
+xl2tpd
+nmap
+tcpdump
+modemmanager
+# Programas de terminal que o desktop substitui
+irssi
+lynx
+mc
+screen
+tmux
+zsh
+grml-zsh-config
+# Instalador em texto, nuvem e máquinas virtuais de servidor
+archinstall
+cloud-init
+hyperv
+qemu-guest-agent
+open-vm-tools
+# Leitor de tela do console e sons do live (o instalador é gráfico)
+brltty
+espeakup
+livecd-sounds
+# Sistemas de arquivos e RAID raros
+bcachefs-tools
+nilfs-utils
+jfsutils
+dmraid
+# Ferramentas de boot e cartão inteligente que o NullyzOS não usa
+memtest86+
+memtest86+-efi
+edk2-shell
+refind
+b43-fwcutter
+sequoia-sq
+openpgp-card-tools
+pcsclite

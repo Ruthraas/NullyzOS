@@ -35,11 +35,11 @@ sed -i \
   -e 's/^iso_application=.*/iso_application="NullyzOS live"/' \
   "$PROFILE/profiledef.sh"
 
-# 2. Pacotes: os do releng + os nossos ------------------------------------------------
+# 2. Pacotes: os do releng (menos os de packages.remover) + os nossos ------------------------------------------------
 {
   cat "$PROFILE/packages.x86_64"
   grep -vE '^\s*(#|$)' "$ISO_SRC/packages.x86_64"
-} | sort -u > "$PROFILE/packages.x86_64.new"
+} | sort -u | grep -vxF -f <(grep -vE '^\s*(#|$)' "$ISO_SRC/packages.remover") > "$PROFILE/packages.x86_64.new"
 mv "$PROFILE/packages.x86_64.new" "$PROFILE/packages.x86_64"
 
 # Repositório nullyzos (instalador, temas, fontes): assinatura exigida. A chave do projeto
@@ -58,6 +58,14 @@ cat >> "$PROFILE/pacman.conf" <<'EOF'
 SigLevel = Required DatabaseRequired
 Server = https://github.com/Ruthraas/NullyzOS/releases/download/repo
 EOF
+
+# Serviços do releng que dependem de pacotes que saíram, e o servidor SSH (o live não precisa
+# aceitar conexões de fora).
+for unit in sshd hv_fcopy_daemon hv_kvp_daemon hv_vss_daemon vmtoolsd vmware-vmblock-fuse             qemu-guest-agent livecd-talk; do
+  rm -f "$PROFILE/airootfs/etc/systemd/system/multi-user.target.wants/$unit.service"
+done
+rm -f "$PROFILE/airootfs/etc/systemd/system/sound.target.wants/livecd-alsa-unmuter.service"       "$PROFILE/airootfs/etc/systemd/system/livecd-talk.service"       "$PROFILE/airootfs/etc/systemd/system/livecd-alsa-unmuter.service"
+rm -rf "$PROFILE/airootfs/etc/systemd/system/cloud-init.target.wants"
 
 # 3. airootfs do NullyzOS (os-release, issue, motd, idioma e teclado) -----------------
 # O releng traz um motd do Arch; o nosso substitui.
