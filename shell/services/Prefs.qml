@@ -143,6 +143,15 @@ Singleton {
         if (changed.includes("accent") || changed.includes("theme") || changed.includes("palette")) { HyprConf.save(); Terminal.save(); }
     }
 
+    readonly property var allKeys: ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
+                          "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
+                          "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
+                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "palette", "kdeGlass", "kdeAnim", "kdeButtonsLeft", "wallpaperTint", "uiFont", "textScale",
+                          "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
+                          "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
+                          "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp", "startupApps", "notifSeconds",
+                          "welcomed"]
+
     FileView {
         id: file
         path: root.dir + (root.kde ? "/kde.json" : "/shell.json")
@@ -153,15 +162,11 @@ Singleton {
         // edita à mão enxergar tudo. Não entra em laço: na releitura já não falta nenhuma.
         onLoaded: {
             const t = text();
-            const keys = ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
-                          "clockSeconds", "showDate", "showAppName", "idleLock", "idleSuspend",
-                          "theme", "glassOpacity", "cursorSize", "clock24", "dateStyle", "weekStart",
-                          "showLogo", "showWorkspaces", "workspaceCount", "showStatus", "barSize", "barStyle", "palette", "kdeGlass", "kdeAnim", "kdeButtonsLeft", "wallpaperTint", "uiFont", "textScale",
-                          "dockPosition", "dockIcon", "dockMagnify", "dockAutohide", "dockStyle", "dockIndicator",
-                          "dockShowOpen", "dockPinned", "roundness", "motion", "wallpaperFit", "wallpaperDim",
-                          "wallpaperCycle", "dnd", "nightLight", "nightAuto", "nightTemp", "startupApps", "notifSeconds",
-                          "welcomed"];
-            if (keys.some(k => !t.includes('"' + k + '"'))) writeAdapter();
+            const keys = root.allKeys;
+            // Arquivo pela metade (alguém gravando por fora: `cat > arquivo` zera antes de
+            // escrever) não conta: regravar aqui desfazia a mudança com os valores antigos.
+            try { JSON.parse(t); } catch (e) { return; }
+            if (keys.some(k => !t.includes('"' + k + '"'))) fillKeys.restart();
         }
         adapter: JsonAdapter {
             id: prefs
@@ -215,6 +220,17 @@ Singleton {
             property string startupApps: "[]"
             property int notifSeconds: 6
             property bool welcomed: false
+        }
+    }
+
+    // Completa as opções que faltam só se o arquivo continuar assim depois de um instante
+    Timer {
+        id: fillKeys
+        interval: 1500
+        onTriggered: {
+            const t = file.text();
+            try { JSON.parse(t); } catch (e) { return; }
+            if (root.allKeys.some(k => !t.includes('"' + k + '"'))) file.writeAdapter();
         }
     }
 
