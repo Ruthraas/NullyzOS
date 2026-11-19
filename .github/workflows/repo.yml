@@ -12,6 +12,11 @@ on:
 permissions:
   contents: write
 
+# Um build por vez: dois publicando juntos deixam banco e pacotes desencontrados.
+concurrency:
+  group: repo
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
