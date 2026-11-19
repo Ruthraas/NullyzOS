@@ -78,6 +78,9 @@ guardar_volta() {
     cat "$RICE" 2>/dev/null > "$VOLTA/anterior" || true
     if [ "$(desktop_atual)" = kde ]; then
         kreadconfig6 --file kdeglobals --group General --key ColorScheme > "$VOLTA/kde-esquema" 2>/dev/null || true
+        kreadconfig6 --file plasmarc --group Theme --key name > "$VOLTA/kde-tema" 2>/dev/null || true
+        kreadconfig6 --file kwinrc --group org.kde.kdecoration2 --key library > "$VOLTA/kde-deco-lib" 2>/dev/null || true
+        kreadconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme > "$VOLTA/kde-deco" 2>/dev/null || true
     fi
 }
 
@@ -116,7 +119,12 @@ aplicar() {
             case "$para" in "~/.config/"*|"~/.local/share/"*) ;; *) die "destino fora do permitido: $para" ;; esac
             [ -e "$tmp/x/$de" ] || die "a receita aponta para $de, que não existe no commit"
             say "$de → $para"
-            mkdir -p "$(dirname "$alvo")"; rm -rf "$alvo"; cp -a "$tmp/x/$de" "$alvo"
+            # juntar = true: soma ao que um item anterior da mesma receita já pôs no destino
+            if [ "$(jq -r '.juntar // false' <<<"$a")" = true ] && [ -d "$tmp/x/$de" ]; then
+                mkdir -p "$alvo"; cp -a "$tmp/x/$de/." "$alvo/"
+            else
+                mkdir -p "$(dirname "$alvo")"; rm -rf "$alvo"; cp -a "$tmp/x/$de" "$alvo"
+            fi
         done
     fi
 
@@ -128,6 +136,18 @@ aplicar() {
             say "cores do Plasma: $esq"
             plasma-apply-colorscheme "$esq" >/dev/null 2>&1 || true
             echo "$esq" > "$CONF/kde-cores"
+        fi
+        local tema deco
+        tema=$(jq -r '.kde.desktoptheme // empty' <<<"$r"); deco=$(jq -r '.kde.decoracao // empty' <<<"$r")
+        if [ -n "$tema" ]; then
+            say "tema do Plasma: $tema"
+            plasma-apply-desktoptheme "$tema" >/dev/null 2>&1 || true
+        fi
+        if [ -n "$deco" ]; then
+            say "decoração das janelas: $deco"
+            kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key library org.kde.kwin.aurorae.v2
+            kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme "__aurorae__svg__$deco"
+            dbus-send --session --type=method_call --dest=org.kde.KWin /KWin org.kde.KWin.reconfigure 2>/dev/null || true
         fi
     fi
     mkdir -p "$CONF"; echo "$id" > "$RICE"
@@ -147,6 +167,14 @@ desfazer() {
     if [ "$(desktop_atual)" = kde ] && [ -s "$VOLTA/kde-esquema" ]; then
         plasma-apply-colorscheme "$(cat "$VOLTA/kde-esquema")" >/dev/null 2>&1 || true
         cp -f "$VOLTA/kde-esquema" "$CONF/kde-cores"
+    fi
+    if [ "$(desktop_atual)" = kde ]; then
+        [ -s "$VOLTA/kde-tema" ] && plasma-apply-desktoptheme "$(cat "$VOLTA/kde-tema")" >/dev/null 2>&1
+        if [ -s "$VOLTA/kde-deco-lib" ]; then
+            kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key library "$(cat "$VOLTA/kde-deco-lib")"
+            kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key theme "$(cat "$VOLTA/kde-deco" 2>/dev/null)"
+            dbus-send --session --type=method_call --dest=org.kde.KWin /KWin org.kde.KWin.reconfigure 2>/dev/null || true
+        fi
     fi
     if [ -s "$VOLTA/anterior" ]; then cp -f "$VOLTA/anterior" "$RICE"; else rm -f "$RICE"; fi
     rm -rf "$VOLTA"

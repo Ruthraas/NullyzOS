@@ -151,6 +151,12 @@ def le(pasta, offline):
                 erro(rid, f"nome de pacote estranho: {p}")
             elif not pacote_existe(p, offline):
                 erro(rid, f"pacote fora dos repositórios oficiais e do nullyz: {p}")
+        # KDE de terceiro: nomes dos temas que os arquivos copiados trazem
+        for chave, valor in r.get("kde", {}).items():
+            if chave not in ("colorscheme", "desktoptheme", "decoracao"):
+                erro(rid, f"[kde] {chave} não existe (colorscheme, desktoptheme, decoracao)")
+            elif not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,60}", str(valor)):
+                erro(rid, f"[kde] {chave} com nome estranho: {valor!r}")
         arqs = r.get("arquivos", [])
         if not arqs:
             erro(rid, "lista [[arquivos]] vazia")
@@ -160,6 +166,8 @@ def le(pasta, offline):
                 erro(rid, f"origem de arquivo inválida: {de!r}")
             if not caminho_destino_ok(para):
                 erro(rid, f"destino só dentro de ~/.config ou ~/.local/share: {para!r}")
+            if "juntar" in a and not isinstance(a["juntar"], bool):
+                erro(rid, "juntar é verdadeiro ou falso")
     else:
         erro(rid, "tipo precisa ser preset ou arquivos")
     return r
