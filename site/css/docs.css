@@ -183,3 +183,4 @@ details p { margin: 0 0 16px; }
   .cartoes { grid-template-columns: 1fr; }
   .proximo a { min-width: 0; width: 100%; }
 }
+.cor { display: inline-block; vertical-align: middle; margin-right: 6px; }

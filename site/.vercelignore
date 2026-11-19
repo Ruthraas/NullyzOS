@@ -1,0 +1,7 @@
+# Só o site vai para o ar: nada de arquivos de trabalho nem imagens provisórias
+.taste-skill
+img/*.webp
+_headers
+.gitignore
+.env*
+.vercel

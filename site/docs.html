@@ -48,7 +48,7 @@
     <p class="lead">NullyzOS é um sistema baseado em Arch Linux, pronto para usar. Você escolhe o desktop, Hyprland ou KDE Plasma, e o visual: troca quando quiser e volta em um clique.</p>
 
     <figure class="tela">
-      <img src="img/tela-nulo.webp" width="1920" height="1080" alt="Área de trabalho do NullyzOS com o rice Nulo, o padrão.">
+      <img src="img/arte/hero.webp" width="2560" height="1440" alt="O fundo padrão do NullyzOS: manchas violeta, petróleo e rosa sobre quase-preto.">
     </figure>
 
     <div class="cartoes">
@@ -103,21 +103,20 @@
     </table>
 
     <h2 id="rices">Rices</h2>
-    <p>Um rice muda o sistema inteiro de uma vez. Escolha um para ver:</p>
-    <div class="rices" role="radiogroup" aria-label="Rices">
-      <button role="radio" aria-checked="true" data-rice="nulo"><i class="cor nulo"></i>Nulo</button>
-      <button role="radio" aria-checked="false" data-rice="papel"><i class="cor papel"></i>Papel</button>
-      <button role="radio" aria-checked="false" data-rice="ouro"><i class="cor ouro"></i>Ouro</button>
-      <button role="radio" aria-checked="false" data-rice="brasa"><i class="cor brasa"></i>Brasa</button>
-      <button role="radio" aria-checked="false" data-rice="cru"><i class="cor cru"></i>Cru</button>
-      <button role="radio" aria-checked="false" data-rice="areia"><i class="cor areia"></i>Areia</button>
-      <button role="radio" aria-checked="false" data-rice="musgo"><i class="cor musgo"></i>Musgo</button>
-      <button role="radio" aria-checked="false" data-rice="sol"><i class="cor sol"></i>Sol</button>
-      <button role="radio" aria-checked="false" data-rice="mono"><i class="cor mono"></i>Mono</button>
-    </div>
-    <figure class="tela">
-      <img id="tela-rice" src="img/tela-nulo.webp" width="1920" height="1080" loading="lazy" alt="O rice Nulo aplicado.">
-    </figure>
+    <p>Um rice muda o sistema inteiro de uma vez: cores, barra, cantos e terminal.</p>
+    <table>
+      <tbody>
+        <tr><th scope="row"><i class="cor nulo"></i> Nulo</th><td>O padrão: escuro, vidro, violeta e cantos arredondados.</td></tr>
+        <tr><th scope="row"><i class="cor papel"></i> Papel</th><td>Claro como papel: fundo creme, azul tinta, barra flutuante.</td></tr>
+        <tr><th scope="row"><i class="cor ouro"></i> Ouro</th><td>Preto quente e dourado, com a barra em ilhas.</td></tr>
+        <tr><th scope="row"><i class="cor brasa"></i> Brasa</th><td>Quase preto com vermelho brasa e barra flutuante.</td></tr>
+        <tr><th scope="row"><i class="cor cru"></i> Cru</th><td>Preto no branco, sem enfeite: claro, reto e direto.</td></tr>
+        <tr><th scope="row"><i class="cor areia"></i> Areia</th><td>Areia e terracota, claro e quente.</td></tr>
+        <tr><th scope="row"><i class="cor musgo"></i> Musgo</th><td>Verde musgo no escuro, com a barra em ilhas.</td></tr>
+        <tr><th scope="row"><i class="cor sol"></i> Sol</th><td>Grafite com amarelo sol e contraste alto.</td></tr>
+        <tr><th scope="row"><i class="cor mono"></i> Mono</th><td>Compacto, sem vidro e sem animação. O mais leve. Só Hyprland.</td></tr>
+      </tbody>
+    </table>
     <p>Para trocar, abra <strong>Configurações, Rices</strong> e clique em "Usar este". Se não gostar, <strong>Desfazer</strong> volta tudo. Pelo terminal:</p>
     <div class="codigo"><pre><code>nullyzos-rice aplicar musgo</code></pre><button class="copiar" type="button">Copiar</button></div>
 
