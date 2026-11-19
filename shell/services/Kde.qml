@@ -112,11 +112,23 @@ Singleton {
     }
     // Wallpaper atual do Plasma (arquivo de imagem; pacote de wallpaper → a maior imagem dele)
     property string wallpaperUrl: ""
-    function readWallpaper() { wallProc.running = true; }
+    // Pergunta ao próprio plasmashell (o appletsrc nem sempre tem a chave gravada); sem
+    // nada configurado, é o padrão do tema global (/usr/share/wallpapers/Nullyz).
+    function readWallpaper() {
+        script("var d = desktops()[0]; d.currentConfigGroup = ['Wallpaper', 'org.kde.image', 'General'];"
+             + " print('IMG=' + d.readConfig('Image', ''));",
+             out => {
+                 const m = out.match(/IMG=([^"\n]*)/);
+                 wallProc.want = (m && m[1].trim()) || "/usr/share/wallpapers/Nullyz";
+                 wallProc.running = true;
+             });
+    }
+    // Arquivo de imagem; pacote de wallpaper → a maior imagem dele
     Process {
         id: wallProc
-        command: ["sh", "-c", "w=$(grep -m1 '^Image=' \"${XDG_CONFIG_HOME:-$HOME/.config}/plasma-org.kde.plasma.desktop-appletsrc\" | cut -d= -f2-);"
-                            + " w=${w#file://}; if [ -d \"$w\" ]; then w=$(ls -S \"$w\"/contents/images/* 2>/dev/null | head -n1); fi; echo \"$w\""]
+        property string want: ""
+        command: ["sh", "-c", "w=${1#file://}; w=${w%/}; if [ -d \"$w\" ]; then w=$(ls -S \"$w\"/contents/images/* 2>/dev/null | head -n1); fi; echo \"$w\"",
+                  "sh", want]
         stdout: StdioCollector { onStreamFinished: { const p = text.trim(); if (p) root.wallpaperUrl = Prefs.url(p); } }
     }
 
