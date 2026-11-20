@@ -91,13 +91,22 @@ fi
 grep -q plymouth "$PROFILE/airootfs/etc/mkinitcpio.conf.d/archiso.conf" \
   || { echo "não achei onde pôr o hook plymouth em archiso.conf" >&2; exit 1; }
 for f in "$PROFILE"/efiboot/loader/entries/*.conf; do
-  [ -f "$f" ] && sed -i '/^options / s/$/ quiet splash/' "$f"
+  [ -f "$f" ] && sed -i '/^options / s/$/ quiet splash nouveau.modeset=0/' "$f"
 done
 for f in "$PROFILE"/syslinux/*.cfg; do
-  [ -f "$f" ] && sed -i '/^\s*APPEND .*archisobasedir/ s/$/ quiet splash/' "$f"
+  [ -f "$f" ] && sed -i '/^\s*APPEND .*archisobasedir/ s/$/ quiet splash nouveau.modeset=0/' "$f"
 done
 for f in "$PROFILE"/grub/*.cfg; do
-  [ -f "$f" ] && sed -i '/^\s*linux .*archisobasedir/ s/$/ quiet splash/' "$f"
+  [ -f "$f" ] && sed -i '/^\s*linux .*archisobasedir/ s/$/ quiet splash nouveau.modeset=0/' "$f"
+done
+# nouveau.modeset=0: com placa NVIDIA (RTX) o driver livre deixava a tela preta e o monitor
+# sem sinal logo depois do GRUB; sem ele o live usa o vídeo simples do firmware (simpledrm),
+# que funciona em qualquer placa. AMD e Intel não usam o nouveau, nada muda para elas.
+# A entrada do leitor de tela (o espeakup saiu da ISO) vira a de vídeo seguro: nomodeset.
+for f in "$PROFILE"/efiboot/loader/entries/*.conf "$PROFILE"/syslinux/*.cfg "$PROFILE"/grub/*.cfg; do
+  [ -f "$f" ] || continue
+  sed -i -e 's/ accessibility=on/ nomodeset/' \
+         -e 's/with speakup screen reader/(video seguro)/; s/with speech/(video seguro)/' "$f"
 done
 
 # 4. Branding do boot: nome nos três carregadores, cores e splash do syslinux ---------

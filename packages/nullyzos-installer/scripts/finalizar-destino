@@ -12,6 +12,42 @@ if [ -x /usr/lib/nullyzos/flathub ]; then
     /usr/lib/nullyzos/flathub brave
 fi
 
+# Drivers de vídeo pela placa do computador (NVIDIA, AMD e Intel; pode ter mais de uma, como
+# num notebook com Intel + NVIDIA). O Mesa (OpenGL) já vem; aqui entram o Vulkan (jogos), a
+# aceleração de vídeo (VA-API) e, na NVIDIA, o driver oficial.
+nvidia="" amd="" intel=""
+for d in /sys/bus/pci/devices/*; do
+    case "$(cat "$d/class" 2>/dev/null)" in 0x0300*|0x0302*|0x0380*) ;; *) continue ;; esac
+    case "$(cat "$d/vendor" 2>/dev/null)" in
+        # NVIDIA GTX 16 / RTX (Turing ou mais nova): nvidia-open. Sem ele o driver livre
+        # (nouveau) deixa a tela preta nas RTX. Mais antigas ficam com o nouveau (o driver
+        # delas não está nos repositórios oficiais).
+        0x10de) id=$(cat "$d/device"); [ $((id)) -ge $((0x1e00)) ] && nvidia=sim ;;
+        0x1002) amd=sim ;;
+        0x8086) intel=sim ;;
+    esac
+done
+pacotes=()
+[ -n "$amd" ] && { echo ":: placa AMD: Vulkan (RADV) e vídeo acelerado"; pacotes+=(vulkan-radeon); }   # o VA-API da AMD já vem no mesa
+[ -n "$intel" ] && { echo ":: vídeo Intel: Vulkan e vídeo acelerado"; pacotes+=(vulkan-intel intel-media-driver); }
+[ -n "$nvidia" ] && { echo ":: placa NVIDIA: driver nvidia-open"; pacotes+=(nvidia-open nvidia-utils nvidia-settings libva-nvidia-driver); }
+if [ "${#pacotes[@]}" -gt 0 ]; then
+    if pacman -S --needed --noconfirm "${pacotes[@]}"; then
+        if [ -n "$nvidia" ]; then
+            mkdir -p /etc/modprobe.d
+            {
+                echo "# NullyzOS: modo gráfico do driver NVIDIA (Wayland, Hyprland e KDE)"
+                echo "options nvidia_drm modeset=1 fbdev=1"
+                echo "options nvidia NVreg_PreserveVideoMemoryAllocations=1"
+            } > /etc/modprobe.d/nullyzos-nvidia.conf
+            systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service 2>/dev/null
+        fi
+    else
+        echo ":: não deu para instalar os drivers de vídeo (sem internet?): instale depois com pacman"
+        [ -n "$nvidia" ] && echo ":: NVIDIA sem driver: use a opção 'vídeo seguro' do boot até instalar"
+    fi
+fi
+
 if [ -f /etc/ufw/ufw.conf ]; then
     echo ":: firewall (ufw) ligado no boot"
     sed -i 's/^ENABLED=.*/ENABLED=yes/' /etc/ufw/ufw.conf

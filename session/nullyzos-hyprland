@@ -10,6 +10,12 @@ if [ "$(systemd-detect-virt 2>/dev/null || echo none)" != "none" ]; then
   export NULLYZ_VM=1
 fi
 
+# Driver NVIDIA carregado: variáveis que o Hyprland e os apps precisam com ele
+if [ -e /proc/driver/nvidia/version ]; then
+  export LIBVA_DRIVER_NAME=nvidia __GLX_VENDOR_LIBRARY_NAME=nvidia NVD_BACKEND=direct
+  export ELECTRON_OZONE_PLATFORM_HINT=auto
+fi
+
 cfg="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
 # Config que o próprio Hyprland gera quando não acha nenhuma (ex.: sessão aberta antes do
 # desktop Nullyz existir): troca pela nossa e guarda a gerada ao lado.
