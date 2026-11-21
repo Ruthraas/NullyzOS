@@ -6,8 +6,8 @@ Sistema baseado em Arch Linux, com Hyprland ou KDE Plasma e o visual Nullyz. **P
 
 | Arquivo | Para que serve |
 |---|---|
-| `nullyzos-x86_64.iso` | a imagem do sistema (grave num pendrive) |
-| `nullyzos-x86_64.iso.sig` | assinatura GPG da ISO |
+| `NullyzOS.iso` | a imagem do sistema (grave num pendrive) |
+| `NullyzOS.iso.sig` | assinatura GPG da ISO |
 | `SHA256SUMS` e `SHA256SUMS.asc` | soma de conferência e a mesma lista assinada |
 
 Baixe **só** do GitHub do projeto (`github.com/Ruthraas/NullyzOS/releases`) ou dos espelhos listados no site oficial. Cópia de outro lugar pode ter sido alterada: confira sempre (abaixo).
@@ -29,14 +29,14 @@ sha256sum -c SHA256SUMS
 ```
 **Windows (PowerShell)**
 ```
-Get-FileHash .\nullyzos-x86_64.iso -Algorithm SHA256
+Get-FileHash .\NullyzOS.iso -Algorithm SHA256
 ```
 e compare com o número dentro de `SHA256SUMS`.
 
 **Assinatura (opcional, mais forte):** prova que a ISO foi publicada pelo projeto.
 ```
 gpg --import nullyz-repo.asc          # chave em docs/nullyz-repo.asc
-gpg --verify nullyzos-x86_64.iso.sig nullyzos-x86_64.iso
+gpg --verify NullyzOS.iso.sig NullyzOS.iso
 ```
 Tem de aparecer **Good signature** da chave `Nullyz Packages`, fingerprint
 `C43C 292B 0901 FB84 D4A1  A174 3682 8706 C86F B94A`.
@@ -46,7 +46,7 @@ Tem de aparecer **Good signature** da chave `Nullyz Packages`, fingerprint
 Apaga tudo o que estiver no pendrive.
 - **Windows:** [Rufus](https://rufus.ie) (modo "DD" se ele perguntar) ou [Ventoy](https://www.ventoy.net)
 - **Linux / macOS:** [Fedora Media Writer](https://github.com/FedoraQt/MediaWriter), Ventoy ou
-  `sudo dd if=nullyzos-x86_64.iso of=/dev/sdX bs=4M status=progress oflag=sync`
+  `sudo dd if=NullyzOS.iso of=/dev/sdX bs=4M status=progress oflag=sync`
 
 ## 3. Instale
 

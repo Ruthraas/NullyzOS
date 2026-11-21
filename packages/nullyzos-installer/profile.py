@@ -2,6 +2,8 @@
 
 import os
 import shutil
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING, override
 
 from archinstall.default_profiles.profile import Profile, ProfileType
@@ -64,8 +66,10 @@ class NullyzOSProfile(Profile):
         rice_dir.mkdir(parents=True, exist_ok=True)
         (rice_dir / "rice-inicial").write_text(rice + "\n")
 
-        finalizer = target / "tmp/nullyzos-finalizar"
-        shutil.copy2("/usr/lib/nullyzos-installer/finalizar-destino", finalizer)
-        finalizer.chmod(0o755)
-        install_session.arch_chroot("/tmp/nullyzos-finalizar")
-        finalizer.unlink(missing_ok=True)
+        # arch-chroot -S usa um /tmp privado. Um caminho no disco do alvo fica
+        # disponível no chroot e é limpo mesmo quando o finalizador falha.
+        with TemporaryDirectory(prefix="nullyzos-", dir=target / "var/lib") as work:
+            finalizer = Path(work) / "finalizar"
+            shutil.copy2("/usr/lib/nullyzos-installer/finalizar-destino", finalizer)
+            finalizer.chmod(0o755)
+            install_session.arch_chroot(f"/{finalizer.relative_to(target)}")

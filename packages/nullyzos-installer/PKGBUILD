@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-installer
 pkgver=0.1.0
-pkgrel=27
+pkgrel=28
 pkgdesc="Instalador em terminal do NullyzOS baseado no archinstall"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"

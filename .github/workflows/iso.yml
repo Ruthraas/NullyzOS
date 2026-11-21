@@ -1,15 +1,12 @@
 # Gera a ISO do NullyzOS na nuvem (sem depender do PC de ninguém), confere, assina e publica
-# numa release vX.Y.Z com o SHA256SUMS e a assinatura GPG (chave Nullyz Packages, a mesma dos
-# pacotes: docs/REPOSITORIO.md). Rodar: Actions → "ISO" → Run workflow, com a versão.
+# na release fixa NullyzOS com o SHA256SUMS e a assinatura GPG (chave Nullyz Packages, a mesma dos
+# pacotes: docs/REPOSITORIO.md). Rodar: Actions → "ISO" → Run workflow.
 # Secrets: NULLYZ_GPG_PRIVATE_KEY e NULLYZ_GPG_KEY (os mesmos do repositório pacman).
 name: ISO
 
 on:
   workflow_dispatch:
     inputs:
-      versao:
-        description: "Marca interna da release (ex.: 0.2.0); para quem baixa é só NullyzOS"
-        required: true
       publicar:
         description: "Publicar como release (senão só deixa o arquivo no Actions)"
         type: boolean
@@ -27,12 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
-      - name: Versão válida
-        env:
-          VERSAO: ${{ inputs.versao }}
-        run: |
-          [[ "$VERSAO" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-z0-9.]+)?$ ]] || { echo "versão inválida: $VERSAO"; exit 1; }
-
       # A ISO precisa de ~10 GB durante o build: tira do runner o que ele traz e não usamos.
       - name: Espaço em disco
         run: |
@@ -53,12 +44,10 @@ jobs:
 
       - name: Nome, tamanho e SHA256
         id: iso
-        env:
-          VERSAO: ${{ inputs.versao }}
         run: |
           sudo chown -R "$(id -u)" out
           src=$(ls out/*.iso | head -n1)
-          nome="nullyzos-x86_64.iso"   # para quem baixa, só NullyzOS (a marca vX.Y.Z fica interna)
+          nome="NullyzOS.iso"
           mv "$src" "out/$nome"
           tam=$(stat -c %s "out/$nome")
           echo "tamanho: $tam bytes"
@@ -89,7 +78,7 @@ jobs:
         if: ${{ !inputs.publicar }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: nullyzos-${{ inputs.versao }}
+          name: NullyzOS-${{ github.sha }}
           path: out/*
           retention-days: 7
           compression-level: 0
@@ -98,19 +87,13 @@ jobs:
         if: ${{ inputs.publicar }}
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSAO: ${{ inputs.versao }}
           NOME: ${{ steps.iso.outputs.nome }}
         run: |
           arquivos=("out/$NOME" "out/$NOME.sig" out/SHA256SUMS out/SHA256SUMS.asc)
-          if gh release view "v$VERSAO" >/dev/null 2>&1; then
-            # Mesma release (versão única "NullyzOS"): troca a ISO e tira as de nome antigo
-            gh release view "v$VERSAO" --json assets -q '.assets[].name' \
-              | grep -E '^nullyzos-.*\.iso(\.sig)?$' | grep -vxF -e "$NOME" -e "$NOME.sig" \
-              | while read -r velho; do gh release delete-asset "v$VERSAO" "$velho" --yes; done
-            gh release upload "v$VERSAO" "${arquivos[@]}" --clobber
-            gh release edit "v$VERSAO" --title "NullyzOS" --notes-file docs/BAIXAR.md
+          if gh release view iso >/dev/null 2>&1; then
+            gh release upload iso "${arquivos[@]}" --clobber
+            gh release edit iso --title "NullyzOS" --notes-file docs/BAIXAR.md --latest
           else
-            pre=""; case "$VERSAO" in *-*) pre="--prerelease" ;; esac
-            gh release create "v$VERSAO" $pre --target "$GITHUB_SHA" \
-              --title "NullyzOS" --notes-file docs/BAIXAR.md "${arquivos[@]}"
+            gh release create iso --target "$GITHUB_SHA" --title "NullyzOS" \
+              --notes-file docs/BAIXAR.md --latest "${arquivos[@]}"
           fi
