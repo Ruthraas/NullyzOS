@@ -13,8 +13,23 @@ end
 hl.bind("SUPER + L", exec(sh("lock")), { description = "Bloquear a tela" })
 hl.bind("SUPER + comma", exec(sh("settings")), { description = "Configurações" })
 local function cycleWindow(next)
-  hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
-  hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+  local active = hl.get_active_window()
+  local special = hl.get_active_special_workspace()
+  local windows, current = {}, nil
+  for _, window in ipairs(hl.get_windows()) do
+    local workspace = window.workspace
+    if window.mapped and not window.hidden and workspace
+        and (not workspace.special or (special and workspace.id == special.id)) then
+      windows[#windows + 1] = window
+      if active and window.address == active.address then current = #windows end
+    end
+  end
+  if #windows == 0 then return end
+  local step = next and 1 or -1
+  local index = current and ((current - 1 + step) % #windows + 1) or (next and 1 or #windows)
+  local target = windows[index]
+  hl.dispatch(hl.dsp.focus({ window = target }))
+  hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top", window = target }))
 end
 hl.bind("ALT + Tab", function() cycleWindow(true) end, { description = "Próxima janela" })
 hl.bind("ALT + SHIFT + Tab", function() cycleWindow(false) end, { description = "Janela anterior" })
