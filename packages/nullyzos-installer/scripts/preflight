@@ -3,8 +3,8 @@
 set -euo pipefail
 
 check_url() {
-    local nome=$1 url=$2 tentativa
-    for tentativa in 1 2 3; do
+    local nome=$1 url=$2
+    for _ in 1 2 3; do
         curl --fail --silent --show-error --location --head \
              --connect-timeout 10 --max-time 25 "$url" >/dev/null && return 0
         sleep 2
