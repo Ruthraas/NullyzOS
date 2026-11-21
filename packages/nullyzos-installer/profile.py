@@ -50,7 +50,11 @@ class NullyzOSProfile(Profile):
         install_session.arch_chroot("pacman-key --add /usr/share/nullyzos/nullyz-repo.asc")
         install_session.arch_chroot(f"pacman-key --lsign-key {FINGERPRINT}")
         install_session.arch_chroot("pacman -Sy --noconfirm")
-        install_session.add_additional_packages([f"nullyzos-desktop-{desktop}", "grub", "efibootmgr"])
+        # O resolvedor do archinstall só conhece os repositórios oficiais carregados no início.
+        # Neste ponto o repositório NullyzOS já está assinado, confiado e sincronizado no alvo.
+        install_session.arch_chroot(
+            f"pacman -S --needed --noconfirm nullyzos-desktop-{desktop} grub efibootmgr"
+        )
         install_session.enable_service([
             "NetworkManager", "sddm", "bluetooth", "cups", "ufw",
             "power-profiles-daemon", "fstrim.timer",

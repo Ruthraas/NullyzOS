@@ -7,3 +7,4 @@
 - Status: base, KDE, receitas, loja de rices e apps do sistema implementados; pendentes rices comunitários, ícones próprios, Secure Boot e testes em hardware real.
 - Último estado observado: commit `a1f260b` (2026-11-20), correções de vídeo NVIDIA/AMD/Intel no boot e sistema instalado.
 - Instalador: TUI baseado no `archinstall`; ESP em `/boot/efi`; logs em `/root/nullyzos-instalacao.log`.
+- Pacotes NullyzOS no perfil devem ser instalados por `pacman` no chroot após chave e repositório; não usar o resolvedor oficial do archinstall.

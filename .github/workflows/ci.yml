@@ -40,3 +40,13 @@ jobs:
       - name: Carrega perfil NullyzOS na API real
         run: |
           python -c "import runpy; p=runpy.run_path('packages/nullyzos-installer/profile.py')['NullyzOSProfile'](); assert p.name == 'NullyzOS'"
+      - name: Resolve desktops no repositório assinado
+        run: |
+          pacman-key --init
+          pacman-key --populate archlinux
+          pacman-key --add docs/nullyz-repo.asc
+          pacman-key --lsign-key C43C292B0901FB84D4A1A17436828706C86FB94A
+          printf '\n[nullyzos]\nSigLevel = Required DatabaseRequired\nServer = https://github.com/Ruthraas/NullyzOS/releases/download/repo\n' >> /etc/pacman.conf
+          pacman -Sy
+          pacman -Sp --print-format '%n' nullyzos-desktop-hyprland nullyzos-desktop-kde | grep -qx nullyzos-desktop-hyprland
+          pacman -Sp --print-format '%n' nullyzos-desktop-hyprland nullyzos-desktop-kde | grep -qx nullyzos-desktop-kde
