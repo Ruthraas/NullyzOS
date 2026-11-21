@@ -11,10 +11,6 @@ plymouth
 nullyzos-plymouth
 nullyzos-branding
 
-# Instalador gráfico (#5): Calamares em tela cheia no cage
+# Instalador oficial do Arch com perfil e assistente do NullyzOS
 nullyzos-installer
-calamares
-cage
-qt6-wayland
-ttf-geist
-adwaita-cursors
+archinstall

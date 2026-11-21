@@ -38,7 +38,7 @@ NullyzOS
 | Pasta | Conteúdo |
 |---|---|
 | `iso/` | perfil archiso |
-| `installer/` | Calamares com telas próprias |
+| `installer/` | assistente TUI baseado no archinstall |
 | `shell/` | desktop Nullyz para Hyprland (Quickshell) |
 | `plasma/` | visual Nullyz para KDE |
 | `rices/` | receitas dos rices da comunidade |

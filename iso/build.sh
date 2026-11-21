@@ -51,7 +51,7 @@ if ! pacman-key --list-keys "$FPR" >/dev/null 2>&1; then
 fi
 # Cópias antigas dos nossos pacotes no cache do pacman do host travam o build ("corrupted"):
 # o nome é o mesmo e o conteúdo pode não bater com o banco atual. Sempre baixa de novo.
-rm -f /var/cache/pacman/pkg/nullyzos-* /var/cache/pacman/pkg/ttf-geist-* /var/cache/pacman/pkg/calamares-*
+rm -f /var/cache/pacman/pkg/nullyzos-* /var/cache/pacman/pkg/ttf-geist-*
 cat >> "$PROFILE/pacman.conf" <<'EOF'
 
 [nullyzos]
@@ -71,10 +71,10 @@ rm -rf "$PROFILE/airootfs/etc/systemd/system/cloud-init.target.wants"
 # O releng traz um motd do Arch; o nosso substitui.
 cp -a "$ISO_SRC/airootfs/." "$PROFILE/airootfs/"
 
-# O live abre o instalador gráfico sozinho no tty1 (Ctrl+Alt+F2 dá um terminal).
+# O live abre o assistente em terminal sozinho no tty1 (Ctrl+Alt+F2 dá outro terminal).
 cat >> "$PROFILE/airootfs/root/.zlogin" <<'EOF'
 
-# NullyzOS: instalador gráfico no tty1. Para reabrir: nullyzos-instalar
+# NullyzOS: instalador no tty1. Para reabrir: nullyzos-instalar
 if [[ "$(tty)" == /dev/tty1 ]] && [[ -z "${NULLYZ_SEM_INSTALADOR:-}" ]]; then
   nullyzos-instalar
 fi

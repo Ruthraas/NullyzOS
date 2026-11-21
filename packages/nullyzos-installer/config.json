@@ -1,0 +1,18 @@
+{
+  "archinstall-language": "Brazilian Portuguese",
+  "bootloader_config": { "bootloader": "Grub", "uki": false, "removable": false },
+  "hostname": "nullyzos",
+  "kernels": ["linux"],
+  "ntp": true,
+  "profile_config": {
+    "gfx_driver": null,
+    "greeter": null,
+    "profile": {
+      "details": [],
+      "main": "NullyzOS",
+      "path": "/usr/share/nullyzos-installer/profile.py"
+    }
+  },
+  "script": "guided",
+  "silent": false
+}

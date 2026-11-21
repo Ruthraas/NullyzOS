@@ -22,7 +22,21 @@ jobs:
         run: python scripts/check-qml.py
       - name: Receitas de rice (#9)
         run: python scripts/check-rices.py --verificar
+      - name: Perfil do archinstall
+        run: |
+          python -m json.tool packages/nullyzos-installer/config.json >/dev/null
+          python -m py_compile packages/nullyzos-installer/profile.py
       - name: Shell scripts
         run: |
           sudo apt-get install -y shellcheck
           shellcheck -S warning iso/build.sh packages/build.sh session/nullyzos-hyprland packages/nullyzos-installer/scripts/* shell/scripts/*.sh packages/nullyzos-sddm/fundo-login apps/limpeza apps/atualizar apps/nullyzos-rice apps/rice-root apps/nullyzos-configuracoes plasma/nullyzos-kde-primeiro plasma/nullyzos-kde-sessao packages/nullyzos-essenciais/nullyzos-flathub terminal/terminal-shell && shellcheck -S warning -s bash terminal/bashrc
+
+  archinstall-profile:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - run: pacman -Syu --noconfirm --needed git archinstall
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Carrega perfil NullyzOS na API real
+        run: |
+          python -c "import runpy; p=runpy.run_path('packages/nullyzos-installer/profile.py')['NullyzOSProfile'](); assert p.name == 'NullyzOS'"

@@ -24,7 +24,7 @@ Instalador gráfico do NullyzOS
 2. **Seguro por padrão.**
    - Sem AUR e sem `curl | bash`.
    - Tudo vem dos repositórios oficiais do Arch ou do repositório `nullyz`, assinado.
-   - O que falta (por exemplo, o Calamares) nós empacotamos.
+   - O que falta nós empacotamos no repositório assinado do projeto.
 3. **Crédito a quem fez.**
    - Rice de terceiro entra com autor, licença e link para o original, mostrados na instalação e na loja.
    - Avisamos o autor antes de publicar a receita.
@@ -39,7 +39,7 @@ Instalador gráfico do NullyzOS
 | Pasta | O que é |
 |---|---|
 | `iso/` | Perfil archiso: a ISO live que roda o instalador. |
-| `installer/` | Calamares com tema e telas próprias, incluindo a escolha de desktop e de rice. |
+| `installer/` | Assistente TUI sobre o archinstall, incluindo desktop, rice e guia de particionamento. |
 | `shell/` | **Nullyz para Hyprland:** desktop novo em Quickshell (barra de menus, dock, central de controle, busca, visão de janelas, notificações, bloqueio). |
 | `plasma/` | **Nullyz para KDE:** tema global (look-and-feel), cores, decoração de janela, painel e ícones. |
 | `rices/` | Receitas dos rices da comunidade, uma pasta por rice, e o verificador. |
@@ -76,7 +76,7 @@ para = "~/.config/hypr"
 | Parte | Escolha | Por quê |
 |---|---|---|
 | Sistema | Arch Linux | rolling, pacotes novos, archiso pronto |
-| Instalador | Calamares | gráfico e modular; não está nos repositórios oficiais, então vai para o `nullyz` |
+| Instalador | archinstall | oficial do Arch, com perfil próprio do NullyzOS |
 | Disco | btrfs + snapper | snapshots para trocar rice e atualizar sem medo |
 | Login | SDDM com tema Nullyz | serve para Hyprland e KDE |
 | Hyprland | Hyprland + Quickshell | o que já dominamos; config em Lua |

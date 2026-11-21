@@ -4,37 +4,24 @@
 
 pkgname=nullyzos-installer
 pkgver=0.1.0
-pkgrel=25
-pkgdesc="Instalador do NullyzOS (configuração e visual do Calamares)"
+pkgrel=26
+pkgdesc="Instalador em terminal do NullyzOS baseado no archinstall"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
 license=('GPL-3.0-only')
 options=('!debug')
-depends=('calamares' 'ckbcomp' 'cage' 'ttf-geist' 'qt6-svg' 'qt6-wayland' 'arch-install-scripts'
-         'squashfs-tools' 'grub' 'efibootmgr' 'btrfs-progs')
-makedepends=('python')
+depends=('archinstall' 'arch-install-scripts' 'curl' 'grub' 'efibootmgr' 'btrfs-progs')
 source=()
 
 _here() { cd "$startdir" && pwd; }
 
-build() {
-  python "$(_here)/gerar-imagens.py" "$srcdir/imagens"
-}
-
 package() {
   local src
   src="$(_here)"
-  install -Dm644 "$src/settings.conf" "$pkgdir/etc/calamares/settings.conf"
-  install -dm755 "$pkgdir/etc/calamares/modules" "$pkgdir/etc/calamares/branding/nullyzos"
-  install -m644 "$src"/modules/*.conf "$pkgdir/etc/calamares/modules/"
-  install -m644 "$src"/branding/nullyzos/* "$pkgdir/etc/calamares/branding/nullyzos/"
-  install -Dm644 "$src/../../branding/logo/nullyz-escuro.svg" "$pkgdir/etc/calamares/branding/nullyzos/logo.svg"
-  install -m644 "$srcdir"/imagens/* "$pkgdir/etc/calamares/branding/nullyzos/"
-  install -Dm755 "$src/scripts/preparar-destino" "$pkgdir/usr/lib/nullyzos-installer/preparar-destino"
   install -Dm755 "$src/scripts/finalizar-destino" "$pkgdir/usr/lib/nullyzos-installer/finalizar-destino"
-  install -Dm755 "$src/scripts/rice-inicial" "$pkgdir/usr/lib/nullyzos-installer/rice-inicial"
   install -Dm755 "$src/scripts/nullyzos-instalar" "$pkgdir/usr/bin/nullyzos-instalar"
-  install -Dm755 "$src/scripts/preflight" "$pkgdir/usr/lib/nullyzos-installer/preflight"
+  install -Dm644 "$src/config.json" "$pkgdir/usr/share/nullyzos-installer/config.json"
+  install -Dm644 "$src/profile.py" "$pkgdir/usr/share/nullyzos-installer/profile.py"
   install -Dm644 "$src/../../docs/nullyz-repo.asc" "$pkgdir/usr/share/nullyzos-installer/nullyz-repo.asc"
   install -Dm644 "$src/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

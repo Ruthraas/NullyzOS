@@ -1,19 +1,61 @@
 #!/usr/bin/env bash
-# Abre o instalador do NullyzOS em tela cheia (cage = compositor Wayland de um app só).
-# Na VM sem aceleração 3D usa desenho por software (lição do Nullyzrice).
-set -u
-if [ "$(systemd-detect-virt 2>/dev/null || echo none)" != "none" ]; then
-  export WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 QT_QUICK_BACKEND=software
-fi
-export QT_QPA_PLATFORM=wayland XDG_SESSION_TYPE=wayland
+# shellcheck disable=SC2059 # ANSI dinâmico é intencional nesta interface.
+set -uo pipefail
 
-# O nível 6 registra comandos e saídas suficientes para diagnosticar uma instalação real.
-# Ao fechar o instalador, deixa uma cópia fácil de encontrar no live.
-cage -s -- calamares -D6 "$@"
-status=$?
-log=/root/.cache/calamares/session.log
-if [ -f "$log" ]; then
-  cp -f "$log" /root/nullyzos-instalacao.log
-  echo "Log da instalação: /root/nullyzos-instalacao.log"
+purple='\033[38;2;169;154;255m'; white='\033[1;37m'; muted='\033[38;2;163;163;179m'
+green='\033[38;2;111;214;159m'; reset='\033[0m'
+
+header() {
+    clear
+    printf "${purple}  ███╗   ██╗${reset}\n${purple}  ████╗  ██║${reset}  ${white}NullyzOS${reset}\n"
+    printf "${purple}  ██╔██╗ ██║${reset}  Instalador seguro baseado no archinstall\n"
+    printf "${purple}  ██║╚██╗██║${reset}\n${purple}  ██║ ╚████║${reset}\n\n"
+}
+
+choose() {
+    local prompt=$1 max=$2 answer
+    while true; do
+        read -r -p "$prompt" answer
+        [[ "$answer" =~ ^[0-9]+$ ]] && (( answer >= 1 && answer <= max )) && { REPLY=$answer; return; }
+        printf "${muted}Escolha um número entre 1 e %s.${reset}\n" "$max"
+    done
+}
+
+header
+printf "${white}1 de 3 · Desktop${reset}\n\n"
+printf "  ${purple}1${reset}  Hyprland   leve, moderno e orientado ao teclado\n"
+printf "  ${purple}2${reset}  KDE Plasma completo, familiar e configurável\n\n"
+choose "Desktop [1-2]: " 2
+if (( REPLY == 1 )); then
+    export NULLYZ_DESKTOP=hyprland
+    rices=(nullyz nullyz-areia nullyz-brasa nullyz-cru nullyz-mono nullyz-musgo nullyz-ouro nullyz-papel nullyz-sol)
+else
+    export NULLYZ_DESKTOP=kde
+    rices=(nullyz nullyz-areia nullyz-brasa nullyz-cru nullyz-musgo nullyz-ouro nullyz-papel nullyz-sol graphite layan)
 fi
+
+header
+printf "${white}2 de 3 · Visual${reset}\n\n"
+for i in "${!rices[@]}"; do printf "  ${purple}%2d${reset}  %s\n" "$((i + 1))" "${rices[$i]}"; done
+printf "\n"
+choose "Visual [1-${#rices[@]}]: " "${#rices[@]}"
+export NULLYZ_RICE=${rices[$((REPLY - 1))]}
+
+header
+printf "${white}3 de 3 · Disco e sistema${reset}\n\n"
+printf "No menu oficial, abra ${white}Configuração de disco → Particionamento manual${reset}:\n\n"
+printf "  ${green}/boot/efi${reset}  FAT32 · 1 GiB · marque como ESP/boot\n"
+printf "  ${green}/${reset}          Btrfs recomendado · mínimo 25 GiB\n"
+printf "  ${green}/home${reset}      opcional · arquivos pessoais\n"
+printf "  ${green}swap${reset}       opcional · recomendado para hibernação\n\n"
+printf "${muted}O modo automático também funciona. Revise o disco no resumo: partições\n"
+printf "marcadas para formatação serão apagadas.${reset}\n\n"
+read -r -p "Pressione Enter para abrir o archinstall... "
+
+archinstall --config /usr/share/nullyzos-installer/config.json
+status=$?
+if [ -f /var/log/archinstall/install.log ]; then
+    cp -f /var/log/archinstall/install.log /root/nullyzos-instalacao.log
+fi
+printf "\nLog: ${white}/root/nullyzos-instalacao.log${reset}\n"
 exit "$status"

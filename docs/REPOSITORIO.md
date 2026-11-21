@@ -1,6 +1,6 @@
 # Repositório pacman do NullyzOS (#3)
 
-Tudo o que não existe nos repositórios oficiais do Arch é empacotado aqui e **assinado**. É o que substitui o AUR no NullyzOS. O primeiro pacote é a identidade visual (`nullyzos-branding`); depois vêm o Calamares (#4), o desktop Nullyz e os rices revisados.
+Tudo o que não existe nos repositórios oficiais do Arch é empacotado aqui e **assinado**. É o que substitui o AUR no NullyzOS. Entram a identidade visual (`nullyzos-branding`), o perfil do instalador, o desktop Nullyz e os rices revisados.
 
 ## Estrutura
 
