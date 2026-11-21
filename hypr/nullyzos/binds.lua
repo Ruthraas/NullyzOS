@@ -5,10 +5,19 @@ local sh = lib.shell
 
 -- Nomes de tecla como no XKB ("space", "Return"): "Space" não casa com a tecla.
 -- Sistema e apps
-hl.bind("SUPER + space", exec(sh("toggleLauncher")), { description = "Buscar apps" })
+local launcher = exec(sh("toggleLauncher"))
+hl.bind("SUPER + space", launcher, { description = "Buscar apps" })
+for _, key in ipairs({ "Super_L", "Super_R" }) do
+  hl.bind(key, launcher, { release = true, description = "Buscar apps ao soltar Super" })
+end
 hl.bind("SUPER + L", exec(sh("lock")), { description = "Bloquear a tela" })
 hl.bind("SUPER + comma", exec(sh("settings")), { description = "Configurações" })
-hl.bind("ALT + Tab", exec(sh("switcher")), { description = "Trocar de janela" })
+local function cycleWindow(next)
+  hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
+  hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+end
+hl.bind("ALT + Tab", function() cycleWindow(true) end, { description = "Próxima janela" })
+hl.bind("ALT + SHIFT + Tab", function() cycleWindow(false) end, { description = "Janela anterior" })
 hl.bind("SUPER + Tab", exec(sh("overview")), { description = "Visão geral dos workspaces" })
 hl.bind("SUPER + SHIFT + V", exec(sh("clipboard")), { description = "Histórico da área de transferência" })
 hl.bind("SUPER + period", exec(sh("emoji")), { description = "Emoji" })

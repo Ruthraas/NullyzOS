@@ -20,7 +20,7 @@ SettingsPage {
     function refresh() { if (!query.running) query.running = true; }
     function parseMode(s) {
         const m = /^(\d+)x(\d+)@([\d.]+)/.exec(s);
-        return m ? { w: +m[1], h: +m[2], hz: Math.round(+m[3]) } : null;
+        return m ? { w: +m[1], h: +m[2], hz: +m[3] } : null;
     }
     function apply(name, rule) {
         if (page.countdown === 0) page.previous = JSON.stringify(HyprConf.monitors);
@@ -99,7 +99,8 @@ SettingsPage {
                     if (m.w === mon.modelData.width && m.h === mon.modelData.height && !out.includes(m.hz)) out.push(m.hz);
                 return out.sort((a, b) => b - a);
             }
-            readonly property int hz: Math.round(modelData.refreshRate || 60)
+            readonly property real refreshRate: modelData.refreshRate || 60
+            readonly property real hz: rates.find(rate => Math.abs(rate - refreshRate) < 0.015) ?? refreshRate
             readonly property string mode: modelData.width + "x" + modelData.height + "@" + hz
             function setMode(w, h, hz) { page.apply(modelData.name, { mode: w + "x" + h + "@" + hz, scale: modelData.scale || 1 }); }
 
@@ -120,7 +121,7 @@ SettingsPage {
                     Txt { text: mon.modelData.description || mon.modelData.name; font.weight: Font.DemiBold }
                     Txt {
                         muted: true; size: 13
-                        text: mon.modelData.width + " × " + mon.modelData.height + " · " + mon.hz + " Hz · tamanho "
+                        text: mon.modelData.width + " × " + mon.modelData.height + " · " + Number(mon.hz.toFixed(2)) + " Hz · tamanho "
                               + Math.round((mon.modelData.scale || 1) * 100) + "%"
                               + (mon.modelData.description ? " · " + mon.modelData.name : "")
                     }
@@ -153,8 +154,8 @@ SettingsPage {
                     Repeater {
                         model: mon.rates
                         Chip {
-                            required property int modelData
-                            text: modelData + " Hz"
+                            required property real modelData
+                            text: Number(modelData.toFixed(2)) + " Hz"
                             active: modelData === mon.hz
                             onClicked: mon.setMode(mon.modelData.width, mon.modelData.height, modelData)
                         }

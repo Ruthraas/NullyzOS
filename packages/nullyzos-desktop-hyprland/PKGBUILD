@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=51
+pkgrel=52
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"

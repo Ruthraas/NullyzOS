@@ -14,6 +14,9 @@ Singleton {
     id: root
 
     readonly property string dir: Prefs.dir
+    readonly property bool ready: file.loaded || missingConfig
+    property bool missingConfig: false
+    property bool reloadMonitors: false
     // Campos vazios/zero = deixa o padrão do sistema (o teclado escolhido no instalador etc.).
     readonly property string kbLayout: conf.kbLayout
     readonly property string kbVariant: conf.kbVariant
@@ -92,18 +95,46 @@ Singleton {
     }
 
     function save() {
+        if (!ready) return;
         file.writeAdapter();
-        luaFile.setText(lua());
-        reloadTimer.restart();
+        render();
     }
-    // Deixa o arquivo chegar ao disco antes de pedir o reload.
-    Timer { id: reloadTimer; interval: 150; onTriggered: Quickshell.execDetached(["hyprctl", "reload"]) }
+
+    function render() {
+        if (!ready) return;
+        const previous = luaFile.text();
+        const next = lua();
+        if (previous === next) return;
+        // Uma mudança de tema ou entrada não precisa reaplicar os modos de vídeo.
+        const monitorRules = text => text.split("\n").filter(line => line.startsWith("hl.monitor(")).join("\n");
+        reloadMonitors = reloadMonitors || monitorRules(previous) !== monitorRules(next);
+        luaFile.setText(next);
+    }
+
+    Timer {
+        id: reloadTimer
+        interval: 150
+        onTriggered: {
+            const args = root.reloadMonitors ? ["hyprctl", "reload"] : ["hyprctl", "reload", "config-only"];
+            root.reloadMonitors = false;
+            Quickshell.execDetached(args);
+        }
+    }
 
     FileView {
         id: file
         path: root.dir + "/hyprland.json"
+        blockWrites: true
         watchChanges: true
         onFileChanged: reload()
+        onLoaded: {
+            root.missingConfig = false;
+            renderTimer.restart();
+        }
+        onLoadFailed: err => {
+            root.missingConfig = err === FileViewError.FileNotFound;
+            if (root.missingConfig) renderTimer.restart();
+        }
         adapter: JsonAdapter {
             id: conf
             property string kbLayout: ""
@@ -119,12 +150,18 @@ Singleton {
             property bool shadow: true
         }
     }
-    FileView { id: luaFile; path: root.dir + "/hyprland.lua" }
+    FileView {
+        id: luaFile
+        path: root.dir + "/hyprland.lua"
+        blockLoading: true
+        blockWrites: true
+        onSaved: reloadTimer.restart()
+    }
     // Ao subir: se a config gerada não bate com o arquivo (cor ou opção mudou com o shell
     // fechado, ex.: rice aplicado por arquivo), regrava e recarrega. Espera as preferências.
     Timer {
+        id: renderTimer
         interval: 3000
-        running: true
-        onTriggered: if (luaFile.text() !== root.lua()) root.save()
+        onTriggered: root.render()
     }
 }

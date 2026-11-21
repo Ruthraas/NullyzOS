@@ -140,7 +140,7 @@ PanelWindow {
             spacing: 12
             Txt { text: "Os atalhos que mais importam"; size: 24; font.weight: Font.DemiBold }
             Repeater {
-                model: [["Super + Espaço", "Buscar e abrir apps"], ["Super + Enter", "Terminal"], ["Super + vírgula", "Configurações"],
+                model: [["Super ou Super + Espaço", "Buscar e abrir apps"], ["Super + Enter", "Terminal"], ["Super + vírgula", "Configurações"],
                         ["Super + E", "Arquivos"], ["Super + L", "Bloquear a tela"], ["Super + Q", "Fechar a janela"]]
                 Item {
                     required property var modelData

@@ -93,12 +93,12 @@ Singleton {
         function onAutoAccentChanged() { if (prefs.accent === "auto" || prefs.palette === "wallpaper") autoSave.restart(); }
         function onAutoHueChanged() { if (prefs.palette === "wallpaper") autoSave.restart(); }
     }
-    Timer { id: autoSave; interval: 600; onTriggered: { HyprConf.save(); Terminal.save(); } }
+    Timer { id: autoSave; interval: 600; onTriggered: { HyprConf.render(); Terminal.save(); } }
     Binding { target: Tok; property: "light"; value: root.light }
     Binding { target: Tok; property: "roundness"; value: prefs.roundness }
     Binding { target: Tok; property: "motion"; value: prefs.motion }
     // Tema automático: ao virar claro/escuro, borda das janelas e terminal acompanham.
-    onLightChanged: if (prefs.theme === "auto") { HyprConf.save(); Terminal.save(); }
+    onLightChanged: if (prefs.theme === "auto") { HyprConf.render(); Terminal.save(); }
     Binding { target: Tok; property: "glassOpacity"; value: prefs.glassOpacity }
     Binding { target: Tok; property: "font"; value: prefs.uiFont || "Geist" }
     Binding { target: Tok; property: "fontScale"; value: prefs.textScale || 1 }
@@ -124,11 +124,11 @@ Singleton {
         if (prefs[key] === value) return;
         prefs[key] = value;
         file.writeAdapter();
-        if (key === "accent" || key === "theme" || key === "palette") { HyprConf.save(); Terminal.save(); }   // borda e terminal na cor nova
+        if (key === "accent" || key === "theme" || key === "palette") { HyprConf.render(); Terminal.save(); }   // borda e terminal na cor nova
         if (key === "roundness") HyprConf.set("rounding", Math.round(14 * value));   // janelas acompanham
         if (key === "cursorSize") {
             Quickshell.execDetached(["hyprctl", "setcursor", "Adwaita", String(value)]);
-            HyprConf.save();                                           // XCURSOR_SIZE para os apps
+            HyprConf.render();                                           // XCURSOR_SIZE para os apps
         }
     }
 
@@ -140,7 +140,7 @@ Singleton {
         for (const k of changed) prefs[k] = obj[k];
         file.writeAdapter();
         if (changed.includes("roundness") && !("rounding" in obj)) HyprConf.set("rounding", Math.round(14 * obj.roundness));
-        if (changed.includes("accent") || changed.includes("theme") || changed.includes("palette")) { HyprConf.save(); Terminal.save(); }
+        if (changed.includes("accent") || changed.includes("theme") || changed.includes("palette")) { HyprConf.render(); Terminal.save(); }
     }
 
     readonly property var allKeys: ["dock", "wallpaper", "lockWallpaper", "lockDim", "loginWallpaper", "accent",
