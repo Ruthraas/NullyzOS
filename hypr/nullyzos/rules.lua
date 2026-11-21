@@ -16,7 +16,7 @@ hl.window_rule({ match = { class = "^(calamares|io.calamares.calamares)$" }, flo
 -- Camadas do shell: vidro onde há fundo translúcido (fora do modo VM).
 if not lib.vm then
   hl.layer_rule({
-    match = { namespace = "nullyzos-(menubar|dock|launcher|notifications)" },
+    match = { namespace = "nullyzos-(menubar|dock|launcher|notifications|quick|calendar)" },
     blur = true,
     ignore_alpha = 0.35,
   })

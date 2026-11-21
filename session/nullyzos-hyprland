@@ -6,7 +6,7 @@
 #    tudo por software (mais lento, mas abre).
 set -u
 
-if [ "$(systemd-detect-virt 2>/dev/null || echo none)" != "none" ]; then
+if systemd-detect-virt --quiet; then
   export NULLYZ_VM=1
 fi
 

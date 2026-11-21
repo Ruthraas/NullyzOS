@@ -20,13 +20,13 @@ Item {
 
     // Páginas por tópico (a ordem é a da lateral); `k` = palavras para a busca.
     readonly property var allPages: [
-        { kde: true, kdeFile: "SettingsKdeAppearance.qml", id: "aparencia", label: "Aparência", icon: Icons.palette, file: "SettingsAppearance.qml", group: "Personalização", k: "tema claro escuro cor destaque wallpaper fundo vidro cursor cantos animações" },
+        { kde: true, kdeFile: "SettingsKdeAppearance.qml", id: "aparencia", label: "Aparência", icon: Icons.palette, file: "SettingsAppearance.qml", group: "Personalização", k: "tema claro escuro cor destaque wallpaper fundo vidro desfoque cursor cantos animações" },
         { kde: true, id: "rices", label: "Rices", icon: Icons.sparkles, file: "SettingsRices.qml", group: "Personalização", k: "tema visual pronto estilo rice preset" },
         { kde: true, id: "wallpapers", label: "Wallpapers", icon: Icons.image, file: "SettingsWallpapers.qml", group: "Personalização", k: "fundo imagem galeria baixar papel de parede" },
         { id: "bloqueio", label: "Tela de bloqueio", icon: Icons.lock, file: "SettingsLock.qml", group: "Personalização", k: "login senha fundo" },
         { kde: true, kdeFile: "SettingsKdeBar.qml", id: "barra", label: "Barra", icon: Icons.bar, file: "SettingsBar.qml", group: "Personalização", k: "relógio hora data workspaces menu" },
         { kde: true, kdeFile: "SettingsKdeDock.qml", id: "dock", label: "Dock", icon: Icons.dock, file: "SettingsDock.qml", group: "Personalização", k: "apps fixados ampliar ocultar" },
-        { id: "janelas", label: "Janelas", icon: Icons.windows, file: "SettingsWindows.qml", group: "Personalização", k: "espaço cantos animações desfoque" },
+        { id: "janelas", label: "Janelas", icon: Icons.windows, file: "SettingsWindows.qml", group: "Personalização", k: "espaço cantos animações" },
         { kde: true, id: "fontes", label: "Fontes", icon: Icons.type, file: "SettingsFonts.qml", group: "Personalização", k: "letra texto tamanho instalar" },
         { id: "terminal", label: "Terminal", icon: Icons.terminal, file: "SettingsTerminal.qml", group: "Personalização", k: "kitty prompt fastfetch logo" },
         { kde: true, id: "rede", label: "Rede", icon: Icons.wifi, file: "SettingsNetwork.qml", group: "Sistema", k: "wifi internet cabo" },

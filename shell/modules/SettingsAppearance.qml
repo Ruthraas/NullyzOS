@@ -206,6 +206,11 @@ SettingsPage {
         }
     }
     SettingsRow {
+        title: "Desfoque atrás do vidro"
+        description: Tok.vm ? "Desligado em máquina virtual (fica lento sem placa de vídeo)." : "A barra e os painéis desfocam o que está atrás deles."
+        Toggle { enabled: !Tok.vm; opacity: enabled ? 1 : 0.4; checked: HyprConf.blur && !Tok.vm; onToggled: v => HyprConf.set("blur", v) }
+    }
+    SettingsRow {
         title: "Transparência do vidro"
         description: Tok.vm ? "Em máquina virtual o vidro fica quase opaco (sem desfoque)." : "Barra de menus, busca e painéis: quanto do fundo aparece através deles."
         Slider {

@@ -33,9 +33,4 @@ SettingsPage {
         description: "Janelas abrindo, fechando e trocando de workspace com movimento."
         Toggle { checked: HyprConf.animations; onToggled: v => HyprConf.set("animations", v) }
     }
-    SettingsRow {
-        title: "Desfoque atrás do vidro"
-        description: Tok.vm ? "Desligado em máquina virtual (fica lento sem placa de vídeo)." : "A barra e os painéis desfocam o que está atrás deles."
-        Toggle { enabled: !Tok.vm; opacity: enabled ? 1 : 0.4; checked: HyprConf.blur && !Tok.vm; onToggled: v => HyprConf.set("blur", v) }
-    }
 }
