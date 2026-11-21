@@ -9,18 +9,26 @@ import QtQuick
 Rectangle {
     id: side
     anchors.fill: parent
-    color: "#0e0e13"
+    color: "#111118"
 
-    readonly property color accent: "#9d8cff"
+    readonly property color accent: "#a99aff"
     readonly property color text: "#ededf2"
     readonly property color muted: "#a3a3b3"
-    readonly property color line: "#2b2b37"
+    readonly property color line: "#30303d"
     // Janela baixa: marca mais perto do topo e passos mais juntos, sem invadir o rodapé
     readonly property bool compact: height < 760
     property string atual: ""   // nome do passo aberto
     readonly property real stepH: Math.max(28, Math.min(48, (height - steps.y - 72 - (dicaCaixa.visible ? dicaCaixa.height + 12 : 0)) / Math.max(1, rep.count)))
 
-    // Borda direita
+    // Brilho sutil da marca e separação da área principal.
+    Rectangle {
+        anchors { left: parent.left; right: parent.right; top: parent.top }
+        height: 190
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#221d3d" }
+            GradientStop { position: 1.0; color: "#111118" }
+        }
+    }
     Rectangle { anchors { right: parent.right; top: parent.top; bottom: parent.bottom } width: 1; color: side.line }
 
     // ---- marca ------------------------------------------------------------------------
@@ -33,7 +41,7 @@ Rectangle {
             spacing: 2
             Repeater {
                 model: "##...#####..######.####.######..#####...####...##".split("")
-                Rectangle { width: 7; height: 7; radius: 1.5; color: modelData === "#" ? side.accent : "transparent" }
+                Rectangle { width: 7; height: 7; radius: 2; color: modelData === "#" ? side.accent : "transparent" }
             }
         }
         Column {
@@ -62,6 +70,13 @@ Rectangle {
                 height: side.stepH
                 // Linha do tempo entre os círculos
                 Rectangle {
+                    visible: step.now
+                    anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter }
+                    height: Math.min(40, parent.height - 4)
+                    radius: 10
+                    color: "#1e1b31"
+                }
+                Rectangle {
                     visible: index > 0
                     x: 11; y: 12 - step.height / 2
                     width: 2; height: step.height - 24
@@ -71,7 +86,7 @@ Rectangle {
                     id: dot
                     x: 0; anchors.verticalCenter: parent.verticalCenter
                     width: 24; height: 24; radius: 12
-                    color: step.done || step.now ? side.accent : "transparent"
+                    color: step.done ? "#4f476f" : (step.now ? side.accent : "transparent")
                     border { width: 2; color: step.done || step.now ? side.accent : side.line }
                     scale: step.now ? 1.12 : 1
                     Behavior on scale { NumberAnimation { duration: 260; easing.type: Easing.OutBack } }
@@ -88,7 +103,7 @@ Rectangle {
                     width: parent.width - 40
                     elide: Text.ElideRight
                     text: display
-                    color: step.now ? side.text : side.muted
+                    color: step.now ? side.text : (step.done ? "#c9c5d7" : side.muted)
                     font { family: "Geist"; pixelSize: 15; weight: step.now ? Font.DemiBold : Font.Normal }
                 }
             }

@@ -36,7 +36,14 @@ Presentation {
 
     Slide {
         anchors.fill: parent
-        Rectangle { anchors.fill: parent; color: "#0e0e13" }
+        Rectangle {
+            anchors.fill: parent
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#171429" }
+                GradientStop { position: 0.55; color: "#0e0e13" }
+                GradientStop { position: 1.0; color: "#0b0b10" }
+            }
+        }
 
         Column {
             anchors.centerIn: parent
@@ -54,7 +61,7 @@ Presentation {
                         required property string modelData
                         required property int index
                         width: 16; height: 16; radius: 3
-                        color: modelData === "#" ? "#9d8cff" : "#17171f"
+                        color: modelData === "#" ? "#a99aff" : "#201d31"
                         opacity: modelData === "#" ? 0.25 : 1
                         SequentialAnimation on opacity {
                             running: modelData === "#"
@@ -81,7 +88,7 @@ Presentation {
                         horizontalAlignment: Text.AlignHCenter
                         text: presentation.messages[presentation.shown][0]
                         color: "#ededf2"
-                        font { family: "Geist"; pixelSize: 30; weight: Font.DemiBold }
+                        font { family: "Geist"; pixelSize: 32; weight: Font.DemiBold }
                     }
                     Text {
                         width: parent.width
@@ -103,7 +110,7 @@ Presentation {
                     Rectangle {
                         required property int index
                         width: index === presentation.shown ? 22 : 7; height: 7; radius: 3.5
-                        color: index === presentation.shown ? "#9d8cff" : "#2b2b37"
+                        color: index === presentation.shown ? "#a99aff" : "#343442"
                         Behavior on width { NumberAnimation { duration: 260; easing.type: Easing.OutBack } }
                     }
                 }

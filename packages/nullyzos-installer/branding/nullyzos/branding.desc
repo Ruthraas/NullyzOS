@@ -27,10 +27,10 @@ images:
 
 # Papéis de branding/tokens.json (escuro)
 style:
-    SidebarBackground:        "#17171f"
+    SidebarBackground:        "#111118"
     SidebarText:              "#ededf2"
     SidebarTextCurrent:       "#0e0e13"
-    SidebarBackgroundCurrent: "#9d8cff"
+    SidebarBackgroundCurrent: "#a99aff"
 
 slideshow: "show.qml"
 slideshowAPI: 2

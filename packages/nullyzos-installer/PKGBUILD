@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-installer
 pkgver=0.1.0
-pkgrel=24
+pkgrel=25
 pkgdesc="Instalador do NullyzOS (configuração e visual do Calamares)"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -34,6 +34,7 @@ package() {
   install -Dm755 "$src/scripts/finalizar-destino" "$pkgdir/usr/lib/nullyzos-installer/finalizar-destino"
   install -Dm755 "$src/scripts/rice-inicial" "$pkgdir/usr/lib/nullyzos-installer/rice-inicial"
   install -Dm755 "$src/scripts/nullyzos-instalar" "$pkgdir/usr/bin/nullyzos-instalar"
+  install -Dm755 "$src/scripts/preflight" "$pkgdir/usr/lib/nullyzos-installer/preflight"
   install -Dm644 "$src/../../docs/nullyz-repo.asc" "$pkgdir/usr/share/nullyzos-installer/nullyz-repo.asc"
   install -Dm644 "$src/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

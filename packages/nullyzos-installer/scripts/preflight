@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Garante que as duas fontes usadas na instalação estão acessíveis antes de particionar.
+set -euo pipefail
+
+check_url() {
+    local nome=$1 url=$2 tentativa
+    for tentativa in 1 2 3; do
+        curl --fail --silent --show-error --location --head \
+             --connect-timeout 10 --max-time 25 "$url" >/dev/null && return 0
+        sleep 2
+    done
+    echo "Não foi possível acessar $nome ($url). Verifique a conexão e tente novamente." >&2
+    return 1
+}
+
+echo ":: verificando conexão antes de alterar o disco"
+check_url "os servidores do Arch Linux" "https://archlinux.org/packages/"
+check_url "o repositório do NullyzOS" "https://github.com/Ruthraas/NullyzOS/releases/download/repo/nullyzos.db"
+echo ":: conexão pronta"

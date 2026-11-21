@@ -6,4 +6,14 @@ if [ "$(systemd-detect-virt 2>/dev/null || echo none)" != "none" ]; then
   export WLR_RENDERER=pixman WLR_NO_HARDWARE_CURSORS=1 QT_QUICK_BACKEND=software
 fi
 export QT_QPA_PLATFORM=wayland XDG_SESSION_TYPE=wayland
-exec cage -s -- calamares "$@"
+
+# O nível 6 registra comandos e saídas suficientes para diagnosticar uma instalação real.
+# Ao fechar o instalador, deixa uma cópia fácil de encontrar no live.
+cage -s -- calamares -D6 "$@"
+status=$?
+log=/root/.cache/calamares/session.log
+if [ -f "$log" ]; then
+  cp -f "$log" /root/nullyzos-instalacao.log
+  echo "Log da instalação: /root/nullyzos-instalacao.log"
+fi
+exit "$status"

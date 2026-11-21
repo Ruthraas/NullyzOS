@@ -8,10 +8,10 @@ import QtQuick
 
 Rectangle {
     id: nav
-    color: "#0e0e13"
-    height: 76
+    color: "#101017"
+    height: 80
 
-    readonly property color accent: "#9d8cff"
+    readonly property color accent: "#a99aff"
     // Última tela (Concluir): o botão de sair vira "Concluído" (reinicia se marcado)
     readonly property bool last: ViewManager.currentStepIndex === ViewManager.rowCount() - 1
 
@@ -23,13 +23,13 @@ Rectangle {
         property bool primary: false
         property bool active: true
         signal clicked()
-        height: 44
-        width: Math.max(120, t.implicitWidth + 44)
-        radius: 22
+        height: 46
+        width: Math.max(124, t.implicitWidth + 48)
+        radius: 13
         opacity: active ? 1 : 0.4
         color: primary ? (area.containsMouse && active ? Qt.lighter(nav.accent, 1.08) : nav.accent)
-                       : (area.containsMouse && active ? "#262632" : "#1f1f29")
-        border { width: primary ? 0 : 1; color: "#2b2b37" }
+                       : (area.containsMouse && active ? "#292936" : "#1b1b25")
+        border { width: primary ? 0 : 1; color: "#343442" }
         scale: area.pressed && active ? 0.96 : 1
         Behavior on scale { NumberAnimation { duration: 140; easing.type: Easing.OutBack } }
         Behavior on color { ColorAnimation { duration: 140 } }
@@ -38,7 +38,7 @@ Rectangle {
             anchors.centerIn: parent
             text: b.label.replace("&", "")
             color: b.primary ? "#0e0e13" : "#ededf2"
-            font { family: "Geist"; pixelSize: 15; weight: b.primary ? Font.DemiBold : Font.Medium }
+            font { family: "Geist"; pixelSize: 15; weight: Font.DemiBold }
         }
         MouseArea {
             id: area
