@@ -38,6 +38,7 @@ SettingsPage {
                 font.weight: Font.DemiBold; size: 16
                 text: Updates.updating ? "Atualizando…"
                     : Updates.checking ? "Procurando atualizações…"
+                    : Updates.result > 0 ? "Atualização incompleta"
                     : Updates.result === 0 ? "Atualizado"
                     : Updates.count === 0 ? "Tudo em dia"
                     : Updates.count + (Updates.count === 1 ? " atualização" : " atualizações")
@@ -45,8 +46,8 @@ SettingsPage {
             Txt {
                 width: parent.width
                 muted: true; size: 13
-                text: Updates.needsReboot ? "Reinicie para usar o kernel novo."
-                    : Updates.result > 0 ? "A atualização não terminou (erro " + Updates.result + "). Veja o registro abaixo."
+                text: Updates.result > 0 ? "Veja o registro abaixo." + (Updates.needsReboot ? " Reinicie para usar o kernel novo." : "")
+                    : Updates.needsReboot ? "Reinicie para usar o kernel novo."
                     : isNaN(Updates.lastCheck) ? "Ainda não conferido."
                     : "Conferido " + Clock.hm(Updates.lastCheck) + (Updates.packages.length ? " · " + Updates.packages.length + " do sistema" : "")
                       + (Updates.flatpaks.length ? " · " + Updates.flatpaks.length + " do Flathub" : "")
@@ -58,8 +59,9 @@ SettingsPage {
             spacing: 8
             Chip { text: "Procurar"; enabled: !Updates.checking && !Updates.updating; onClicked: Updates.check(true) }
             Chip {
-                visible: Updates.count > 0 || Updates.updating
-                text: Updates.updating ? "Atualizando…" : "Atualizar agora"
+                visible: Updates.count > 0 || Updates.updating || Updates.result > 0
+                enabled: !Updates.checking && !Updates.updating
+                text: Updates.updating ? "Atualizando…" : Updates.result > 0 ? "Tentar novamente" : "Atualizar agora"
                 active: true
                 onClicked: Updates.update()
             }

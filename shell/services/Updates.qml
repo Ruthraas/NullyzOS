@@ -30,7 +30,7 @@ Singleton {
         query.running = true;
     }
     function update() {
-        if (updating) return;
+        if (checking || updating) return;
         updating = true;
         result = -1;
         needsReboot = false;
@@ -68,7 +68,7 @@ Singleton {
         stdout: SplitParser {
             onRead: line => {
                 if (Panels.settingsAside) Panels.settingsAside = false;   // senha aceita: volta
-                if (line.indexOf("Reinicie") >= 0) root.needsReboot = true;
+                if (line === ":: Reinicie para usar o kernel novo") root.needsReboot = true;
                 root.log = root.log.concat([line]).slice(-200);
             }
         }
