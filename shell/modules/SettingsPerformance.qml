@@ -25,6 +25,8 @@ SettingsPage {
     property string busy: ""             // ação de limpeza em andamento
     property string confirm: ""          // "orfaos" aguardando o segundo clique
     property string message: ""
+    property bool messageError: false
+    property int cacheBeforeClean: -1
 
     readonly property string script: Qt.resolvedUrl("../scripts/uso.sh").toString().replace("file://", "")
 
@@ -40,20 +42,33 @@ SettingsPage {
             else if (f[0] === "disco") { page.diskUsed = +f[1]; page.diskTotal = +f[2]; }
             else if (f[0] === "temp") page.temp = f[1];
             else if (f[0] === "perfil") page.profile = f[1] || "-";
-            else if (f[0] === "cache") { page.cacheBytes = +f[1] || 0; page.cacheFiles = +f[2] || 0; }
+            else if (f[0] === "cache") {
+                page.cacheBytes = +f[1];
+                page.cacheFiles = +f[2];
+                if (page.cacheBeforeClean >= 0) {
+                    page.message = page.cacheBytes < 0 ? "Limpeza concluída. Não foi possível medir o cache."
+                        : page.cacheFiles < page.cacheBeforeClean ? "Cache de pacotes limpo."
+                        : "Nenhum pacote antigo para remover.";
+                    page.cacheBeforeClean = -1;
+                }
+            }
             else if (f[0] === "orfaos") page.orphans = +f[1] || 0;
             else if (f[0] === "miniaturas") page.thumbs = +f[1] || 0;
         }
     }
-    function root(action) {
+    function clean(action) {
         if (busy) return;
         if (action === "orfaos" && confirm !== "orfaos") { confirm = "orfaos"; confirmTimer.restart(); return; }
         confirm = "";
         busy = action;
         message = "";
-        job.command = ["pkexec", "/usr/lib/nullyzos/limpeza", action];
+        messageError = false;
+        cacheBeforeClean = -1;
+        const needsRoot = action !== "miniaturas";
+        job.command = needsRoot ? ["pkexec", "/usr/lib/nullyzos/limpeza", action]
+            : ["sh", page.script, "--limpar-miniaturas"];
+        if (needsRoot) Panels.settingsAside = true;
         job.running = true;
-        Panels.settingsAside = true;            // o pedido de senha fica por baixo das Configurações
     }
 
     Process {
@@ -73,7 +88,13 @@ SettingsPage {
         id: job
         onExited: code => {
             Panels.settingsAside = false;
-            page.message = code === 0 ? "Pronto." : code === 126 ? "" : "Não deu certo (erro " + code + ").";
+            if (code === 0 && page.busy === "pacotes") {
+                page.cacheBeforeClean = page.cacheFiles;
+            } else {
+                page.messageError = code !== 0 && code !== 126;
+                page.message = code === 0 ? (page.busy === "miniaturas" ? "Miniaturas limpas." : "Pronto.")
+                    : code === 126 ? "Autorização cancelada." : "Não foi possível concluir (erro " + code + ").";
+            }
             page.busy = "";
             cleanInfo.running = true;
             usage.running = true;
@@ -105,7 +126,7 @@ SettingsPage {
         description: page.profile === "-" ? "O serviço de perfis está desligado." : "Economia gasta menos bateria; Desempenho deixa o processador no máximo."
         Row {
             spacing: 8
-            Chip { visible: page.profile === "-"; text: page.busy === "energia" ? "Ligando…" : "Ligar"; onClicked: page.root("energia") }
+            Chip { visible: page.profile === "-"; text: page.busy === "energia" ? "Ligando…" : "Ligar"; onClicked: page.clean("energia") }
             Repeater {
                 model: page.profile === "-" ? [] : [["power-saver", "Economia"], ["balanced", "Equilibrado"], ["performance", "Desempenho"]]
                 Chip {
@@ -134,9 +155,14 @@ SettingsPage {
     Txt { text: "Limpeza"; font.weight: Font.DemiBold }
     SettingsRow {
         title: "Cache de pacotes"
-        description: page.cacheBytes < 0 ? "Calculando…"
-            : page.gb(page.cacheBytes) + " em " + page.cacheFiles + " arquivos. Guarda as 2 últimas versões de cada pacote, para poder voltar atrás."
-        Chip { text: page.busy === "pacotes" ? "Limpando…" : "Limpar"; onClicked: page.root("pacotes") }
+        description: page.cacheBytes === -1 ? "Calculando…"
+            : page.cacheBytes < 0 ? "Não foi possível ler um dos diretórios de cache do pacman."
+            : page.gb(page.cacheBytes) + " em " + page.cacheFiles + " arquivos. Mantém até 2 versões de cada pacote instalado."
+        Chip {
+            enabled: page.busy === "" && page.cacheBytes >= 0 && page.cacheFiles > 0
+            text: page.busy === "pacotes" ? "Limpando…" : "Limpar"
+            onClicked: page.clean("pacotes")
+        }
     }
     SettingsRow {
         title: "Pacotes sem uso"
@@ -147,24 +173,24 @@ SettingsPage {
             visible: page.orphans > 0
             text: page.busy === "orfaos" ? "Removendo…" : page.confirm === "orfaos" ? "Clique de novo" : "Remover"
             active: page.confirm === "orfaos"
-            onClicked: page.root("orfaos")
+            onClicked: page.clean("orfaos")
         }
     }
     SettingsRow {
         title: "Miniaturas"
-        description: page.thumbs < 0 ? "Calculando…" : page.gb(page.thumbs) + " de prévias de imagens; são refeitas quando precisar."
+        description: page.thumbs === -1 ? "Calculando…"
+            : page.thumbs < 0 ? "Não foi possível ler o cache de miniaturas."
+            : page.gb(page.thumbs) + " de prévias de imagens. Elas são refeitas quando necessário."
         Chip {
-            text: "Limpar"
-            onClicked: {
-                Quickshell.execDetached(["sh", "-c", "rm -rf \"$HOME/.cache/thumbnails\""]);
-                page.thumbs = 0;
-            }
+            enabled: page.busy === "" && page.thumbs > 0
+            text: page.busy === "miniaturas" ? "Limpando…" : "Limpar"
+            onClicked: page.clean("miniaturas")
         }
     }
     Txt {
         visible: page.message !== ""
         text: page.message
-        color: page.message === "Pronto." ? Tok.accent : Tok.error
+        color: page.messageError ? Tok.error : Tok.accent
         size: 13
     }
 
