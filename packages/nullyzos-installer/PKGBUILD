@@ -1,10 +1,9 @@
 # Maintainer: Arthur (Ruthraas) — https://github.com/Ruthraas/NullyzOS
-# Configuração do instalador gráfico do NullyzOS (#5): sequência do Calamares, telas, pt-BR,
-# btrfs, escolha do desktop e o script que prepara o sistema novo.
+# Instalador do NullyzOS em terminal: perfil do archinstall, escolha do desktop e finalização.
 
 pkgname=nullyzos-installer
 pkgver=0.1.0
-pkgrel=28
+pkgrel=29
 pkgdesc="Instalador em terminal do NullyzOS baseado no archinstall"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -18,9 +17,11 @@ _here() { cd "$startdir" && pwd; }
 package() {
   local src
   src="$(_here)"
+  install -Dm755 "$src/scripts/preflight" "$pkgdir/usr/lib/nullyzos-installer/preflight"
   install -Dm755 "$src/scripts/finalizar-destino" "$pkgdir/usr/lib/nullyzos-installer/finalizar-destino"
   install -Dm755 "$src/scripts/nullyzos-instalar" "$pkgdir/usr/bin/nullyzos-instalar"
   install -Dm644 "$src/config.json" "$pkgdir/usr/share/nullyzos-installer/config.json"
+  install -Dm644 "$src/../../rices/catalogo.json" "$pkgdir/usr/share/nullyzos-installer/catalogo.json"
   install -Dm644 "$src/profile.py" "$pkgdir/usr/share/nullyzos-installer/profile.py"
   install -Dm644 "$src/../../docs/nullyz-repo.asc" "$pkgdir/usr/share/nullyzos-installer/nullyz-repo.asc"
   install -Dm644 "$src/../../LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

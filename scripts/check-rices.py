@@ -9,8 +9,7 @@ Regras (docs/VISAO.md, #9):
     arquivos copiados só para dentro de ~/.config ou ~/.local/share. Nada de script.
 
 Gera:
-  rices/catalogo.json                                      (lido pelo shell e pelo aplicador)
-  packages/nullyzos-installer/modules/packagechooser-visual.conf   (passo "Visual" do instalador)
+  rices/catalogo.json (lido pelo shell, pelo aplicador e pelo instalador)
 
 Uso: check-rices.py             confere e (re)gera os arquivos
      check-rices.py --verificar confere e falha se os gerados estiverem desatualizados (CI)
@@ -26,8 +25,6 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 RICES = RAIZ / "rices"
 CATALOGO = RICES / "catalogo.json"
-VISUAL = RAIZ / "packages/nullyzos-installer/modules/packagechooser-visual.conf"
-CONTEXTO = RAIZ / "packages/nullyzos-installer/modules/contextualprocess-rice.conf"
 
 LICENCAS = re.compile(r"^(MIT|ISC|Unlicense|CC0-1\.0|0BSD|BSD-[23]-Clause|Apache-2\.0|MPL-2\.0|"
                       r"(L|A)?GPL-[23]\.0(-only|-or-later)?|CC-BY(-SA)?-4\.0)$")
@@ -177,51 +174,6 @@ def le(pasta, offline):
     return r
 
 
-def visual_conf(cat):
-    linhas = [
-        "# GERADO por scripts/check-rices.py a partir de rices/*/rice.toml. Não edite à mão.",
-        "# Passo \"Visual\" do instalador: o rice que entra no primeiro login (só o do desktop",
-        "# escolhido é aplicado; os outros ficam para a página Rices das Configurações).",
-        "---",
-        "mode: required",
-        "method: legacy",
-        "id: visual",
-        "labels:",
-        "    step: \"Visual\"",
-        "default: nullyz",
-        "items:",
-    ]
-    for r in cat:
-        quem = "" if r["autor"] == "NullyzOS" else f" Por {r['autor']} ({r['licenca']})."
-        so = {"hyprland": " Só Hyprland.", "kde": " Só KDE."}.get(r["desktop"], "") if r["id"] != "nullyz" else ""
-        desc = (r["descricao"] + so + quem).replace('"', "'")
-        # No nome também: a lista é a mesma para os dois desktops
-        rotulo = {"hyprland": " (só Hyprland)", "kde": " (só KDE)"}.get(r["desktop"], "")
-        linhas += [
-            f"    - id: {r['id']}",
-            f"      name: \"{r['nome']}{rotulo}\"",
-            f"      description: \"{desc}\"",
-            f"      screenshot: \"/etc/calamares/branding/nullyzos/rice-{r['id']}.png\"",
-        ]
-    return "\n".join(linhas) + "\n"
-
-
-def contexto_conf(cat):
-    linhas = [
-        "# GERADO por scripts/check-rices.py a partir de rices/*/rice.toml. Não edite à mão.",
-        "# Um comando por rice do passo Visual (chave packagechooser_visual do Calamares):",
-        "# anota o escolhido para o primeiro login. O Nullyz padrão não precisa de nada.",
-        "---",
-        "dontChroot: false",
-        "timeout: 60",
-        "packagechooser_visual:",
-    ]
-    for r in cat:
-        if r["id"] != "nullyz":
-            linhas.append(f"    {r['id']}: \"-/usr/lib/nullyzos-installer/rice-inicial {r['id']}\"")
-    return "\n".join(linhas) + "\n"
-
-
 def main():
     offline = "--offline" in sys.argv
     verificar = "--verificar" in sys.argv
@@ -239,8 +191,6 @@ def main():
 
     gerados = {
         CATALOGO: json.dumps(cat, ensure_ascii=False, indent=2) + "\n",
-        VISUAL: visual_conf(cat),
-        CONTEXTO: contexto_conf(cat),
     }
     velhos = [p for p, t in gerados.items() if not p.exists() or p.read_text(encoding="utf-8") != t]
     if verificar and velhos:

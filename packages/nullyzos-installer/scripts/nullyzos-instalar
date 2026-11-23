@@ -8,15 +8,21 @@ green='\033[38;2;111;214;159m'; reset='\033[0m'
 header() {
     clear
     printf "${purple}  ███╗   ██╗${reset}\n${purple}  ████╗  ██║${reset}  ${white}NullyzOS${reset}\n"
-    printf "${purple}  ██╔██╗ ██║${reset}  Instalador seguro baseado no archinstall\n"
+    printf "${purple}  ██╔██╗ ██║${reset}  Instalador baseado no archinstall\n"
     printf "${purple}  ██║╚██╗██║${reset}\n${purple}  ██║ ╚████║${reset}\n\n"
 }
 
 choose() {
-    local prompt=$1 max=$2 answer
+    local prompt=$1 max=$2 answer number
     while true; do
-        read -r -p "$prompt" answer
-        [[ "$answer" =~ ^[0-9]+$ ]] && (( answer >= 1 && answer <= max )) && { REPLY=$answer; return; }
+        read -r -p "$prompt" answer || return 1
+        if [[ "$answer" =~ ^[0-9]{1,6}$ ]]; then
+            number=$((10#$answer))
+            if (( number >= 1 && number <= max )); then
+                REPLY=$number
+                return
+            fi
+        fi
         printf "${muted}Escolha um número entre 1 e %s.${reset}\n" "$max"
     done
 }
@@ -25,20 +31,21 @@ header
 printf "${white}1 de 3 · Desktop${reset}\n\n"
 printf "  ${purple}1${reset}  Hyprland   leve, moderno e orientado ao teclado\n"
 printf "  ${purple}2${reset}  KDE Plasma completo, familiar e configurável\n\n"
-choose "Desktop [1-2]: " 2
+choose "Desktop [1-2]: " 2 || exit 1
 if (( REPLY == 1 )); then
     export NULLYZ_DESKTOP=hyprland
-    rices=(nullyz nullyz-areia nullyz-brasa nullyz-cru nullyz-mono nullyz-musgo nullyz-ouro nullyz-papel nullyz-sol)
 else
     export NULLYZ_DESKTOP=kde
-    rices=(nullyz nullyz-areia nullyz-brasa nullyz-cru nullyz-musgo nullyz-ouro nullyz-papel nullyz-sol graphite layan)
 fi
+rice_list=$(python /usr/share/nullyzos-installer/profile.py "$NULLYZ_DESKTOP") || exit 1
+[[ -n "$rice_list" ]] || exit 1
+mapfile -t rices <<< "$rice_list"
 
 header
 printf "${white}2 de 3 · Visual${reset}\n\n"
 for i in "${!rices[@]}"; do printf "  ${purple}%2d${reset}  %s\n" "$((i + 1))" "${rices[$i]}"; done
 printf "\n"
-choose "Visual [1-${#rices[@]}]: " "${#rices[@]}"
+choose "Visual [1-${#rices[@]}]: " "${#rices[@]}" || exit 1
 export NULLYZ_RICE=${rices[$((REPLY - 1))]}
 
 header
@@ -50,8 +57,9 @@ printf "  ${green}/home${reset}      opcional · arquivos pessoais\n"
 printf "  ${green}swap${reset}       opcional · recomendado para hibernação\n\n"
 printf "${muted}O modo automático também funciona. Revise o disco no resumo: partições\n"
 printf "marcadas para formatação serão apagadas.${reset}\n\n"
-read -r -p "Pressione Enter para abrir o archinstall... "
+read -r -p "Pressione Enter para abrir o archinstall... " || exit 1
 
+/usr/lib/nullyzos-installer/preflight || exit 1
 archinstall --config /usr/share/nullyzos-installer/config.json
 status=$?
 if [ -f /var/log/archinstall/install.log ]; then

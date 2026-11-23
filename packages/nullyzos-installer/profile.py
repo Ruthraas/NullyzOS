@@ -1,7 +1,10 @@
 """Perfil do NullyzOS para o instalador oficial archinstall."""
 
+import json
 import os
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING, override
@@ -13,10 +16,27 @@ if TYPE_CHECKING:
 
 FINGERPRINT = "C43C292B0901FB84D4A1A17436828706C86FB94A"
 VALID_DESKTOPS = {"hyprland", "kde"}
-VALID_RICES = {
-    "nullyz", "nullyz-areia", "nullyz-brasa", "nullyz-cru", "nullyz-mono",
-    "nullyz-musgo", "nullyz-ouro", "nullyz-papel", "nullyz-sol", "graphite", "layan",
-}
+CATALOG = Path(__file__).with_name("catalogo.json")
+REPO_KEY = Path(__file__).with_name("nullyz-repo.asc")
+
+
+def available_rices(desktop: str) -> list[str]:
+    if desktop not in VALID_DESKTOPS:
+        raise ValueError("Desktop inválido")
+    catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
+    return [rice["id"] for rice in catalog if rice["desktop"] in (desktop, "ambos")]
+
+
+def verify_repo_key() -> None:
+    result = subprocess.run(
+        ["gpg", "--batch", "--no-options", "--with-colons", "--show-keys", str(REPO_KEY)],
+        check=True, capture_output=True, text=True,
+    )
+    records = [line.split(":") for line in result.stdout.splitlines()]
+    primary = [records[i + 1][9] for i, record in enumerate(records[:-1])
+               if record[0] == "pub" and records[i + 1][0] == "fpr"]
+    if primary != [FINGERPRINT]:
+        raise ValueError("A chave do repositório NullyzOS não corresponde à impressão digital esperada")
 
 
 class NullyzOSProfile(Profile):
@@ -33,17 +53,18 @@ class NullyzOSProfile(Profile):
     def install(self, install_session: "Installer") -> None:
         desktop = os.environ.get("NULLYZ_DESKTOP", "hyprland")
         rice = os.environ.get("NULLYZ_RICE", "nullyz")
-        if desktop not in VALID_DESKTOPS or rice not in VALID_RICES:
+        if rice not in available_rices(desktop):
             raise ValueError("Seleção inválida do perfil NullyzOS")
 
+        verify_repo_key()
         target = install_session.target
         key_dir = target / "usr/share/nullyzos"
         key_dir.mkdir(parents=True, exist_ok=True)
-        shutil.copy2("/usr/share/nullyzos-installer/nullyz-repo.asc", key_dir / "nullyz-repo.asc")
+        shutil.copy2(REPO_KEY, key_dir / "nullyz-repo.asc")
 
         pacman_conf = target / "etc/pacman.conf"
         text = pacman_conf.read_text()
-        if "[nullyzos]" not in text:
+        if "[nullyzos]" not in (line.strip() for line in text.splitlines()):
             pacman_conf.write_text(
                 text + "\n[nullyzos]\nSigLevel = Required DatabaseRequired\n"
                 + "Server = https://github.com/Ruthraas/NullyzOS/releases/download/repo\n"
@@ -51,11 +72,10 @@ class NullyzOSProfile(Profile):
 
         install_session.arch_chroot("pacman-key --add /usr/share/nullyzos/nullyz-repo.asc")
         install_session.arch_chroot(f"pacman-key --lsign-key {FINGERPRINT}")
-        install_session.arch_chroot("pacman -Sy --noconfirm")
         # O resolvedor do archinstall só conhece os repositórios oficiais carregados no início.
         # Neste ponto o repositório NullyzOS já está assinado, confiado e sincronizado no alvo.
         install_session.arch_chroot(
-            f"pacman -S --needed --noconfirm nullyzos-desktop-{desktop} grub efibootmgr"
+            f"pacman -Syu --needed --noconfirm nullyzos-desktop-{desktop} grub efibootmgr"
         )
         install_session.enable_service([
             "NetworkManager", "sddm", "bluetooth", "cups", "ufw",
@@ -73,3 +93,7 @@ class NullyzOSProfile(Profile):
             shutil.copy2("/usr/lib/nullyzos-installer/finalizar-destino", finalizer)
             finalizer.chmod(0o755)
             install_session.arch_chroot(f"/{finalizer.relative_to(target)}")
+
+
+if __name__ == "__main__":
+    print("\n".join(available_rices(sys.argv[1])))

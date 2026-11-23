@@ -22,7 +22,7 @@ function M.shell(fn)
   return "qs -c nullyzos ipc call nullyzos " .. fn
 end
 
--- Teclado escolhido no instalador (o Calamares grava no formato do X11).
+-- Mapeamento configurado para o X11 e usado também na sessão Hyprland.
 function M.keyboard()
   local layout, variant = "br", ""
   local f = io.open("/etc/X11/xorg.conf.d/00-keyboard.conf", "r")

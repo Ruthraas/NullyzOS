@@ -4,7 +4,7 @@
 
 pkgname=nullyzos-desktop-hyprland
 pkgver=0.1.0
-pkgrel=54
+pkgrel=55
 pkgdesc="Desktop do NullyzOS para Hyprland"
 arch=('any')
 url="https://github.com/Ruthraas/NullyzOS"
@@ -28,7 +28,7 @@ package() {
   # Config do Hyprland (do sistema; o usuário ajusta em ~/.config/hypr/nullyzos.lua)
   install -Dm644 "$src/hypr/hyprland.lua" "$pkgdir/usr/share/nullyzos/hypr/hyprland.lua"
   install -Dm644 -t "$pkgdir/usr/share/nullyzos/hypr/nullyzos" "$src"/hypr/nullyzos/*.lua
-  # Sessão (a tela de login lista "Hyprland" apontando para o nosso lançador)
+  # Sessão (a tela de login lista "NullyzOS (Hyprland)" apontando para o nosso lançador)
   install -Dm755 "$src/session/nullyzos-hyprland" "$pkgdir/usr/bin/nullyzos-hyprland"
   install -Dm644 "$src/session/nullyzos-hyprland.desktop" "$pkgdir/usr/share/wayland-sessions/nullyzos-hyprland.desktop"
   # Terminal: kitty do sistema, shell com prompt/saudação do Nullyz
